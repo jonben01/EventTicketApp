@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+
+<BorderPane fx:id="rootPane" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.LoginController">
+   <center>
+      <FlowPane>
+         <children>
+            <Button fx:id="btnEventDash" mnemonicParsing="false" onAction="#handleEventDash" text="go to event dashboard" />
+            <Button fx:id="btnAdminDash" mnemonicParsing="false" onAction="#handleAdminDash" text="go to admin dashboard" />
+            <TextField />
+            <TextField />
+         </children>
+      </FlowPane>
+   </center>
+</BorderPane>
