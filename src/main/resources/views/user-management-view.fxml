@@ -13,15 +13,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" styleClass="BorderPane" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="952.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField prefHeight="26.0" prefWidth="449.0" promptText="search" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets right="12.0" />
-               </HBox.margin></TextField>
-            <Button mnemonicParsing="false" text="create new user" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="928.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField prefHeight="36.0" prefWidth="807.0" promptText="search" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="109.0" text="Create User">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets left="12.0" right="12.0" />
@@ -51,7 +59,7 @@
                   <Insets left="6.0" right="12.0" />
                </padding>
                <children>
-                  <VBox prefHeight="379.0" prefWidth="466.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                  <VBox fx:id="UserDetailsPane" prefHeight="386.0" prefWidth="466.0" style="-fx-background-color: white; -fx-background-radius: 8;" styleClass="UserDetailsPane">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
@@ -61,12 +69,12 @@
                                  </font>
                               </Label>
                               <Region prefHeight="42.0" prefWidth="132.0" HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="Admin">
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="67.0" text="+ Admin">
                                  <HBox.margin>
                                     <Insets right="12.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" text="Event Coordinator" />
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="+ Event Coordinator" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="24.0" />
@@ -86,33 +94,33 @@
                            </VBox.margin>
                         </Label>
                         <Label text="First Name" />
-                        <TextField promptText="e.g. John">
+                        <TextField prefHeight="35.0" promptText="e.g. John">
                            <VBox.margin>
                               <Insets bottom="12.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Last Name" />
-                        <TextField promptText="e.g. Cooper">
+                        <TextField prefHeight="35.0" promptText="e.g. Cooper">
                            <VBox.margin>
                               <Insets bottom="12.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Email" />
-                        <TextField prefWidth="326.0" promptText="e.g. mail@easv365.dk">
+                        <TextField prefHeight="35.0" prefWidth="326.0" promptText="e.g. mail@easv365.dk">
                            <VBox.margin>
                               <Insets bottom="12.0" />
                            </VBox.margin>
                         </TextField>
                         <Label text="Phone" />
-                        <TextField promptText="e.g. +45 12345678">
+                        <TextField prefHeight="35.0" promptText="e.g. +45 12345678">
                            <VBox.margin>
                               <Insets bottom="12.0" />
                            </VBox.margin>
                         </TextField>
-                        <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="442.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="442.0">
                            <children>
                               <Region prefHeight="200.0" prefWidth="366.0" HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" text="Delete user">
+                              <Button fx:id="btnDeleteUser" mnemonicParsing="false" text="Delete user">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
