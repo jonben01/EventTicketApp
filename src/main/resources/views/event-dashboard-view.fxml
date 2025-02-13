@@ -9,14 +9,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventDashboardController">
    <left>
-      <VBox alignment="TOP_CENTER" minWidth="200.0" spacing="12.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="sidebarVBox" alignment="TOP_CENTER" minWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Admin dashboard" />
-            <Button mnemonicParsing="false" text="User management" />
-            <Button mnemonicParsing="false" text="Event management" />
+            <Label text="Event Dashboard">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding></Label>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" text="🗒 Event Management" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" text="🎫 Ticket Management" />
+            <Label layoutX="63.0" layoutY="22.0" />
          </children>
          <padding>
             <Insets top="12.0" />
@@ -24,7 +27,7 @@
       </VBox>
    </left>
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1152.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="topbarHBox" alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1152.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="APPLICATION NAME">
                <font>
