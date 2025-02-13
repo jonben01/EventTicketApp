@@ -1,13 +1,20 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.GUI.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class EventEventManagementController {
 
@@ -68,14 +75,27 @@ public class EventEventManagementController {
 
     @FXML
     private void handleCreateEvent(ActionEvent actionEvent) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-event-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Create Event");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error loading create event view: " + e.getMessage());
+        }
+        /*
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
-        gridPane.add(createEventPanel("Tech Conference 2025", "Convention Center",
+        gridPane.add(createEventPanel("navn", "Convention Center",
                 "August 20, 2025", "9:00 AM - 6:00 PM",
                 new String[]{"Early Bird $299", "Regular $399"},
                 "John Cooper"), x, y);
+
+         */
+
     }
 
     private int getNextX() {
