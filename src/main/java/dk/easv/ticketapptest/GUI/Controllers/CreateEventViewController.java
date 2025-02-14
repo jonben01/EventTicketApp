@@ -3,12 +3,15 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateEventViewController {
 
+    public Button btnAddTicket;
+    public Button btnCreateEvent;
     @FXML
     private TextField txtNameEvent;
     @FXML
@@ -32,6 +35,13 @@ public class CreateEventViewController {
 
 
     private EventEventManagementController parent;
+
+    @FXML
+    private void initialize() {
+        String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
+        btnCreateEvent.getStylesheets().add(cssFile);
+        btnAddTicket.getStylesheets().add(cssFile);
+    }
 
 
 

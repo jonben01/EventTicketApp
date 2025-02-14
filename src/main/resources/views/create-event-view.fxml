@@ -106,7 +106,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="160.0" text="+ Add Ticket Type">
+                  <Button fx:id="btnAddTicket" mnemonicParsing="false" prefHeight="36.0" prefWidth="160.0" text="+ Add Ticket Type">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -161,7 +161,7 @@
                   </TextField>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#CreateEvent" prefHeight="36.0" prefWidth="160.0" text="Create Event">
+            <Button fx:id="btnCreateEvent" mnemonicParsing="false" onAction="#CreateEvent" prefHeight="36.0" prefWidth="160.0" text="Create Event">
                <font>
                   <Font size="16.0" />
                </font>

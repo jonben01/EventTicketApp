@@ -83,7 +83,9 @@ public class EventEventManagementController {
             controller.setParent(this);
             Stage stage = new Stage();
             stage.setTitle("Create Event");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             System.out.println("Error loading create event view: " + e.getMessage());
