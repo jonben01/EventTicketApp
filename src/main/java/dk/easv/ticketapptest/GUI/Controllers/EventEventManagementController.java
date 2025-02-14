@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class EventEventManagementController {
 
@@ -78,25 +79,35 @@ public class EventEventManagementController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-event-view.fxml"));
             Parent root = loader.load();
+            CreateEventViewController controller = loader.getController();
+            controller.setParent(this);
             Stage stage = new Stage();
             stage.setTitle("Create Event");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             System.out.println("Error loading create event view: " + e.getMessage());
+            e.printStackTrace();
         }
-        /*
+    }
+
+
+    public void createEvent(String title, String location, String date, String starttime, String endtime,
+                             String[] ticketTypes, String coordinator){
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
-        gridPane.add(createEventPanel("navn", "Convention Center",
-                "August 20, 2025", "9:00 AM - 6:00 PM",
-                new String[]{"Early Bird $299", "Regular $399"},
-                "John Cooper"), x, y);
+        gridPane.add(createEventPanel(title, location,
+                date, starttime + " - " + endtime,
+                 ticketTypes,
+                coordinator), x, y);
 
-         */
+
+
 
     }
+
+
 
     private int getNextX() {
         int x = currentX; // Store the current value of currentX

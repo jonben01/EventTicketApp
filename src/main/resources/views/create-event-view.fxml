@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="rootNewEvent" prefHeight="1055.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
    <children>
       <VBox layoutX="7.0" layoutY="12.0" prefHeight="1042.0" prefWidth="955.0" spacing="15.0">
@@ -29,7 +28,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField prefHeight="42.0" prefWidth="824.0" promptText="Enter Event TItle">
+            <TextField fx:id="txtNameEvent" prefHeight="42.0" prefWidth="824.0" promptText="Enter Event TItle">
                <font>
                   <Font size="16.0" />
                </font>
@@ -39,7 +38,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea prefHeight="128.0" prefWidth="824.0" promptText="Describe your event">
+            <TextArea fx:id="txtDescriptionEvent" prefHeight="128.0" prefWidth="824.0" promptText="Describe your event">
                <font>
                   <Font size="16.0" />
                </font>
@@ -60,12 +59,12 @@
             </HBox>
             <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
                <children>
-                  <TextField prefHeight="42.0" prefWidth="412.0" promptText="Enter Location">
+                  <TextField fx:id="txtLocationEvent" prefHeight="42.0" prefWidth="412.0" promptText="Enter Location">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <TextField prefHeight="42.0" prefWidth="412.0" promptText="mm/dd/yyyy">
+                  <TextField fx:id="txtDateEvent" prefHeight="42.0" prefWidth="412.0" promptText="dd/mm/yyyy">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -88,12 +87,12 @@
             </HBox>
             <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
                <children>
-                  <TextField prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
+                  <TextField fx:id="txtStartEvent" prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <TextField prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
+                  <TextField fx:id="txtEndEvent" prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -162,7 +161,7 @@
                   </TextField>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="160.0" text="Create Event">
+            <Button mnemonicParsing="false" onAction="#CreateEvent" prefHeight="36.0" prefWidth="160.0" text="Create Event">
                <font>
                   <Font size="16.0" />
                </font>
