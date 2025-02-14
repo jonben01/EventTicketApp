@@ -22,6 +22,13 @@ public class LoginController {
 
     }
 
-    public void handleEventDash(ActionEvent actionEvent) {
+    public void handleEventDash(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-dashboard-view.fxml"));
+        Parent eventDashboard = fxmlLoader.load();
+
+        Stage stage = (Stage) rootPane.getScene().getWindow();
+        Scene scene = new Scene(eventDashboard);
+        scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+        stage.setScene(scene);
     }
 }
