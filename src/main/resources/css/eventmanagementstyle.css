@@ -1,0 +1,74 @@
+.h1 {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+}
+
+.h2 {
+    -fx-font-size: 16;
+    -fx-text-fill: #737373;
+}
+
+.h3 {
+    -fx-font-size: 14;
+}
+
+.h4 {
+    -fx-font-size: 16;
+}
+
+.vBoxBorder {
+    -fx-background-color: white;
+    -fx-border-color: #c3c3c3;
+    -fx-border-width: 2;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.vBoxBorder:hover {
+    -fx-border-color: #4242ff;
+    -fx-border-width: 3;
+}
+
+/* Added shadow to vBoxBorder2 */
+.vBoxBorder2 {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.2, 0, 2);
+}
+
+/* Prevent children from inheriting effects */
+.vBoxBorder2 > * {
+    -fx-effect: null;
+}
+
+.button2 {
+    -fx-background-radius: 8px;
+    -fx-background-color: #EFF6FF;
+    -fx-font-size: 14;
+    -fx-text-fill: #2563EB;
+    -fx-border-radius: 6.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(200,200,200,0.8), 1, 0, 0, 2);
+    -fx-font-family: "Arial", sans-serif;
+}
+
+.button2:hover {
+    -fx-cursor: hand;
+    -fx-font-size: 15;
+}
+
+.returnButton {
+    -fx-background-radius: 8px;
+    -fx-background-color: #E5E7EB;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial", sans-serif;
+}
+
+/* Optional hover effect for vBoxBorder2 */
+.vBoxBorder2:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0.3, 0, 4);
+}

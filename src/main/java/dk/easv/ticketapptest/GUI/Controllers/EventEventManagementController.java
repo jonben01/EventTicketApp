@@ -5,12 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -18,7 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 
 public class EventEventManagementController {
-
+    String userCSS;
+    String eventCSS;
+    BorderPane mainPane;
     @FXML
     private Button btnCreateEvent;
     @FXML
@@ -31,45 +34,104 @@ public class EventEventManagementController {
 
     @FXML
     private void initialize() {
-        String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
-        btnCreateEvent.getStylesheets().add(cssFile);
+            userCSS = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
+            eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
+            btnCreateEvent.getStylesheets().add(userCSS);
+            gridPane.getStylesheets().add(eventCSS);
+        gridPane.setStyle("-fx-background-color: #F8F8F8;");
+
+
+            // Set GridPane properties
+            gridPane.setPadding(new Insets(70, 0, 0, 0)); // Padding around the grid
+            gridPane.setHgap(10); // Horizontal gap between columns
+            gridPane.setVgap(10); // Vertical gap between rows
+
+// Set row and column constraints
+        for (int i = 0; i < 3; i++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow(Priority.NEVER);
+            columnConstraints.setMinWidth(300);
+            columnConstraints.setPrefWidth(300);
+            columnConstraints.setMaxWidth(300);
+            gridPane.getColumnConstraints().add(columnConstraints);
+        }
+
+        for (int i = 0; i < 10; i++) { // Set the number of rows you expect
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setVgrow(Priority.NEVER);
+            rowConstraints.setMinHeight(300);
+            rowConstraints.setPrefHeight(300);
+            rowConstraints.setMaxHeight(300);
+            gridPane.getRowConstraints().add(rowConstraints);
+
+            gridPane.setAlignment(Pos.CENTER);
+            gridPane.getStylesheets().add(eventCSS);
+        }
+    }
+
+    public void setPanel(BorderPane mainPane)
+    {
+        this.mainPane = mainPane;
     }
 
     private VBox createEventPanel(String title, String location, String date, String time,
                                   String[] ticketTypes, String coordinator) {
         VBox vbox = new VBox();
+        vbox.getStyleClass().add("vBoxBorder");
+            // Width constraints
+            vbox.setPrefWidth(300);
+            vbox.setMaxWidth(300);
 
-        // Set a fixed height for the VBox to prevent overlapping
-        vbox.setPrefHeight(150); // Set a preferred height
-        vbox.setMaxHeight(150); // Set a maximum height
-        vbox.setSpacing(10);
-        vbox.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-border-color: lightgray; -fx-border-radius: 5; -fx-background-radius: 5;");
-
-        // Set GridPane properties
-        gridPane.setHgap(10); // Horizontal gap between columns
-        gridPane.setVgap(10); // Vertical gap between rows
-        gridPane.setPadding(new Insets(10)); // Padding around the grid
+            // Height constraints
+            vbox.setPrefHeight(300);
+            vbox.setMaxHeight(300);
 
         Label titleLabel = new Label(title);
-        titleLabel.setFont(new Font("Arial", 18));
+        titleLabel.getStyleClass().add("h1");
+
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("button2");
 
         Label locationLabel = new Label("📍 " + location);
+        locationLabel.getStyleClass().add("h2");
         Label dateLabel = new Label("📅 " + date);
+        dateLabel.getStyleClass().add("h2");
         Label timeLabel = new Label("🕒 " + time);
+        timeLabel.getStyleClass().add("h2");
+        Separator separator1 = new Separator();
 
         Label ticketsLabel = new Label("Tickets Sold");
+        ticketsLabel.getStyleClass().add("h2");
         StringBuilder ticketInfo = new StringBuilder();
         for (String ticket : ticketTypes) {
             ticketInfo.append(ticket).append("\n");
         }
         Label ticketInfoLabel = new Label(ticketInfo.toString().trim());
+        ticketInfoLabel.getStyleClass().add("h3");
+        Separator separator2 = new Separator();
 
         Label coordinatorLabel = new Label("Coordinator: " + coordinator);
+        coordinatorLabel.getStyleClass().add("h4");
 
-        Button deleteButton = new Button("🗑️");
 
-        vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel,
-                ticketsLabel, ticketInfoLabel, coordinatorLabel, deleteButton);
+
+        vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,
+                ticketsLabel, ticketInfoLabel, separator2, coordinatorLabel, deleteButton);
+
+        vbox.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 1)
+            {
+                try{
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-view.fxml"));
+                    Parent eventInDepth = fxmlLoader.load();
+                    EventViewController controller = fxmlLoader.getController();
+                    controller.setPanel(mainPane);
+                    mainPane.setCenter(eventInDepth);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         return vbox;
     }
@@ -95,44 +157,27 @@ public class EventEventManagementController {
 
 
     public void createEvent(String title, String location, String date, String starttime, String endtime,
-                             String[] ticketTypes, String coordinator){
+                            String[] ticketTypes, String coordinator) {
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
-        gridPane.add(createEventPanel(title, location,
-                date, starttime + " - " + endtime,
-                 ticketTypes,
-                coordinator), x, y);
 
+        gridPane.add(createEventPanel(title, location, date, starttime + " - " + endtime, ticketTypes, coordinator), x, y);
 
-
-
+        currentX++;
     }
+
 
 
 
     private int getNextX() {
-        int x = currentX; // Store the current value of currentX
-        if (currentX < 2) { // Allow for indices 0, 1, 2
-            currentX++; // Increment currentX for the next call
-        } else {
-            currentX = 0; // Reset currentX for the next row
-        }
-        return x; // Return the stored value
+        return currentX % 3;
     }
 
     private int getNextY() {
-        if (currentX == 1) { // If we just reset currentX, we need to increment currentY
-            if(ignore == 0)
-            {
-                ignore = 1;
-                return currentY;
-            }
-            else {
-                currentY++;
-            }
-        }
-        return currentY; // Return the currentY value
+        return currentX / 3;
     }
+
+
 }
 

@@ -5,19 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="720.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventEventManagementController">
    <children>
-      <VBox prefHeight="720.0" prefWidth="950.0" spacing="10.0">
+      <VBox prefHeight="720.0" prefWidth="950.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox prefHeight="100.0" prefWidth="739.0">
                      <children>
@@ -48,9 +45,9 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <AnchorPane prefHeight="100.0" prefWidth="211.0">
+                  <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="211.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="btnCreateEvent" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleCreateEvent" prefHeight="50.0" prefWidth="165.0" text="+ Create New Event">
+                        <Button fx:id="btnCreateEvent" contentDisplay="CENTER" layoutX="14.0" layoutY="47.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleCreateEvent" prefHeight="27.0" prefWidth="165.0" text="+ Create New Event" AnchorPane.rightAnchor="27.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -59,21 +56,16 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <ScrollPane VBox.vgrow="ALWAYS">
+            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="gridPane" prefHeight="608.0" prefWidth="947.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                    </rowConstraints>
-                  </GridPane>
+                  <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefWidth="947.0" vgap="80.0">
+                     <padding>
+                        <Insets left="-50.0" />
+                     </padding></GridPane>
                </content>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
             </ScrollPane>
          </children>
       </VBox>

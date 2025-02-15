@@ -1,14 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="dk.easv.ticketapptest.event coordinator views.EventView"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
+   <children>
+      <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="btnReturn" mnemonicParsing="false" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
+               <VBox.margin>
+                  <Insets left="15.0" top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="418.0" prefWidth="875.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox fx:id="vboxLeft" prefHeight="409.0" prefWidth="147.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lblTitle" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Title">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblLocation" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Location">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblDate" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Date">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTime" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Time">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox layoutX="10.0" layoutY="213.0" prefHeight="39.0" prefWidth="429.0">
+                           <children>
+                              <Label fx:id="lblDesc" prefHeight="25.0" prefWidth="119.0" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Description:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <AnchorPane maxHeight="30.0" prefHeight="25.0" prefWidth="379.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="btnEditDesc" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Edit Description" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <TextField fx:id="txtDesc" prefHeight="107.0" prefWidth="429.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <HBox maxHeight="25.0" prefHeight="39.0" prefWidth="429.0">
+                           <children>
+                              <Label fx:id="lblTicket" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="btnAddTicket" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn prefWidth="121.99999749660492" text="Ticket Type" />
+                            <TableColumn prefWidth="152.6666488647461" text="Description" />
+                              <TableColumn prefWidth="77.33331298828125" text="Price" />
+                              <TableColumn prefWidth="76.66668701171875" text="Sold" />
+                          </columns>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </TableView>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="vboxRight" prefHeight="347.0" prefWidth="108.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label fx:id="lblCoords" prefHeight="17.0" prefWidth="439.0" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Event Coordinators">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lstCoords" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="531.0" prefWidth="413.0" VBox.vgrow="ALWAYS" />
+                        <VBox alignment="BOTTOM_RIGHT" maxHeight="30.0" prefHeight="31.0" prefWidth="413.0">
+                           <children>
+                              <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="207.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+  Add Event Coordinator">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>

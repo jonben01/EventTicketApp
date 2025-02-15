@@ -29,9 +29,9 @@ public class EventDashboardController {
     public void handleEventManagement(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-Dashboard-event-management.fxml"));
         Parent eventDashboard = fxmlLoader.load();
-
+        EventEventManagementController controller = fxmlLoader.getController();
+        controller.setPanel(rootPaneEvent);
         rootPaneEvent.setCenter(eventDashboard);
-
     }
     }
 
