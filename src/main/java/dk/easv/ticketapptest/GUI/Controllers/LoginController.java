@@ -22,6 +22,9 @@ public class LoginController {
 
     }
 
+    //TODO LOGIN SHOULD JUST BE AN IF STATEMENT IF TEXTFIELD CONTAINS ADMIN/PASSWORD - ADMIN SECTION
+    // IF TEXTFIELD CONTAINS EVENT/PASSWORD - EVENT SECTION
+
     public void handleEventDash(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-dashboard-view.fxml"));
         Parent eventDashboard = fxmlLoader.load();
