@@ -66,7 +66,24 @@ public class TicketManagementController {
         mainPane = rootPaneEvent;
     }
 
-    private VBox createEventPanel(String title, String location, String date, String time){
+    private class EventDetails {
+        String title;
+        String location;
+        String date;
+        String time;
+        String description;
+
+        public EventDetails(String title, String location, String date, String time, String description) {
+            this.title = title;
+            this.location = location;
+            this.date = date;
+            this.time = time;
+            this.description = description;
+        }
+    }
+
+    private VBox createEventPanel(String title, String location, String date, String time, String description) {
+        EventDetails eventDetails = new EventDetails(title, location, date, time, description);
         VBox vbox = new VBox();
         vbox.getStyleClass().add("vBoxBorder");
 
@@ -100,6 +117,7 @@ public class TicketManagementController {
                     Parent eventInDepth = fxmlLoader.load();
                     TicketPrintController controller = fxmlLoader.getController();
                     controller.setPanel(mainPane);
+                    controller.setEventDetails(eventDetails.title, eventDetails.location, eventDetails.date, eventDetails.time);
                     mainPane.setCenter(eventInDepth);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -110,12 +128,12 @@ public class TicketManagementController {
         return vbox;
     }
 
-    public void createEvent(String title, String location, String date, String starttime, String endtime) {
+    public void createEvent(String title, String location, String date, String starttime, String endtime, String description) {
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
 
-        gridPane.add(createEventPanel(title, location, date, starttime + " - " + endtime), x, y);
+        gridPane.add(createEventPanel(title, location, date, starttime + " - " + endtime, description), x, y);
 
         currentX++;
     }
@@ -123,7 +141,7 @@ public class TicketManagementController {
     private void addExistingEvents(List<Event2> events){
         if(!events.isEmpty()){
             for(Event2 event : events){
-                createEvent(event.getTitle(), event.getLocation(), event.getDate(), event.getStartTime(), event.getEndTime());
+                createEvent(event.getTitle(), event.getLocation(), event.getDate(), event.getStartTime(), event.getEndTime(), event.getDescription());
             }
         }
     }

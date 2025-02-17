@@ -1,11 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
    <children>
-      <Label layoutX="286.0" layoutY="191.0" text="Have fun david" />
+      <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="btnReturn" mnemonicParsing="false" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
+               <VBox.margin>
+                  <Insets left="15.0" top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="418.0" prefWidth="875.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox fx:id="vboxLeft" prefHeight="409.0" prefWidth="147.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lblTitle" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Title">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblLocationTicket" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Location">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblDateTicket" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Date">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTimeTicket" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Time">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox layoutX="10.0" layoutY="213.0" prefHeight="39.0" prefWidth="429.0" />
+                        <HBox maxHeight="25.0" prefHeight="39.0" prefWidth="429.0">
+                           <children>
+                              <Label fx:id="lblTicket" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn prefWidth="121.99999749660492" text="Ticket Type" />
+                              <TableColumn prefWidth="152.6666488647461" text="Description" />
+                              <TableColumn prefWidth="77.33331298828125" text="Price" />
+                              <TableColumn prefWidth="76.66668701171875" text="Sold" />
+                           </columns>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </TableView>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox fx:id="vboxRight" prefHeight="347.0" prefWidth="108.0" spacing="10.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label fx:id="lblCoords" prefHeight="17.0" prefWidth="439.0" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="2.0" prefWidth="361.0">
+                           <children>
+                              <Label prefHeight="25.0" prefWidth="371.0" text="First Name">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer first name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label prefHeight="25.0" prefWidth="371.0" text="Last Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer last name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label prefHeight="25.0" prefWidth="371.0" text="Email">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer email address">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label prefHeight="25.0" prefWidth="371.0" text="Phone">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer phone number">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="btnPrintTicket" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

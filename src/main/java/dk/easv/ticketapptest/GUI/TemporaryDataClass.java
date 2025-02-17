@@ -43,6 +43,14 @@ public class TemporaryDataClass {
         eventsToBeViewed.add(event2);
         eventsToBeViewed.add(event3);
 
+        //Mock data - Ticket
+        Ticket ticket1 = new Ticket(eventsToBeViewed.get(1),100,true,"VIP", "Free Meal");
+        Ticket ticket2 = new Ticket(eventsToBeViewed.get(2),200,true,"Super VIP","Free Meal and Drink");
+        Ticket ticket3 = new Ticket(eventsToBeViewed.get(3),500,true,"WIP", "Error: 404 Not Found");
+        ticketsToBeViewed.add(ticket1);
+        ticketsToBeViewed.add(ticket2);
+        ticketsToBeViewed.add(ticket3);
+
     }
 
     //EVENTS SECTION

@@ -23,6 +23,7 @@ public class Event2 {
         this.endTime = endTime;
         this.ticketTypes = ticketTypes;
         this.eventCoordinators = eventCoordinators;
+
     }
 
     public String getDate() {
