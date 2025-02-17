@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import javafx.collections.FXCollections;
@@ -25,15 +26,14 @@ public class TemporaryDataClass {
 
 
         //mock data
-        User user1 = new User("John", "Cooper", "johncooper@mail.com", "+45 66827391");
-        User user2 = new User("Sarah", "Wilson", "sarahwilson@mail.com", "+45 45829101");
-        User user3 = new User("Michael", "Brown", "michaelbrown@mail.com", "+45 12749228");
+        User user1 = new User("JohCoo42", "12345","John", "Cooper", "johncooper@mail.com", "+45 66827391", Role.ADMIN);
+        User user2 = new User("SarWil87", "54321","Sarah", "Wilson", "sarahwilson@mail.com", "+45 45829101", Role.COORDINATOR);
+        User user3 = new User("MicBro", "broooooo","Michael", "Brown", "michaelbrown@mail.com", "+45 12749228", Role.ADMIN);
         usersToBeViewed.add(user1);
         usersToBeViewed.add(user2);
         usersToBeViewed.add(user3);
 
 
-        //TODO finish ticket BE and then make mock data.
 
         //Mock data - Event
         Event2 event1 = new Event2("Summer Music Festival", "Central Park, New York", "July 15, 2025", "2:00pm", "10:00pm", new String[]{"good one", "not as good one"}, usersToBeViewed);
@@ -44,9 +44,12 @@ public class TemporaryDataClass {
         eventsToBeViewed.add(event3);
 
         //Mock data - Ticket
-        Ticket ticket1 = new Ticket(eventsToBeViewed.get(1),100,true,"VIP", "Free Meal");
-        Ticket ticket2 = new Ticket(eventsToBeViewed.get(2),200,true,"Super VIP","Free Meal and Drink");
-        Ticket ticket3 = new Ticket(eventsToBeViewed.get(3),500,true,"WIP", "Error: 404 Not Found");
+        //TODO change constructor, global and event should be mutually exclusive (dont need an event for a global ticket)
+        // also make a direct connection to the event instead of using get()
+
+        Ticket ticket1 = new Ticket(eventsToBeViewed.get(0),100,true,"VIP", "Free Meal");
+        Ticket ticket2 = new Ticket(eventsToBeViewed.get(1),200,true,"Super VIP","Free Meal and Drink");
+        Ticket ticket3 = new Ticket(eventsToBeViewed.get(2),500,true,"WIP", "Error: 404 Not Found");
         ticketsToBeViewed.add(ticket1);
         ticketsToBeViewed.add(ticket2);
         ticketsToBeViewed.add(ticket3);
@@ -98,7 +101,7 @@ public class TemporaryDataClass {
         usersToBeViewed.add(user);
     }
 
-    public List<User> getUsers() {
+    public ObservableList<User> getUsers() {
         return usersToBeViewed;
     }
 

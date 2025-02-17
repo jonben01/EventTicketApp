@@ -1,7 +1,7 @@
 package dk.easv.ticketapptest.BE;
 
 
-import javax.management.relation.Role;
+
 
 
 //TODO MAKE CLASS ABSTRACT WHEN ACTUAL PROJECT STARTS
@@ -19,11 +19,47 @@ public class User {
     //should arguably not be a string, but its just easier to work with.
     private String phone;
 
-    public User(String firstName, String lastName, String email, String phone) {
+
+    //TODO IMPLEMENT USERNAME AND PASSWORD
+
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public User(String username, String password, String firstName, String lastName, String email, String phone, Role role) {
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {

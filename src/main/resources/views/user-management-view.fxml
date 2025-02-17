@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" styleClass="BorderPane" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" styleClass="BorderPane" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="952.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +39,7 @@
          <children>
             <VBox alignment="TOP_CENTER" minWidth="460.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="UsersPane" prefHeight="430.0" prefWidth="466.0" styleClass="UsersPane">
+                  <VBox fx:id="UsersPane" prefHeight="470.0" prefWidth="458.0" styleClass="UsersPane">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -62,7 +62,7 @@
                               <Insets bottom="12.0" />
                            </VBox.margin>
                         </HBox>
-                        <ListView prefHeight="315.0" prefWidth="434.0" />
+                        <ListView fx:id="lstUsers" prefHeight="394.0" prefWidth="434.0" />
                      </children>
                   </VBox>
                </children>
@@ -75,7 +75,7 @@
                   <Insets left="12.0" right="12.0" />
                </padding>
                <children>
-                  <VBox fx:id="UserDetailsPane" prefHeight="430.0" prefWidth="452.0" styleClass="UserDetailsPane">
+                  <VBox fx:id="UserDetailsPane" prefHeight="470.0" prefWidth="452.0" styleClass="UserDetailsPane">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
@@ -85,7 +85,7 @@
                                  </font>
                               </Label>
                               <Region prefHeight="42.0" prefWidth="72.0" HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="81.0" text="+ Admin">
+                              <Button fx:id="btnSetAdmin" mnemonicParsing="false" onAction="#handleSetAdmin" prefHeight="30.0" prefWidth="81.0" text="+ Admin">
                                  <HBox.margin>
                                     <Insets right="12.0" />
                                  </HBox.margin>
@@ -93,7 +93,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="157.0" text="+ Event Coordinator">
+                              <Button fx:id="btnSetEventCoordinator" mnemonicParsing="false" onAction="#handleSetEventCoordinator" prefHeight="30.0" prefWidth="157.0" text="+ Event Coordinator">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Button>
@@ -107,48 +107,51 @@
                         </HBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0">
                            <children>
-                              <Label text="Username">
+                              <Label fx:id="lblName" text="Username">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Role 1">
+                                    <Label fx:id="lblRole" text="Role 1">
                                        <HBox.margin>
                                           <Insets right="12.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Label text="Role 2" />
                                  </children>
                                  <padding>
                                     <Insets bottom="12.0" />
                                  </padding>
                               </HBox>
-                              <Label text="First Name" />
-                              <TextField prefHeight="35.0" promptText="e.g. John">
+                              <Label text="Username" />
+                              <TextField fx:id="txtUsername" prefHeight="35.0" promptText="e.g. JohCoo42">
                                  <VBox.margin>
-                                    <Insets bottom="12.0" />
+                                    <Insets />
+                                 </VBox.margin>
+                              </TextField>
+                              <Label text="Password" />
+                              <TextField fx:id="txtPassword" prefHeight="35.0" promptText="e.g. cahsidfvn">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </TextField>
+                              <Label text="First Name" />
+                              <TextField fx:id="txtFirstName" prefHeight="35.0" prefWidth="326.0" promptText="e.g. John">
+                                 <VBox.margin>
+                                    <Insets />
                                  </VBox.margin>
                               </TextField>
                               <Label text="Last Name" />
-                              <TextField prefHeight="35.0" promptText="e.g. Cooper">
+                              <TextField fx:id="txtLastName" prefHeight="35.0" promptText="e.g. Cooper">
                                  <VBox.margin>
-                                    <Insets bottom="12.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </TextField>
                               <Label text="Email" />
-                              <TextField prefHeight="35.0" prefWidth="326.0" promptText="e.g. mail@easv365.dk">
-                                 <VBox.margin>
-                                    <Insets bottom="12.0" />
-                                 </VBox.margin>
-                              </TextField>
+                              <TextField fx:id="txtEmail" prefHeight="35.0" promptText="e.g. mail@easv365.dk" />
                               <Label text="Phone" />
-                              <TextField prefHeight="35.0" promptText="e.g. +45 12345678">
-                                 <VBox.margin>
-                                    <Insets bottom="12.0" />
-                                 </VBox.margin>
-                              </TextField>
+                              <TextField fx:id="txtPhone" prefHeight="35.0" promptText="e.g. +45 12345678" />
                               <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="428.0">
                                  <VBox.margin>
                                     <Insets bottom="6.0" />
