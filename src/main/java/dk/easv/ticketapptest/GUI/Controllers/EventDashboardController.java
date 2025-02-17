@@ -1,6 +1,5 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
-import dk.easv.ticketapptest.BE.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +32,15 @@ public class EventDashboardController {
         controller.setPanel(rootPaneEvent);
         rootPaneEvent.setCenter(eventDashboard);
     }
+
+    @FXML
+    private void handleTicketManagement(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ticket-management-view.fxml"));
+        Parent eventDashboard = fxmlLoader.load();
+        TicketManagementController controller = fxmlLoader.getController();
+        controller.setPanel(rootPaneEvent);
+        rootPaneEvent.setCenter(eventDashboard);
     }
+}
 
 

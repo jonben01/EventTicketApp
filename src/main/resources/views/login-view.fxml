@@ -24,7 +24,7 @@
                         <Label layoutX="24.0" layoutY="14.0" text="Username" />
                         <Label layoutX="24.0" layoutY="69.0" text="Password" />
                         <Button layoutX="261.0" layoutY="128.0" mnemonicParsing="false" text="Login" />
-                        <TextArea layoutX="41.0" layoutY="178.0" prefHeight="46.0" prefWidth="250.0" text="Admin login  = admin/password&#10;Event coordinator login = event/password" />
+                        <TextArea layoutX="41.0" layoutY="178.0" prefHeight="46.0" prefWidth="250.0" text="Admin login  = admin/password&#10;Event coordinator login = event2/password" />
                      </children>
                      <padding>
                         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />

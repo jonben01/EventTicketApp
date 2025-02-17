@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -7,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class CreateEventViewController {
 
@@ -32,12 +35,14 @@ public class CreateEventViewController {
     private TextField txtPrice;
     @FXML
     private TextField txtQuantityAvailable;
+    TemporaryDataClass data;
 
 
     private EventEventManagementController parent;
 
     @FXML
     private void initialize() {
+        data = new TemporaryDataClass();
         String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
         btnCreateEvent.getStylesheets().add(cssFile);
         btnAddTicket.getStylesheets().add(cssFile);
@@ -58,7 +63,7 @@ public class CreateEventViewController {
                 && !txtDescriptionEvent.getText().isEmpty()
                 && !txtStartEvent.getText().isEmpty()
                 && !txtLocationEvent.getText().isEmpty()) {
-            parent.createEvent(txtNameEvent.getText(), txtLocationEvent.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, "John Cooper");
+            parent.createEvent(txtNameEvent.getText(), txtLocationEvent.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
             ((Stage) txtNameEvent.getScene().getWindow()).close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -19,7 +19,7 @@
                   <Insets bottom="10.0" />
                </padding></Label>
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEventManagement" prefHeight="45.0" prefWidth="200.0" text="🗒 Event Management" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" text="🎫 Ticket Management" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTicketManagement" prefHeight="45.0" prefWidth="200.0" text="🎫 Ticket Management" />
             <Label layoutX="63.0" layoutY="22.0" />
          </children>
          <padding>
