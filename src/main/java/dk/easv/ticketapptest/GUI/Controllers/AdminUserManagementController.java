@@ -8,25 +8,31 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminUserManagementController implements Initializable {
 
-    @FXML public TextField txtPhone;
-    @FXML public TextField txtEmail;
-    @FXML public TextField txtLastName;
-    @FXML public TextField txtFirstName;
-    @FXML public Label lblRole;
-    @FXML public Label lblName;
-    @FXML public TextField txtUsername;
-    @FXML public TextField txtPassword;
-    @FXML public CheckBox chkEditable;
+    @FXML private TextField txtPhone;
+    @FXML private TextField txtEmail;
+    @FXML private TextField txtLastName;
+    @FXML private TextField txtFirstName;
+    @FXML private Label lblRole;
+    @FXML private Label lblName;
+    @FXML private TextField txtUsername;
+    @FXML private TextField txtPassword;
+    @FXML private CheckBox chkEditable;
     @FXML private ListView<User> lstUsers;
 
     private TemporaryDataClass tdc;
@@ -45,6 +51,7 @@ public class AdminUserManagementController implements Initializable {
 
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setUserInfo();
+
         });
 
 
@@ -189,7 +196,24 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    public void handleCreateUser(ActionEvent actionEvent) {
+    public void handleCreateUser(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-user-creation-view.fxml"));
+        Parent root = loader.load();
+
+        AdminCreateUserController controller = loader.getController();
+
+        Stage stage = new Stage();
+        stage.setTitle("Create User");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+
+        User newUser = controller.getCreatedUser();
+        if (newUser != null) {
+            tdc.createUser(newUser);
+            lstUsers.getSelectionModel().select(newUser);
+            lstUsers.scrollTo(newUser);
+        }
     }
 
     public void handleDeleteUser(ActionEvent actionEvent) {
@@ -226,6 +250,14 @@ public class AdminUserManagementController implements Initializable {
             txtLastName.setEditable(true);
             txtEmail.setEditable(true);
             txtPhone.setEditable(true);
+        }
+        if (!chkEditable.selectedProperty().getValue()) {
+            txtUsername.setEditable(false);
+            txtPassword.setEditable(false);
+            txtFirstName.setEditable(false);
+            txtLastName.setEditable(false);
+            txtEmail.setEditable(false);
+            txtPhone.setEditable(false);
         }
 
     }
