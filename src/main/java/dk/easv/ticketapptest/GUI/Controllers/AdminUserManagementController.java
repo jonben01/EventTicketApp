@@ -37,8 +37,6 @@ public class AdminUserManagementController implements Initializable {
 
     private TemporaryDataClass tdc;
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tdc = new TemporaryDataClass();
