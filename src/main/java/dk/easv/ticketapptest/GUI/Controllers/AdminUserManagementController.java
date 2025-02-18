@@ -53,6 +53,9 @@ public class AdminUserManagementController implements Initializable {
         userChangeListeners();
     }
 
+
+    //TODO IMPLEMENT USE OF BEANS OR USERDATA FOR ACTUAL PROJECT
+    // SO THERE ISNT 6 LISTENERS DOING THE SAME THING
     private void userChangeListeners() {
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
             User user = lstUsers.getSelectionModel().getSelectedItem();
