@@ -3,15 +3,16 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,7 @@ public class AdminUserManagementController implements Initializable {
     @FXML public Label lblName;
     @FXML public TextField txtUsername;
     @FXML public TextField txtPassword;
+    @FXML public CheckBox chkEditable;
     @FXML private ListView<User> lstUsers;
 
     private TemporaryDataClass tdc;
@@ -44,21 +46,67 @@ public class AdminUserManagementController implements Initializable {
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setUserInfo();
         });
+
+
+        //TODO IMPLEMENT USE OF BEANS OR USERDATA FOR ACTUAL PROJECT
+        // SO THERE ISNT 6 LISTENERS DOING THE SAME THING
+        userChangeListeners();
+    }
+
+    private void userChangeListeners() {
+        txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setUsername(newValue);
+            }
+        });
+        txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setPassword(newValue);
+            }
+        });
+        txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setEmail(newValue);
+            }
+        });
+        txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setFirstName(newValue);
+            }
+        });
+        txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setLastName(newValue);
+            }
+        });
+        txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            if (user != null) {
+                user.setPhone(newValue);
+            }
+        });
     }
 
     private void setUserInfo() {
         User user = lstUsers.getSelectionModel().getSelectedItem();
-        txtUsername.setText(user.getUsername());
-        txtPassword.setText(user.getPassword());
-        txtFirstName.setText(user.getFirstName());
-        txtLastName.setText(user.getLastName());
-        txtEmail.setText(user.getEmail());
-        txtPhone.setText(user.getPhone());
-        lblName.setText(user.getFirstName() + " " + user.getLastName());
-        if (user.getRole() != null) {
-            lblRole.setText(user.getRole().toString());
-        } else {
-            lblRole.setText("NO ROLE");
+        if (user != null) {
+            txtUsername.setText(user.getUsername());
+            txtPassword.setText(user.getPassword());
+            txtFirstName.setText(user.getFirstName());
+            txtLastName.setText(user.getLastName());
+            txtEmail.setText(user.getEmail());
+            txtPhone.setText(user.getPhone());
+            lblName.setText(user.getFirstName() + " " + user.getLastName());
+            if (user.getRole() != null) {
+                lblRole.setText(user.getRole().toString());
+            } else {
+                lblRole.setText("NO ROLE");
+            }
         }
     }
 
@@ -138,16 +186,49 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    //TODO få user listen til at virke
+    public void handleCreateUser(ActionEvent actionEvent) {
+    }
 
+    public void handleDeleteUser(ActionEvent actionEvent) {
+        User user = lstUsers.getSelectionModel().getSelectedItem();
+        if (user != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText(null);
+            alert.setContentText("Delete this user?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                tdc.deleteUser(user);
+            }
+        }
+    }
 
+    public void handleEditable(ActionEvent actionEvent) {
 
+        //TODO figure out if this could cause errors, i.e. when fields are already un-editable.
+        lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            txtUsername.setEditable(false);
+            txtPassword.setEditable(false);
+            txtFirstName.setEditable(false);
+            txtLastName.setEditable(false);
+            txtEmail.setEditable(false);
+            txtPhone.setEditable(false);
+            chkEditable.setSelected(false);
+        });
 
-    //TODO få roller på user til at virke
+        if (chkEditable.selectedProperty().getValue()) {
+            txtUsername.setEditable(true);
+            txtPassword.setEditable(true);
+            txtFirstName.setEditable(true);
+            txtLastName.setEditable(true);
+            txtEmail.setEditable(true);
+            txtPhone.setEditable(true);
+        }
+
+    }
 
 
     //TODO få add user til at virke
 
 
-    //TODO få delete user til at virke
 }
