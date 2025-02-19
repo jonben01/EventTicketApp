@@ -10,9 +10,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -111,9 +113,11 @@ public class AdminUserManagementController implements Initializable {
             txtPhone.setText(user.getPhone());
             lblName.setText(user.getFirstName() + " " + user.getLastName());
             if (user.getRole() != null) {
-                lblRole.setText(user.getRole().toString());
+                lblRole.setText(user.getRole().toString().toLowerCase());
+                lblRole.setStyle("-fx-background-color: blue");
             } else {
-                lblRole.setText("NO ROLE");
+                lblRole.setText("no role");
+                lblRole.setStyle("-fx-background-color: red");
             }
         }
     }
@@ -124,10 +128,43 @@ public class AdminUserManagementController implements Initializable {
             @Override
             protected void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
+
+                setText(null);
+                setGraphic(null);
+
                 if (empty || item == null) {
-                    setText(null);
+                    return;
+                }
+
+                //create labels for full name and user role
+                Label nameLabel = new Label(item.getFirstName() + " " + item.getLastName());
+                Label roleLabel;
+                if (item.getRole() != null) {
+                    roleLabel = new Label(item.getRole().toString().toLowerCase());
+
                 } else {
-                    setText(item.getFirstName() + " " + item.getLastName() + "\n" + item.getEmail());
+                    roleLabel = new Label("no role");
+                    roleLabel.setStyle("-fx-background-color: red ;");
+                }
+
+
+                nameLabel.getStyleClass().add("name-label");
+
+                roleLabel.getStyleClass().add("role-label");
+
+                //use a vbox with both labels in to allow individual styling
+                VBox vbox = new VBox(nameLabel, roleLabel);
+                vbox.setSpacing(2);
+
+                setText(null);
+                setGraphic(vbox);
+
+                if (getIndex() == 0) {
+                    if (!getStyleClass().contains("first-visible")) {
+                        getStyleClass().add("first-visible");
+                    }
+                } else {
+                    getStyleClass().remove("first-visible");
                 }
             }
         });
@@ -138,7 +175,9 @@ public class AdminUserManagementController implements Initializable {
         if (user != null) {
             if (user.getRole() == Role.COORDINATOR) {
                 user.setRole(null);
-                lblRole.setText("NO ROLE");
+                lblRole.setText("no role");
+                lblRole.setStyle("-fx-background-color: red ;");
+                lstUsers.refresh();
             } else if (user.getRole() == Role.ADMIN) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
@@ -147,11 +186,15 @@ public class AdminUserManagementController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.COORDINATOR);
-                    lblRole.setText("COORDINATOR");
+                    lblRole.setText(user.getRole().toString().toLowerCase());
+                    lblRole.setStyle("-fx-background-color: blue ;");
+                    lstUsers.refresh();
                 }
             } else {
                 user.setRole(Role.COORDINATOR);
-                lblRole.setText("COORDINATOR");
+                lblRole.setText(user.getRole().toString().toLowerCase());
+                lblRole.setStyle("-fx-background-color: blue ;");
+                lstUsers.refresh();
             }
         }
     }
@@ -168,7 +211,9 @@ public class AdminUserManagementController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     user.setRole(null);
-                    lblRole.setText("NO ROLE");
+                    lblRole.setText("no role");
+                    lblRole.setStyle("-fx-background-color: red ;");
+                    lstUsers.refresh();
                 }
             } else if (user.getRole() == Role.COORDINATOR) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -178,7 +223,9 @@ public class AdminUserManagementController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.ADMIN);
-                    lblRole.setText("ADMIN");
+                    lblRole.setText(user.getRole().toString().toLowerCase());
+                    lblRole.setStyle("-fx-background-color: blue ;");
+                    lstUsers.refresh();
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -188,7 +235,9 @@ public class AdminUserManagementController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.ADMIN);
-                    lblRole.setText("ADMIN");
+                    lblRole.setText(user.getRole().toString().toLowerCase());
+                    lblRole.setStyle("-fx-background-color: blue");
+                    lstUsers.refresh();
                 }
             }
         }
@@ -230,7 +279,6 @@ public class AdminUserManagementController implements Initializable {
 
     public void handleEditable(ActionEvent actionEvent) {
 
-        //TODO figure out if this could cause errors, i.e. when fields are already un-editable.
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             txtUsername.setEditable(false);
             txtPassword.setEditable(false);
@@ -257,11 +305,6 @@ public class AdminUserManagementController implements Initializable {
             txtEmail.setEditable(false);
             txtPhone.setEditable(false);
         }
-
     }
-
-
-    //TODO få add user til at virke
-
 
 }

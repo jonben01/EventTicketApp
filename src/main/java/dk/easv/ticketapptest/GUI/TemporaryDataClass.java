@@ -29,9 +29,19 @@ public class TemporaryDataClass {
         User user1 = new User("JohCoo42", "12345","John", "Cooper", "johncooper@mail.com", "+45 66827391", Role.ADMIN);
         User user2 = new User("SarWil87", "54321","Sarah", "Wilson", "sarahwilson@mail.com", "+45 45829101", Role.COORDINATOR);
         User user3 = new User("MicBro", "broooooo","Michael", "Brown", "michaelbrown@mail.com", "+45 12749228", Role.ADMIN);
+        User user4 = new User("stupid", "head","Jack", "Son", "mail@mail.com", "+45 1231412512", null);
+        User user5 = new User("test1", "test1","test1", "test1", "test1@mail.com", "+45 1231412512", Role.COORDINATOR);
+        User user6 = new User("test2", "test2","test2", "test2", "test2@mail.com", "+45 1231412512", Role.ADMIN);
+        User user7 = new User("test3", "test3","test3", "test3", "test3@mail.com", "+45 1231412512", null);
+        User user8 = new User("test4", "test4","test4", "test4", "test4@mail.com", "+45 1231412512", Role.ADMIN);
         usersToBeViewed.add(user1);
         usersToBeViewed.add(user2);
         usersToBeViewed.add(user3);
+        usersToBeViewed.add(user4);
+        usersToBeViewed.add(user5);
+        usersToBeViewed.add(user6);
+        usersToBeViewed.add(user7);
+        usersToBeViewed.add(user8);
 
 
 
