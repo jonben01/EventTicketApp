@@ -46,7 +46,7 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #333;
-    -fx-padding: 30px 0;
+    -fx-padding: 5px 0;
 }
 
 #sidebarAdmin .button {
@@ -57,7 +57,7 @@
 }
 
 #sidebarAdmin .button:hover {
-    -fx-background-color: #f0f8ff;
+    -fx-background-color: #EFF6FF;
     -fx-text-fill: #1D4ED8;
 
 }

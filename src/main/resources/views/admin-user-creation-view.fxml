@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="418.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminCreateUserController">
+<AnchorPane prefHeight="418.0" prefWidth="356.0" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminCreateUserController">
    <children>
-      <Label layoutX="108.0" layoutY="14.0" text="Create new user">
+      <Label layoutX="110.0" layoutY="4.0" text="Create new user">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <VBox fx:id="VBox" layoutX="25.0" layoutY="36.0" prefHeight="319.0" prefWidth="306.0" spacing="5.0">
+      <VBox fx:id="VBox" layoutX="25.0" layoutY="26.0" prefHeight="319.0" prefWidth="306.0" spacing="5.0">
          <children>
             <Label text="Username" />
             <TextField fx:id="txtUsername" prefHeight="26.0" prefWidth="279.0" promptText="insert username" />
