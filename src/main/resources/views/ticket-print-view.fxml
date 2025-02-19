@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -50,7 +50,7 @@
                         <HBox layoutX="10.0" layoutY="213.0" prefHeight="39.0" prefWidth="429.0" />
                         <HBox maxHeight="25.0" prefHeight="39.0" prefWidth="429.0">
                            <children>
-                              <Label fx:id="lblTicket" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
+                              <Label fx:id="lblTicket" prefHeight="25.0" prefWidth="110.0" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -60,6 +60,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </AnchorPane>
+                              <Button fx:id="btnAddTicketType" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddTicketType" prefHeight="26.0" prefWidth="137.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Tickettype" />
                            </children>
                         </HBox>
                         <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -75,18 +76,21 @@
                         </TableView>
                      </children>
                      <HBox.margin>
-                        <Insets top="10.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
                   <VBox fx:id="vboxRight" prefHeight="347.0" prefWidth="108.0" spacing="10.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                      <children>
                         <Label fx:id="lblCoords" prefHeight="17.0" prefWidth="439.0" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Label>
                         <HBox prefHeight="2.0" prefWidth="361.0">
                            <children>

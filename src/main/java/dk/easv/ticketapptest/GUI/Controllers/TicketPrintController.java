@@ -4,9 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -84,6 +87,21 @@ public class TicketPrintController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+    }
+
+    @FXML
+    private void handleAddTicketType(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Create Ticket");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error loading create-ticket-view.fxml: " + e.getMessage());
         }
+    }
+
 }
 
