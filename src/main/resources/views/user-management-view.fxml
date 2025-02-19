@@ -45,10 +45,10 @@
                         <Insets />
                      </opaqueInsets>
                      <padding>
-                        <Insets left="12.0" right="12.0" top="6.0" />
+                        <Insets top="6.0" />
                      </padding>
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
+                        <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
                               <Label prefHeight="27.0" prefWidth="110.0" text="Users">
                                  <font>
@@ -60,10 +60,13 @@
                               <Insets />
                            </opaqueInsets>
                            <VBox.margin>
-                              <Insets bottom="12.0" />
+                              <Insets bottom="6.0" />
                            </VBox.margin>
+                           <padding>
+                              <Insets left="12.0" />
+                           </padding>
                         </HBox>
-                        <ListView fx:id="lstUsers" prefHeight="394.0" prefWidth="434.0" />
+                        <ListView fx:id="lstUsers" prefHeight="414.0" prefWidth="458.0" />
                      </children>
                   </VBox>
                </children>

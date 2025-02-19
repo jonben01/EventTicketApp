@@ -56,4 +56,100 @@
 
 }
 
+#lstUsers {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0px;
+}
 
+#lstUsers .list-cell {
+    -fx-background-color: white;
+
+    -fx-border-color: E5E7EB;
+    -fx-border-width: 1 0 1 0;
+    -fx-border-insets: -1 0 -1 0; /* Moves the top border slightly up to overlap */
+    -fx-padding: 7;
+    -fx-font-size: 18;
+}
+
+#lstUsers .list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+#lstUsers .list-cell:empty:hover {
+    -fx-background-color: transparent;
+}
+
+#lstUsers .list-cell:hover {
+    -fx-background-color: #EFF6FF;
+    -fx-background-insets: -2 0 0 0;
+}
+
+#lstUsers .first-visible {
+    -fx-background-insets: 0 0 0 0;
+    -fx-border-color: E5E7EB;
+    -fx-border-width: 2 0 0 0;
+}
+
+#lstUsers .list-cell:selected {
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: black;
+
+}
+
+#lstUsers:selected {
+    -fx-padding: 0px;
+}
+
+#lstUsers:focused {
+    -fx-border-width: 0px;
+    -fx-padding: 0px;
+    -fx-background-insets: 0;
+}
+.name-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+.role-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-color: blue;
+    -fx-background-radius: 8px;
+    -fx-background-insets: 0 -5 0 -5;
+    -fx-border-insets: 0 -5 0 -5;
+    -fx-border-radius: 8px;
+    -fx-border-color: black;
+    -fx-translate-x: 3;
+}
+#lstUsers .list-cell:selected .name-label {
+    -fx-text-fill: black;
+}
+#lstUsers .list-cell:selected .role-label {
+    -fx-text-fill: white;
+}
+
+#lblRole {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-color: blue;
+    -fx-background-radius: 8px;
+    -fx-background-insets: 0 -5 0 -5;
+    -fx-border-insets: 0 -5 0 -5;
+    -fx-border-radius: 8px;
+    -fx-border-color: black;
+    -fx-translate-x: 3;
+}
+
+#lstUsers .scroll-bar:vertical {
+    -fx-background-color: white;
+    -fx-pref-width: 5;
+}
+
+#lstUsers .scroll-bar .increment-arrow {
+    -fx-translate-y: 5;
+}
+
+#lstUsers .scroll-bar .decrement-arrow {
+    -fx-translate-y: -5;
+}
