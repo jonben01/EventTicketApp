@@ -1,13 +1,19 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+
 public class TicketPrintController {
 
     BorderPane root;
+    TicketManagementController parent;
     @FXML
     private Label lblTitle;
     @FXML
@@ -37,6 +43,10 @@ public class TicketPrintController {
     {
         this.root = root;
     }
+    public void setParent(TicketManagementController parent)
+    {
+     this.parent = parent;
+    }
 
     @FXML
     public void initialize() {
@@ -52,6 +62,7 @@ public class TicketPrintController {
         btnReturn.getStyleClass().add("returnButton");
         vboxLeft.getStyleClass().add("vBoxBorder2");
         vboxRight.getStyleClass().add("vBoxBorder2");
+        btnReturn.setCursor(javafx.scene.Cursor.HAND);
     }
 
     public void setEventDetails(String title, String location, String date, String time){
@@ -62,5 +73,17 @@ public class TicketPrintController {
     }
 
 
+    @FXML
+    private void handleReturn(ActionEvent actionEvent) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ticket-management-view.fxml"));
+                Parent ticketManagementView = fxmlLoader.load();
+                TicketManagementController controller = fxmlLoader.getController();
+                controller.setPanel(root);
+                root.setCenter(ticketManagementView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 }
 

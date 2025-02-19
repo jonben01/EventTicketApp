@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketPrintController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="btnReturn" mnemonicParsing="false" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
+            <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturn" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
                <VBox.margin>
                   <Insets left="15.0" top="15.0" />
                </VBox.margin>

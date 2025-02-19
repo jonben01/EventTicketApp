@@ -37,6 +37,9 @@ public class EventEventManagementController {
 
     int currentX = 0;
     int currentY = 0;
+    @FXML
+    private AnchorPane windowPane;
+    private List<VBox> vBoxList = new ArrayList<>();
 
 
     @FXML
@@ -58,7 +61,7 @@ public class EventEventManagementController {
             columnConstraints.setHgrow(Priority.NEVER);
             columnConstraints.setMinWidth(300);
             columnConstraints.setPrefWidth(300);
-            columnConstraints.setMaxWidth(300);
+            //columnConstraints.setMaxWidth(300);
             gridPane.getColumnConstraints().add(columnConstraints);
         }
 
@@ -67,13 +70,14 @@ public class EventEventManagementController {
             rowConstraints.setVgrow(Priority.NEVER);
             rowConstraints.setMinHeight(300);
             rowConstraints.setPrefHeight(300);
-            rowConstraints.setMaxHeight(300);
+            //rowConstraints.setMaxHeight(300);
             gridPane.getRowConstraints().add(rowConstraints);
 
             gridPane.setAlignment(Pos.CENTER);
             gridPane.getStylesheets().add(eventCSS);
         }
         addExistingEvents(dataClass.getEvents());
+        trackWindowSize();
     }
 
     public void setPanel(BorderPane mainPane)
@@ -83,7 +87,9 @@ public class EventEventManagementController {
 
     private VBox createEventPanel(String title, String location, String date, String time,
                                   String[] ticketTypes, List<User> coordinator) {
+
         VBox vbox = new VBox();
+        vBoxList.add(vbox);
         vbox.getStyleClass().add("vBoxBorder");
             // Width constraints
             vbox.setPrefWidth(300);
@@ -190,6 +196,42 @@ public class EventEventManagementController {
         return currentX / 3;
     }
 
+    private void trackWindowSize() {
+        windowPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double width = newValue.doubleValue();
+            int columns = gridPane.getColumnConstraints().size();
+            double columnWidth = width / columns;
+            for (ColumnConstraints column : gridPane.getColumnConstraints()) {
+                column.setMinWidth(columnWidth);
+                column.setPrefWidth(columnWidth);
+                column.setMaxWidth(columnWidth);
+            }
+        for(VBox vBox : vBoxList)
+        {
+            vBox.setPrefWidth(columnWidth * 0.9);
+            vBox.setMinWidth(columnWidth * 0.9);
+            vBox.setMaxWidth(columnWidth * 0.9);
+            System.out.println(vBox.getPrefWidth() + " - " + columnWidth);
+        }
+        });
 
+        windowPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double height = newValue.doubleValue();
+            int columns = gridPane.getColumnConstraints().size();
+            double rowHeight = height / columns;
+            for (RowConstraints row : gridPane.getRowConstraints()) {
+                row.setMinHeight(rowHeight * 0.9);
+                row.setPrefHeight(rowHeight * 0.9);
+                row.setMaxHeight(rowHeight * 0.9);
+            }
+        for(VBox vBox : vBoxList)
+        {
+            vBox.setPrefHeight(rowHeight);
+            vBox.setMinHeight(rowHeight);
+            vBox.setMaxHeight(rowHeight);
+            System.out.println(vBox.getPrefHeight() + " - " + rowHeight);
+        }
+        });
+    }
 }
 

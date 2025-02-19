@@ -14,6 +14,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TicketManagementController {
@@ -26,11 +27,14 @@ public class TicketManagementController {
     private String eventCSS;
     private int h = 150;
     private int w = 300;
-
+    @FXML
+    private AnchorPane windowPane;
+    private List<VBox> vboxList;
 
 
     @FXML
     private void initialize() {
+        vboxList = new ArrayList<>();
         dataClass = new TemporaryDataClass();
         eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
         gridPane.setPadding(new Insets(70, 0, 0, 0));
@@ -43,7 +47,7 @@ public class TicketManagementController {
             columnConstraints.setHgrow(Priority.NEVER);
             columnConstraints.setMinWidth(w);
             columnConstraints.setPrefWidth(w);
-            columnConstraints.setMaxWidth(w);
+
             gridPane.getColumnConstraints().add(columnConstraints);
         }
 
@@ -52,7 +56,7 @@ public class TicketManagementController {
             rowConstraints.setVgrow(Priority.NEVER);
             rowConstraints.setMinHeight(h);
             rowConstraints.setPrefHeight(h);
-            rowConstraints.setMaxHeight(h);
+            
             gridPane.getRowConstraints().add(rowConstraints);
 
             gridPane.setAlignment(Pos.CENTER);
@@ -85,15 +89,9 @@ public class TicketManagementController {
     private VBox createEventPanel(String title, String location, String date, String time, String description) {
         EventDetails eventDetails = new EventDetails(title, location, date, time, description);
         VBox vbox = new VBox();
+        vboxList.add(vbox);
         vbox.getStyleClass().add("vBoxBorder");
-
-        // Width constraints
-        vbox.setPrefWidth(300);
-        vbox.setMaxWidth(300);
-
-        // Height constraints
-        vbox.setPrefHeight(300);
-        vbox.setMaxHeight(300);
+        vbox.setCursor(javafx.scene.Cursor.HAND);
 
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("h1");
@@ -117,6 +115,7 @@ public class TicketManagementController {
                     Parent eventInDepth = fxmlLoader.load();
                     TicketPrintController controller = fxmlLoader.getController();
                     controller.setPanel(mainPane);
+                    controller.setParent(this);
                     controller.setEventDetails(eventDetails.title, eventDetails.location, eventDetails.date, eventDetails.time);
                     mainPane.setCenter(eventInDepth);
                 } catch (IOException e) {
@@ -152,5 +151,43 @@ public class TicketManagementController {
 
     private int getNextY() {
         return currentX / 3;
+    }
+
+    private void trackWindowSize() {
+        windowPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double width = newValue.doubleValue();
+            int columns = gridPane.getColumnConstraints().size();
+            double columnWidth = width / columns;
+            for (ColumnConstraints column : gridPane.getColumnConstraints()) {
+                column.setMinWidth(columnWidth);
+                column.setPrefWidth(columnWidth);
+                column.setMaxWidth(columnWidth);
+            }
+            for(VBox vBox : vboxList)
+            {
+                vBox.setPrefWidth(columnWidth * 0.9);
+                vBox.setMinWidth(columnWidth * 0.9);
+                vBox.setMaxWidth(columnWidth * 0.9);
+                System.out.println(vBox.getPrefWidth() + " - " + columnWidth);
+            }
+        });
+
+        windowPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double height = newValue.doubleValue();
+            int columns = gridPane.getColumnConstraints().size();
+            double rowHeight = height / columns;
+            for (RowConstraints row : gridPane.getRowConstraints()) {
+                row.setMinHeight(rowHeight * 0.9);
+                row.setPrefHeight(rowHeight * 0.9);
+                row.setMaxHeight(rowHeight * 0.9);
+            }
+            for(VBox vBox : vboxList)
+            {
+                vBox.setPrefHeight(rowHeight);
+                vBox.setMinHeight(rowHeight);
+                vBox.setMaxHeight(rowHeight);
+                System.out.println(vBox.getPrefHeight() + " - " + rowHeight);
+            }
+        });
     }
 }
