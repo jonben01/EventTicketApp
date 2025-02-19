@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CreateEventViewController {
 
-    public Button btnAddTicket;
+
     public Button btnCreateEvent;
     @FXML
     private TextField txtNameEvent;
@@ -27,14 +27,6 @@ public class CreateEventViewController {
     private TextField txtStartEvent;
     @FXML
     private TextField txtEndEvent;
-    @FXML
-    private TextField txtTicketName;
-    @FXML
-    private TextArea txtTicketDescription;
-    @FXML
-    private TextField txtPrice;
-    @FXML
-    private TextField txtQuantityAvailable;
     TemporaryDataClass data;
 
 
@@ -45,7 +37,7 @@ public class CreateEventViewController {
         data = new TemporaryDataClass();
         String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
         btnCreateEvent.getStylesheets().add(cssFile);
-        btnAddTicket.getStylesheets().add(cssFile);
+        //btnAddTicket.getStylesheets().add(cssFile);
     }
 
 
