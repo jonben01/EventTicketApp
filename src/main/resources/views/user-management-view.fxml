@@ -40,7 +40,7 @@
          <children>
             <VBox alignment="TOP_CENTER" minWidth="460.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="UsersPane" prefHeight="470.0" prefWidth="458.0" styleClass="UsersPane">
+                  <VBox fx:id="UsersPane" prefHeight="474.0" prefWidth="458.0" styleClass="UsersPane">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -79,7 +79,7 @@
                   <Insets left="12.0" right="12.0" />
                </padding>
                <children>
-                  <VBox fx:id="UserDetailsPane" prefHeight="470.0" prefWidth="452.0" styleClass="UserDetailsPane">
+                  <VBox fx:id="UserDetailsPane" prefHeight="474.0" prefWidth="452.0" styleClass="UserDetailsPane">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
