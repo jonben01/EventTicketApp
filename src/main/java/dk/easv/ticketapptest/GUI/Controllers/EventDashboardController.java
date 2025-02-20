@@ -21,7 +21,6 @@ public class EventDashboardController {
     @FXML
     public void initialize() {
         sidebarVBox.getStyleClass().add("sidebar");
-        topbarHBox.getStyleClass().add("topbar");
     }
 
     @FXML

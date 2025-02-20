@@ -5,12 +5,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPaneEvent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventDashboardController">
+<BorderPane fx:id="rootPaneEvent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventDashboardController">
    <left>
       <VBox fx:id="sidebarVBox" alignment="TOP_CENTER" minWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -27,20 +24,6 @@
          </padding>
       </VBox>
    </left>
-   <top>
-      <HBox fx:id="topbarHBox" alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1152.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="APPLICATION NAME">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="MIN" />
-            <Button mnemonicParsing="false" text="EXIT" />
-         </children>
-      </HBox>
-   </top>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
