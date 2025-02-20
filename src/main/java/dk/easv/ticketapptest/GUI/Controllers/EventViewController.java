@@ -1,14 +1,22 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class EventViewController {
@@ -32,7 +40,7 @@ public class EventViewController {
     @FXML
     private Button btnAddTicket;
     @FXML
-    private TableView tblTicket;
+    private TableView<Ticket> tblTicket;
     @FXML
     private Label lblCoords;
     @FXML
@@ -47,6 +55,14 @@ public class EventViewController {
     private VBox vboxRight;
     private TemporaryDataClass dataClass;
     private HashMap<User, Boolean> selectionState = new HashMap<>();
+    @FXML
+    private TableColumn<Ticket, String> clnTicket;
+
+    @FXML
+    private TableColumn<Ticket, String> clnDescription;
+
+    @FXML
+    private TableColumn<Ticket, Double> clnPrice;
 
     public void setPanel(BorderPane root)
     {
@@ -73,6 +89,11 @@ public class EventViewController {
             vboxRight.getStyleClass().add("vBoxBorder2");
 
             populateList();
+            clnTicket.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getTicketName()));
+            clnDescription.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getDescription()));
+            clnPrice.setCellValueFactory(cellData -> new SimpleObjectProperty<>(( cellData.getValue()).getPrice()));
+
+
         }
 
 
@@ -126,5 +147,23 @@ public class EventViewController {
             selectionState.put(temp, !selectionState.getOrDefault(temp, false));
             lstCoords.refresh();
         }
+    }
+
+    @FXML
+    private void handleAddTicket(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
+        Parent root = loader.load();
+        CreateTicketViewController controller = loader.getController();
+        controller.setParent(this);
+        Stage stage = new Stage();
+        stage.setTitle("Create Ticket");
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void addTicket(Ticket ticket) {
+        tblTicket.getItems().add(ticket);
     }
 }

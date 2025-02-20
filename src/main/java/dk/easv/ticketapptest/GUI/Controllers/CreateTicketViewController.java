@@ -17,12 +17,15 @@ public class CreateTicketViewController {
     private TextField txtTicketPrice;
 
     private TicketPrintController parent;
+    private EventViewController parent2;
 
     private Event2 selectedEvent;
 
+    // todo: find a better way to do this:
     public void setParent(TicketPrintController parent) {
         this.parent = parent;
     }
+    public void setParent(EventViewController parent) { this.parent2 = parent; }
 
     public void setSelectedEvent(Event2 event2) {
         this.selectedEvent = event2;
@@ -35,7 +38,12 @@ public class CreateTicketViewController {
         double price = Double.parseDouble(txtTicketPrice.getText());
 
         Ticket ticket = new Ticket(selectedEvent, price, false, name, description);
-        parent.addTicket(ticket);
+        if(parent != null) {
+            parent.addTicket(ticket);
+        }
+        else{
+            parent2.addTicket(ticket);
+        }
 
         Stage stage = (Stage) txtTicketName.getScene().getWindow();
         stage.close();

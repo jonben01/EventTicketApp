@@ -20,6 +20,8 @@ public class LoginController {
     @FXML
     private TextField txtPassword;
 
+
+    //todo temp login method. Unused in latest build.
     public void handleAdminDash(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/admin-dashboard-view.fxml"));
         Parent adminDashboard = fxmlLoader.load();
@@ -33,6 +35,8 @@ public class LoginController {
     //TODO LOGIN SHOULD JUST BE AN IF STATEMENT IF TEXTFIELD CONTAINS ADMIN/PASSWORD - ADMIN SECTION
     // IF TEXTFIELD CONTAINS EVENT/PASSWORD - EVENT SECTION
 
+
+    //todo temp login method. unused in latest build.
     public void handleEventDash(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-dashboard-view.fxml"));
         Parent eventDashboard = fxmlLoader.load();

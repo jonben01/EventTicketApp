@@ -79,7 +79,7 @@
                               </Label>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="btnAddTicket" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" AnchorPane.rightAnchor="0.0" />
+                                    <Button fx:id="btnAddTicket" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" onAction="#handleAddTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" AnchorPane.rightAnchor="0.0" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />
@@ -89,9 +89,9 @@
                         </HBox>
                         <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                           <columns>
-                            <TableColumn prefWidth="121.99999749660492" text="Ticket Type" />
-                            <TableColumn prefWidth="152.6666488647461" text="Description" />
-                              <TableColumn prefWidth="77.33331298828125" text="Price" />
+                            <TableColumn fx:id="clnTicket" prefWidth="121.99999749660492" text="Ticket Type" />
+                            <TableColumn fx:id="clnDescription" prefWidth="152.6666488647461" text="Description" />
+                              <TableColumn fx:id="clnPrice" prefWidth="77.33331298828125" text="Price" />
                               <TableColumn prefWidth="76.66668701171875" text="Sold" />
                           </columns>
                            <VBox.margin>
