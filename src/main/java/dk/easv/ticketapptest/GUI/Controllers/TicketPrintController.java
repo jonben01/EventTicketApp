@@ -1,11 +1,18 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Ticket;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -28,7 +35,14 @@ public class TicketPrintController {
     @FXML
     private Label lblTicket;
     @FXML
-    private TableView tblTicket;
+    private TableView<Ticket> tblTicket;
+    @FXML
+    private TableColumn<Ticket, String> colName;
+    @FXML
+    private TableColumn<Ticket, String> colDescription;
+    @FXML
+    private TableColumn<Ticket, Double> colPrice;
+
     @FXML
     private Label lblCoords;
     @FXML
@@ -51,6 +65,9 @@ public class TicketPrintController {
      this.parent = parent;
     }
 
+    private Event2 selectedEvent;
+
+
     @FXML
     public void initialize() {
 
@@ -66,6 +83,13 @@ public class TicketPrintController {
         vboxLeft.getStyleClass().add("vBoxBorder2");
         vboxRight.getStyleClass().add("vBoxBorder2");
         btnReturn.setCursor(javafx.scene.Cursor.HAND);
+
+        tblTicket.setItems(FXCollections.observableArrayList());
+
+        colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTicketName()));
+        colDescription.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+        colPrice.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+
     }
 
     public void setEventDetails(String title, String location, String date, String time){
@@ -89,11 +113,24 @@ public class TicketPrintController {
             }
     }
 
+    public void setSelectedEvent(Event2 event2){
+        this.selectedEvent = event2;
+    }
+
+    public Event2 getSelectedEvent(){
+        return selectedEvent;
+    }
+
     @FXML
     private void handleAddTicketType(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
             Parent root = fxmlLoader.load();
+            CreateTicketViewController controller = fxmlLoader.getController();
+
+            controller.setParent(this);
+            controller.setSelectedEvent(selectedEvent);
+
             Stage stage = new Stage();
             stage.setTitle("Create Ticket");
             stage.setScene(new Scene(root));
@@ -101,6 +138,10 @@ public class TicketPrintController {
         } catch (IOException e) {
             System.out.println("Error loading create-ticket-view.fxml: " + e.getMessage());
         }
+    }
+
+    public void addTicket(Ticket ticket) {
+        tblTicket.getItems().add(ticket);
     }
 
 }
