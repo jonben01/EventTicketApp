@@ -56,7 +56,7 @@ public class TicketManagementController {
             rowConstraints.setVgrow(Priority.NEVER);
             rowConstraints.setMinHeight(h);
             rowConstraints.setPrefHeight(h);
-            
+
             gridPane.getRowConstraints().add(rowConstraints);
 
             gridPane.setAlignment(Pos.CENTER);
@@ -90,6 +90,7 @@ public class TicketManagementController {
         EventDetails eventDetails = new EventDetails(title, location, date, time, description);
         VBox vbox = new VBox();
         vboxList.add(vbox);
+        trackWindowSize();
         vbox.getStyleClass().add("vBoxBorder");
         vbox.setCursor(javafx.scene.Cursor.HAND);
 
@@ -180,13 +181,6 @@ public class TicketManagementController {
                 row.setMinHeight(rowHeight * 0.9);
                 row.setPrefHeight(rowHeight * 0.9);
                 row.setMaxHeight(rowHeight * 0.9);
-            }
-            for(VBox vBox : vboxList)
-            {
-                vBox.setPrefHeight(rowHeight);
-                vBox.setMinHeight(rowHeight);
-                vBox.setMaxHeight(rowHeight);
-                System.out.println(vBox.getPrefHeight() + " - " + rowHeight);
             }
         });
     }

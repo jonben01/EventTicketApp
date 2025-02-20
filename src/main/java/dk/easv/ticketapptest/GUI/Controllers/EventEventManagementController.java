@@ -12,9 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -24,6 +22,7 @@ import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EventEventManagementController {
     String userCSS;
@@ -105,6 +104,18 @@ public class EventEventManagementController {
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("button2");
 
+        deleteButton.setOnAction(event -> {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText(null);
+                alert.setContentText("Delete the " + title + " event?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+            }
+        });
+
+
         Label locationLabel = new Label("📍 " + location);
         locationLabel.getStyleClass().add("h2");
         Label dateLabel = new Label("📅 " + date);
@@ -125,8 +136,6 @@ public class EventEventManagementController {
 
         Label coordinatorLabel = new Label("Coordinator: " + coordinator.get(1).getFirstName() + " " + coordinator.get(1).getLastName());
         coordinatorLabel.getStyleClass().add("h4");
-
-
 
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,
                 ticketsLabel, ticketInfoLabel, separator2, coordinatorLabel, deleteButton);
@@ -212,24 +221,6 @@ public class EventEventManagementController {
             vBox.setMinWidth(columnWidth * 0.9);
             vBox.setMaxWidth(columnWidth * 0.9);
             System.out.println(vBox.getPrefWidth() + " - " + columnWidth);
-        }
-        });
-
-        windowPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double height = newValue.doubleValue();
-            int columns = gridPane.getColumnConstraints().size();
-            double rowHeight = height / columns;
-            for (RowConstraints row : gridPane.getRowConstraints()) {
-                row.setMinHeight(rowHeight * 0.9);
-                row.setPrefHeight(rowHeight * 0.9);
-                row.setMaxHeight(rowHeight * 0.9);
-            }
-        for(VBox vBox : vBoxList)
-        {
-            vBox.setPrefHeight(rowHeight);
-            vBox.setMinHeight(rowHeight);
-            vBox.setMaxHeight(rowHeight);
-            System.out.println(vBox.getPrefHeight() + " - " + rowHeight);
         }
         });
     }

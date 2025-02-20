@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -117,7 +116,7 @@
                         <ListView fx:id="lstCoords" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="531.0" prefWidth="413.0" VBox.vgrow="ALWAYS" />
                         <VBox alignment="BOTTOM_RIGHT" maxHeight="30.0" prefHeight="31.0" prefWidth="413.0">
                            <children>
-                              <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="207.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+  Add Event Coordinator">
+                              <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="26.0" prefWidth="207.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+  Add Event Coordinator">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
