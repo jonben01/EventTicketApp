@@ -89,14 +89,17 @@
                         </HBox>
                         <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                           <columns>
-                            <TableColumn fx:id="clnTicket" prefWidth="121.99999749660492" text="Ticket Type" />
-                            <TableColumn fx:id="clnDescription" prefWidth="152.6666488647461" text="Description" />
-                              <TableColumn fx:id="clnPrice" prefWidth="77.33331298828125" text="Price" />
-                              <TableColumn prefWidth="76.66668701171875" text="Sold" />
+                            <TableColumn fx:id="clnTicket" maxWidth="1.7976931348623157E308" prefWidth="121.99999749660492" text="Ticket Type" />
+                            <TableColumn fx:id="clnDescription" maxWidth="1.7976931348623157E308" prefWidth="152.6666488647461" text="Description" />
+                              <TableColumn fx:id="clnPrice" maxWidth="1.7976931348623157E308" prefWidth="77.33331298828125" text="Price" />
+                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="82.00002034505206" text="Sold" />
                           </columns>
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </children>
                      <HBox.margin>
