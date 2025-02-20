@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.8" prefWidth="952.0" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField prefHeight="26.0" prefWidth="449.0" promptText="search" />
-                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" text="something" />
+                <TextField prefHeight="30.0" prefWidth="919.0" promptText="search" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></TextField>
             </children>
             <padding>
                 <Insets left="12.0" right="12.0" />
             </padding>
         </HBox>
     </top>
-    <center>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-               <children>
-                  <TableView prefHeight="661.0" prefWidth="938.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
-               </children>
-               <padding>
-                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-               </padding>
-            </HBox>
+            <HBox fx:id="HboxTop" prefHeight="50.0" prefWidth="904.0" />
+            <TableView fx:id="tblEvents" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="clnEventName" prefWidth="290.4000244140625" text="Event Name" />
+                <TableColumn fx:id="clnDateTime" prefWidth="200.0" text="Date &amp; Time" />
+                  <TableColumn fx:id="clnLocation" prefWidth="204.0" text="Location" />
+                  <TableColumn fx:id="clnStatus" prefWidth="112.800048828125" text="Status" />
+                  <TableColumn fx:id="clnActions" prefWidth="96.79998779296875" text="Actions" />
+              </columns>
+            </TableView>
+            <HBox fx:id="HboxBot" prefHeight="58.0" prefWidth="904.0" />
          </children>
-        </HBox>
-    </center>
+         <BorderPane.margin>
+            <Insets left="12.0" right="12.0" top="6.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <padding>
+      <Insets left="12.0" right="12.0" />
+   </padding>
 </BorderPane>

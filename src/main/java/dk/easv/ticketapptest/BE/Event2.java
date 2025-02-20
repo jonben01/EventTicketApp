@@ -26,6 +26,23 @@ public class Event2 {
 
     }
 
+    //use DateTimeFormatter on localDate types in actual project instead of this
+    //also use a date picker, to avoid edge cases where someone types something stupid.
+    //should validate either way and handle those cases.
+    public String getDateTime() {
+        String date = this.date;
+        String[] dateParts = date.split(" ");
+
+        String month = dateParts[0].substring(0, 3);
+        StringBuilder sb = new StringBuilder();
+        sb.append(month).append(" ").append(dateParts[1]).append(" ").append(dateParts[2]).append(" - ").append(startTime);
+        return sb.toString();
+    }
+
+    public String getStatus() {
+        return "Active";
+    }
+
     public String getDate() {
         return date;
     }

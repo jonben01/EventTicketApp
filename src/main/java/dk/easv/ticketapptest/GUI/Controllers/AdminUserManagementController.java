@@ -114,13 +114,16 @@ public class AdminUserManagementController implements Initializable {
             lblName.setText(user.getFirstName() + " " + user.getLastName());
             if (user.getRole() != null) {
                 lblRole.setText(user.getRole().toString().toLowerCase());
-                lblRole.setStyle("-fx-background-color: blue");
+                lblRole.setStyle("-fx-background-color: #DBEBFF");
             } else {
                 lblRole.setText("no role");
-                lblRole.setStyle("-fx-background-color: red");
+                lblRole.setStyle("-fx-background-color: #FFE5E5");
             }
         }
     }
+
+    //TODO instead of setting style on the labels, make two different style classes
+    // because it is VERY annoying to change anything now.
 
     public void populateUserList() {
         lstUsers.setItems(tdc.getUsers());
@@ -129,6 +132,7 @@ public class AdminUserManagementController implements Initializable {
             protected void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
 
+                //clear nodes, in case refreshing leaves visual artifacts.
                 setText(null);
                 setGraphic(null);
 
@@ -144,7 +148,7 @@ public class AdminUserManagementController implements Initializable {
 
                 } else {
                     roleLabel = new Label("no role");
-                    roleLabel.setStyle("-fx-background-color: red ;");
+                    roleLabel.setStyle("-fx-background-color: #FFE5E5 ;");
                 }
 
 
@@ -152,11 +156,12 @@ public class AdminUserManagementController implements Initializable {
 
                 roleLabel.getStyleClass().add("role-label");
 
-                //use a vbox with both labels in to allow individual styling
+                //create a vbox containing both labels.
                 VBox vbox = new VBox(nameLabel, roleLabel);
                 vbox.setSpacing(2);
 
                 setText(null);
+                //used to display a node inside the table cell.
                 setGraphic(vbox);
 
                 if (getIndex() == 0) {
@@ -176,7 +181,7 @@ public class AdminUserManagementController implements Initializable {
             if (user.getRole() == Role.COORDINATOR) {
                 user.setRole(null);
                 lblRole.setText("no role");
-                lblRole.setStyle("-fx-background-color: red ;");
+                lblRole.setStyle("-fx-background-color: #FFE5E5 ;");
                 lstUsers.refresh();
             } else if (user.getRole() == Role.ADMIN) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -187,13 +192,13 @@ public class AdminUserManagementController implements Initializable {
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.COORDINATOR);
                     lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: blue ;");
+                    lblRole.setStyle("-fx-background-color: #DBEBFF ;");
                     lstUsers.refresh();
                 }
             } else {
                 user.setRole(Role.COORDINATOR);
                 lblRole.setText(user.getRole().toString().toLowerCase());
-                lblRole.setStyle("-fx-background-color: blue ;");
+                lblRole.setStyle("-fx-background-color: #DBEBFF ;");
                 lstUsers.refresh();
             }
         }
@@ -212,7 +217,7 @@ public class AdminUserManagementController implements Initializable {
                 if (result.get() == ButtonType.OK) {
                     user.setRole(null);
                     lblRole.setText("no role");
-                    lblRole.setStyle("-fx-background-color: red ;");
+                    lblRole.setStyle("-fx-background-color: #FFE5E5 ;");
                     lstUsers.refresh();
                 }
             } else if (user.getRole() == Role.COORDINATOR) {
@@ -224,7 +229,7 @@ public class AdminUserManagementController implements Initializable {
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.ADMIN);
                     lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: blue ;");
+                    lblRole.setStyle("-fx-background-color: #DBEBFF ;");
                     lstUsers.refresh();
                 }
             } else {
@@ -236,7 +241,7 @@ public class AdminUserManagementController implements Initializable {
                 if (result.get() == ButtonType.OK) {
                     user.setRole(Role.ADMIN);
                     lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: blue");
+                    lblRole.setStyle("-fx-background-color: #DBEBFF");
                     lstUsers.refresh();
                 }
             }

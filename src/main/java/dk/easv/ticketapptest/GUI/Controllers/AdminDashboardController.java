@@ -28,7 +28,6 @@ public class AdminDashboardController {
 
         rootPaneAdmin.setCenter(adminDashboard);
 
-
     }
 
 
@@ -40,11 +39,5 @@ public class AdminDashboardController {
         btnUserManagement.setStyle("");
 
         rootPaneAdmin.setCenter(adminDashboard);
-    }
-
-    public void handleTicketManagement(ActionEvent actionEvent) {
-    }
-
-    public void handleEventManagement(ActionEvent actionEvent) {
     }
 }

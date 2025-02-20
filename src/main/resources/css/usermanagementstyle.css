@@ -97,7 +97,6 @@
     -fx-text-fill: black;
 
 }
-
 #lstUsers:selected {
     -fx-padding: 0px;
 }
@@ -113,26 +112,26 @@
 }
 .role-label {
     -fx-font-size: 14px;
-    -fx-text-fill: white;
-    -fx-background-color: blue;
+    -fx-text-fill: black;
+    -fx-background-color: #DBEBFF;
     -fx-background-radius: 8px;
     -fx-background-insets: 0 -5 0 -5;
     -fx-border-insets: 0 -5 0 -5;
     -fx-border-radius: 8px;
-    -fx-border-color: black;
+    -fx-border-color: #dfdfdf;
     -fx-translate-x: 3;
 }
 #lstUsers .list-cell:selected .name-label {
     -fx-text-fill: black;
 }
 #lstUsers .list-cell:selected .role-label {
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 #lblRole {
     -fx-font-size: 14px;
-    -fx-text-fill: white;
-    -fx-background-color: blue;
+    -fx-text-fill: black;
+    -fx-background-color: #DBEBFF;
     -fx-background-radius: 8px;
     -fx-background-insets: 0 -5 0 -5;
     -fx-border-insets: 0 -5 0 -5;
