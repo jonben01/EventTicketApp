@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.DAL.TicketDataStore;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -84,8 +85,7 @@ public class TicketPrintController {
         vboxRight.getStyleClass().add("vBoxBorder2");
         btnReturn.setCursor(javafx.scene.Cursor.HAND);
 
-        tblTicket.setItems(FXCollections.observableArrayList());
-
+        tblTicket.setItems(TicketDataStore.getInstance().getTickets());
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTicketName()));
         colDescription.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
         colPrice.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
