@@ -43,7 +43,7 @@ public class LoginController {
 
         Stage stage = (Stage) rootPane.getScene().getWindow();
         Scene scene = new Scene(eventDashboard);
-        scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
         stage.setScene(scene);
     }
 
@@ -63,7 +63,7 @@ public class LoginController {
 
             Stage stage = (Stage) rootPane.getScene().getWindow();
             Scene scene = new Scene(eventDashboard);
-            scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
             stage.setScene(scene);
 
         } else {

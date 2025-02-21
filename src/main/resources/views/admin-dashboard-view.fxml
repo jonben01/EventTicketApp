@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPaneAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" stylesheets="@../styles/Base-stylesheet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminDashboardController">
+<BorderPane fx:id="rootPaneAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" stylesheets="@../css/Base-stylesheet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminDashboardController">
     <left>
         <VBox fx:id="sidebarAdmin" alignment="TOP_CENTER" minWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <children>

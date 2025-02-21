@@ -72,6 +72,8 @@ public class EventViewController {
         @FXML
         public void initialize() {
         dataClass = new TemporaryDataClass();
+        tblTicket.getStylesheets().add("css/admineventstyle.css");
+        tblTicket.getStyleClass().add("table-view");
 
             //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
             lblTitle.getStyleClass().add("h1");
@@ -158,7 +160,7 @@ public class EventViewController {
         Stage stage = new Stage();
         stage.setTitle("Create Ticket");
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/Base-stylesheet.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

@@ -72,6 +72,10 @@ public class TicketPrintController {
     @FXML
     public void initialize() {
 
+        tblTicket.getStylesheets().add("css/admineventstyle.css");
+        tblTicket.getStyleClass().add("table-view");
+
+
         //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
         lblTitle.getStyleClass().add("h1");
         lblLocationTicket.getStyleClass().add("h2");

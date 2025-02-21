@@ -73,7 +73,39 @@
     -fx-font-family: "Arial", sans-serif;
 }
 
-/* Optional hover effect for vBoxBorder2 */
 .vBoxBorder2:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0.3, 0, 4);
+}
+.tblTicket {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+.tblTicket .column-header {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tblTicket .column-header .label {
+    -fx-text-fill: #333;
+}
+
+.tblTicket .table-row-cell {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #ccc;
+    -fx-border-width: 0 0 1px 0;
+}
+.tblTicket:selected{
+    -fx-text-fill: black;
+}
+
+.tblTicket .table-column {
+    -fx-background-color: #f0f0f0;
+}
+
+.tblTicket .table-column .label {
+    -fx-text-fill: #333;
 }
