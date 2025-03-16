@@ -2,6 +2,8 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.EventManager;
+import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +30,18 @@ public class EventEventManagementController {
     private Button btnCreateEvent;
     @FXML
     private GridPane gridPane;
-    private TemporaryDataClass dataClass;
 
     int currentX = 0;
     int currentY = 0;
     @FXML
     private AnchorPane windowPane;
     private List<VBox> vBoxList = new ArrayList<>();
+    private EventManagementModel eventModel;
 
 
     @FXML
-    private void initialize() {
-            dataClass = new TemporaryDataClass();
+    private void initialize() throws SQLException, IOException {
+        eventModel = new EventManagementModel();
             userCSS = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
             eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
             btnCreateEvent.getStylesheets().add(userCSS);
@@ -70,7 +73,7 @@ public class EventEventManagementController {
             gridPane.setAlignment(Pos.CENTER);
             gridPane.getStylesheets().add(eventCSS);
         }
-        addExistingEvents(dataClass.getEvents());
+        addExistingEvents(eventModel.getObservableEvents());
         trackWindowSize();
     }
 
