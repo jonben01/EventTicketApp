@@ -6,10 +6,7 @@ import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
@@ -24,9 +21,9 @@ public class CreateEventViewController {
     @FXML
     private TextArea txtDescriptionEvent;
     @FXML
-    private TextField txtStartDateEvent;
+    private DatePicker dateStartDate;
     @FXML
-    private TextField txtEndDateEvent;
+    private DatePicker dateEndDate;
     @FXML
     private TextField txtStartEvent;
     @FXML
@@ -67,8 +64,8 @@ public class CreateEventViewController {
     public void CreateEvent(ActionEvent actionEvent) {
 
         if (!txtNameEvent.getText().isEmpty()
-                && !txtStartDateEvent.getText().isEmpty()
-                && !txtEndDateEvent.getText().isEmpty()
+                && !dateStartDate.getValue().toString().isEmpty()
+                && !dateEndDate.getValue().toString().isEmpty()
                 && !txtEndEvent.getText().isEmpty()
                 && !txtDescriptionEvent.getText().isEmpty()
                 && !txtStartEvent.getText().isEmpty()
