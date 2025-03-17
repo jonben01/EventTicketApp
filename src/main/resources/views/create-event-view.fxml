@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="682.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
+<ScrollPane prefHeight="701.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
    <content>
-      <AnchorPane fx:id="rootNewEvent" prefHeight="684.0" prefWidth="971.0">
+      <AnchorPane fx:id="rootNewEvent" prefHeight="697.0" prefWidth="971.0">
          <children>
             <VBox layoutX="7.0" layoutY="12.0" prefHeight="614.0" prefWidth="955.0" spacing="15.0">
                <children>
@@ -41,14 +41,60 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="txtDescriptionEvent" prefHeight="128.0" prefWidth="824.0" promptText="Describe your event2">
+                  <TextArea fx:id="txtDescriptionEvent" prefHeight="128.0" prefWidth="824.0" promptText="Describe your event">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextArea>
                   <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Location">
+                        <Label prefHeight="20.0" prefWidth="412.0" text="Location Guidance">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="55.0" prefWidth="955.0" spacing="130.0">
+                     <children>
+                        <TextArea fx:id="txtLocationGuidance" prefHeight="53.0" prefWidth="952.0" promptText="Enter Location Guidance">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="412.0" text="City">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="20.0" prefWidth="412.0" text="Postal Code">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
+                     <children>
+                        <TextField fx:id="txtCity" prefHeight="42.0" prefWidth="412.0" promptText="Enter City">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtPostalCode" prefHeight="42.0" prefWidth="412.0" promptText="Enter Postal Code">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="412.0" text="Address">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -62,7 +108,7 @@
                   </HBox>
                   <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
                      <children>
-                        <TextField fx:id="txtLocationEvent" prefHeight="42.0" prefWidth="412.0" promptText="Enter Location">
+                        <TextField fx:id="txtAddress" prefHeight="42.0" prefWidth="412.0" promptText="Enter Address">
                            <font>
                               <Font size="16.0" />
                            </font>

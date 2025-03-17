@@ -20,13 +20,24 @@ public class CreateEventViewController {
     @FXML
     private TextArea txtDescriptionEvent;
     @FXML
-    private TextField txtLocationEvent;
-    @FXML
     private TextField txtDateEvent;
     @FXML
     private TextField txtStartEvent;
     @FXML
     private TextField txtEndEvent;
+    @FXML
+    private TextArea txtLocationGuidance;
+    @FXML
+    private TextField txtCity;
+    @FXML
+    private TextField txtAddress;
+    @FXML
+    private TextField txtPostalCode;
+
+
+
+
+
     TemporaryDataClass data;
 
 
@@ -54,8 +65,11 @@ public class CreateEventViewController {
                 && !txtEndEvent.getText().isEmpty()
                 && !txtDescriptionEvent.getText().isEmpty()
                 && !txtStartEvent.getText().isEmpty()
-                && !txtLocationEvent.getText().isEmpty()) {
-            parent.createEvent(txtNameEvent.getText(), txtLocationEvent.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
+                && !txtLocationGuidance.getText().isEmpty()
+                && !txtCity.getText().isEmpty()
+                && !txtAddress.getText().isEmpty()
+                && !txtPostalCode.getText().isEmpty()) {
+            parent.createEvent(txtNameEvent.getText(), txtLocationGuidance.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
             ((Stage) txtNameEvent.getScene().getWindow()).close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
