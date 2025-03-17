@@ -1,23 +1,41 @@
 package dk.easv.ticketapptest.BE;
 
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Event2 {
-    private String date;
+    private LocalDateTime date;
     private String title;
     private String description;
-    private String location;
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private User leadEventCoordinator;
     private List<User> eventCoordinators;
     private String[] ticketTypes;
+    private int eventID;
+    private Location location;
+    private String locationGuidance;
 
-    public Event2(String title, String location, String date, String startTime, String endTime,
+    public Event2(String title, Location location, String locationGuidance, LocalDateTime date, LocalDateTime startTime, LocalDateTime endTime,
                   String[] ticketTypes, List<User> eventCoordinators) {
         this.title = title;
         this.location = location;
+        this.locationGuidance = locationGuidance;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.ticketTypes = ticketTypes;
+        this.eventCoordinators = eventCoordinators;
+
+    }
+
+    public Event2(int eventID, String title, Location location, String locationGuidance, LocalDateTime date, LocalDateTime startTime, LocalDateTime endTime,
+                  String[] ticketTypes, List<User> eventCoordinators) {
+        this.eventID = eventID;
+        this.title = title;
+        this.location = location;
+        this.locationGuidance = locationGuidance;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -29,25 +47,31 @@ public class Event2 {
     //use DateTimeFormatter on localDate types in actual project instead of this
     //also use a date picker, to avoid edge cases where someone types something stupid.
     //should validate either way and handle those cases.
-    public String getDateTime() {
-        String date = this.date;
-        String[] dateParts = date.split(" ");
+    public LocalDateTime getDateTime() {
+        return this.date;
+    }
 
-        String month = dateParts[0].substring(0, 3);
-        StringBuilder sb = new StringBuilder();
-        sb.append(month).append(" ").append(dateParts[1]).append(" ").append(dateParts[2]).append(" - ").append(startTime);
-        return sb.toString();
+    public int getEventID() {
+        return this.eventID;
+    }
+
+    public String getLocationGuidance() {
+        return locationGuidance;
+    }
+
+    public void setLocationGuidance(String locationGuidance) {
+        this.locationGuidance = locationGuidance;
     }
 
     public String getStatus() {
         return "Active";
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -67,27 +91,27 @@ public class Event2 {
         this.description = description;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
