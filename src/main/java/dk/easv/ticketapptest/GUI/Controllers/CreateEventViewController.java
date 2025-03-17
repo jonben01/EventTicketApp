@@ -1,5 +1,8 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CreateEventViewController {
@@ -69,7 +73,10 @@ public class CreateEventViewController {
                 && !txtCity.getText().isEmpty()
                 && !txtAddress.getText().isEmpty()
                 && !txtPostalCode.getText().isEmpty()) {
-            parent.createEvent(txtNameEvent.getText(), txtLocationGuidance.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
+          //  parent.createEvent(txtNameEvent.getText(), txtLocationGuidance.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
+            Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
+            Event2 event = new Event2(txtNameEvent.getText(), location, txtLocationGuidance.getText(), LocalDateTime date, LocalDateTime startTime, LocalDateTime endTime,
+                    String[] ticketTypes, List< User > eventCoordinators);
             ((Stage) txtNameEvent.getScene().getWindow()).close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

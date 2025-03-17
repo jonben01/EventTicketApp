@@ -73,7 +73,7 @@ public class EventEventManagementController {
             gridPane.setAlignment(Pos.CENTER);
             gridPane.getStylesheets().add(eventCSS);
         }
-        addExistingEvents(eventModel.getObservableEvents());
+       addExistingEvents(eventModel.getObservableEvents());
         trackWindowSize();
     }
 
