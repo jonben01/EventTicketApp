@@ -11,7 +11,7 @@ import java.util.Properties;
 public class DBConnector {
 
     private static final String PROPERTY_FILE = "config/database.settings";
-    private SQLServerDataSource dataSource;
+    private static SQLServerDataSource dataSource;
 
     public DBConnector() throws IOException {
 
@@ -27,7 +27,7 @@ public class DBConnector {
         dataSource.setTrustServerCertificate(true);
 
     }
-    public Connection getConnection() throws SQLServerException {
+    public static Connection getConnection() throws SQLServerException {
         return dataSource.getConnection();
     }
 }

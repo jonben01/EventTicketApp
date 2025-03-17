@@ -2,15 +2,12 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,6 +35,12 @@ public class AdminUserManagementController implements Initializable {
     @FXML private ListView<User> lstUsers;
 
     private TemporaryDataClass tdc;
+    private UserManagementModel model;
+
+
+    public AdminUserManagementController() {
+        model = new UserManagementModel();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -262,7 +265,7 @@ public class AdminUserManagementController implements Initializable {
 
         User newUser = controller.getCreatedUser();
         if (newUser != null) {
-            tdc.createUser(newUser);
+            model.createUserDB(newUser);
             lstUsers.getSelectionModel().select(newUser);
             lstUsers.scrollTo(newUser);
         }
