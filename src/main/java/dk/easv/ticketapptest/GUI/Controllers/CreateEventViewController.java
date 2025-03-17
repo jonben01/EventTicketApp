@@ -24,7 +24,9 @@ public class CreateEventViewController {
     @FXML
     private TextArea txtDescriptionEvent;
     @FXML
-    private TextField txtDateEvent;
+    private TextField txtStartDateEvent;
+    @FXML
+    private TextField txtEndDateEvent;
     @FXML
     private TextField txtStartEvent;
     @FXML
@@ -65,7 +67,8 @@ public class CreateEventViewController {
     public void CreateEvent(ActionEvent actionEvent) {
 
         if (!txtNameEvent.getText().isEmpty()
-                && !txtDateEvent.getText().isEmpty()
+                && !txtStartDateEvent.getText().isEmpty()
+                && !txtEndDateEvent.getText().isEmpty()
                 && !txtEndEvent.getText().isEmpty()
                 && !txtDescriptionEvent.getText().isEmpty()
                 && !txtStartEvent.getText().isEmpty()

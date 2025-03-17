@@ -99,21 +99,31 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Date">
+                        <Label prefHeight="20.0" prefWidth="146.0" text="Start Date">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="20.0" prefWidth="146.0" text="End Date">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
+                  <HBox prefHeight="35.0" prefWidth="809.0" spacing="130.0">
                      <children>
                         <TextField fx:id="txtAddress" prefHeight="42.0" prefWidth="412.0" promptText="Enter Address">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="txtDateEvent" prefHeight="42.0" prefWidth="412.0" promptText="dd/mm/yyyy">
+                        <TextField fx:id="txtStartDateEvent" prefHeight="35.0" prefWidth="143.0" promptText="dd/mm/yyyy">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtEndDateEvent1" prefHeight="35.0" prefWidth="143.0" promptText="dd/mm/yyyy">
                            <font>
                               <Font size="16.0" />
                            </font>
