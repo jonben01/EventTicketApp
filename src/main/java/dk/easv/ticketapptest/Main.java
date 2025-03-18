@@ -1,4 +1,4 @@
-package dk.easv.ticketapptest.GUI;
+package dk.easv.ticketapptest;
 
 import fr.brouillard.oss.cssfx.CSSFX;
 import javafx.application.Application;
