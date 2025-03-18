@@ -12,17 +12,26 @@ import java.sql.SQLException;
 public class UserDAO {
 
     private DBConnector dbConnector;
-    
+
     public UserDAO() throws IOException {
         dbConnector = new DBConnector();
     }
 
 
     //TODO figure out if i should return the new user, or just manually creating it in is fine.
-    public void createUserDB (User user) {
+    public User createUserDB (User user) {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = dbConnector.getConnection(); PreparedStatement pstmt = connection.prepareStatement(userSQL)) {
+        String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
+
+        String setRoleSQL = "INSERT INTO dbo.User_Roles (UserID, RoleID) VALUES (?, ?) ";
+        //TODO check typings here
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(userSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+             PreparedStatement pstmt2 = connection.prepareStatement(getRoleSQL);
+             PreparedStatement pstmt3 = connection.prepareStatement(setRoleSQL)) {
+            connection.setAutoCommit(false);
+
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
@@ -30,6 +39,30 @@ public class UserDAO {
             pstmt.setString(5, user.getFirstName());
             pstmt.setString(6, user.getLastName());
             pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            //TODO else throw exception. for this if statement.
+            int userID = -1;
+            if (rs.next()) {
+                userID = rs.getInt(1);
+            }
+
+            //TODO might cause issues later, using toString, not sure.
+            pstmt2.setString(1, user.getRole().toString());
+            ResultSet rs2 = pstmt2.executeQuery();
+            //TODO else throw exception. for this if statement.
+            int roleID = -1;
+            if (rs2.next()) {
+                roleID = rs2.getInt("RoleID");
+            }
+
+            pstmt3.setInt(1, userID);
+            pstmt3.setInt(2, roleID);
+            pstmt3.executeUpdate();
+            connection.commit();
+
+            return new User(user.getUsername(), user.getPassword(), user.getFirstName(),
+                            user.getLastName(), user.getEmail(), user.getPhone(), user.getRole());
 
             //TODO implement better exception handling, drop runtimeexception
         } catch (SQLException e) {
@@ -38,7 +71,7 @@ public class UserDAO {
     }
 
     public String getPassword(String username) {
-        String passwordSQL = "SELECT password_hash FROM dbo.Users WHERE username = ?";
+        String passwordSQL = "SELECT PasswordHash FROM dbo.Users WHERE Username = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(passwordSQL)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
