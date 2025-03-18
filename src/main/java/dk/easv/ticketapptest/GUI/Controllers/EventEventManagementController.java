@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
@@ -18,8 +19,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class EventEventManagementController {
@@ -82,8 +86,7 @@ public class EventEventManagementController {
         this.mainPane = mainPane;
     }
 
-    private VBox createEventPanel(String title, String location, String date, String time,
-                                  String[] ticketTypes, List<User> coordinator) {
+    private VBox createEventPanel(Event2 event2) {
 
         VBox vbox = new VBox();
         vBoxList.add(vbox);
@@ -96,7 +99,7 @@ public class EventEventManagementController {
             vbox.setPrefHeight(300);
             vbox.setMaxHeight(300);
 
-        Label titleLabel = new Label(title);
+        Label titleLabel = new Label(event2.getTitle());
         titleLabel.getStyleClass().add("h1");
 
         Button deleteButton = new Button("Delete");
@@ -107,32 +110,48 @@ public class EventEventManagementController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
                 alert.setHeaderText(null);
-                alert.setContentText("Delete the " + title + " event?");
+                alert.setContentText("Delete the " + event2.getTitle() + " event?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-            }
+                    try {
+                        eventModel.deleteEvent(event2);
+                        currentX = 0;
+                        currentY = 0;
+                        updateList();
+
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         });
 
 
-        Label locationLabel = new Label("📍 " + location);
+        Label locationLabel = new Label("📍 " + event2.getLocation().getAddress());
         locationLabel.getStyleClass().add("h2");
-        Label dateLabel = new Label("📅 " + date);
+        Label dateLabel;
+        if(Objects.equals(event2.getStartDate(), event2.getEndDate()))
+        {
+             dateLabel = new Label("📅 " + event2.getStartDate());
+        }
+        else {
+             dateLabel = new Label("📅 " + event2.getStartDate() + " to " + event2.getEndDate());
+        }
         dateLabel.getStyleClass().add("h2");
-        Label timeLabel = new Label("🕒 " + time);
+        Label timeLabel = new Label("🕒 " + event2.getStartTime() + " - " + event2.getEndTime());
         timeLabel.getStyleClass().add("h2");
         Separator separator1 = new Separator();
 
         Label ticketsLabel = new Label("Tickets Sold");
         ticketsLabel.getStyleClass().add("h2");
         StringBuilder ticketInfo = new StringBuilder();
-        for (String ticket : ticketTypes) {
+        for (String ticket : event2.getTicketTypes()) {
             ticketInfo.append(ticket).append("\n");
         }
         Label ticketInfoLabel = new Label(ticketInfo.toString().trim());
         ticketInfoLabel.getStyleClass().add("h3");
         Separator separator2 = new Separator();
 
-        Label coordinatorLabel = new Label("Coordinator: " + coordinator.get(1).getFirstName() + " " + coordinator.get(1).getLastName());
+        Label coordinatorLabel = new Label("Coordinator: " + event2.getEventCoordinators().get(0).getFirstName() + " " + event2.getEventCoordinators().get(0).getLastName());
         coordinatorLabel.getStyleClass().add("h4");
 
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,
@@ -145,6 +164,7 @@ public class EventEventManagementController {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-view.fxml"));
                     Parent eventInDepth = fxmlLoader.load();
                     EventViewController controller = fxmlLoader.getController();
+                    controller.setSelectedEvent(event2);
                     controller.setPanel(mainPane);
                     mainPane.setCenter(eventInDepth);
                 } catch (IOException e) {
@@ -176,13 +196,12 @@ public class EventEventManagementController {
     }
 
 
-    public void createEvent(String title, String location, String date, String starttime, String endtime,
-                            String[] ticketTypes, List<User> coordinator) {
+    public void createEvent(Event2 event) {
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
 
-        gridPane.add(createEventPanel(title, location, date, starttime + " - " + endtime, ticketTypes, coordinator), x, y);
+        gridPane.add(createEventPanel(event), x, y);
 
         currentX++;
     }
@@ -190,9 +209,14 @@ public class EventEventManagementController {
     private void addExistingEvents(List<Event2> events){
         if(!events.isEmpty()){
             for(Event2 event : events){
-                createEvent(event.getTitle(), event.getLocation(), event.getDate(), event.getStartTime(), event.getEndTime(), event.getTicketTypes(), event.getEventCoordinators());
+                createEvent(event);
             }
         }
+    }
+
+    private void updateList(){
+        gridPane.getChildren().clear();
+        addExistingEvents(eventModel.getObservableEvents());
     }
 
     private int getNextX() {

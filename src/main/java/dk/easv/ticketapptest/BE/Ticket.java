@@ -5,21 +5,41 @@ public class Ticket {
     //TODO - a list of tickets should be iterated through when looking at events, where the event matches the selected
     // event, the ticket should be shown.
     // Should probably also have a "GLOBAL" mode, for tickets that can be used for all events - like STANDARD or FREE BEER
-    private Event2 event2;
+    private Event2 event;
     private boolean GLOBAL;
     private String ticketName;
     private String description;
-    //not sure if double is optimal
     private double price;
-
-    //maybe its just better to not do the GLOBAL, and instead just have an if statement IF (EVENT == GLOBAL) and do it like that instead
+    private int ticketID;
 
     public Ticket(Event2 event2, double price, boolean GLOBAL, String ticketName, String description) {
-        this.event2 = event2; //event was taken
+        this.event = event2; //event was taken
         this.price = price;
         this.GLOBAL = GLOBAL;
         this.ticketName = ticketName;
         this.description = description;
+    }
+
+    public Ticket(int ticketID, double price, boolean GLOBAL, String ticketName, String description) {
+        this.ticketID = ticketID;
+        this.price = price;
+        this.GLOBAL = GLOBAL;
+        this.ticketName = ticketName;
+        this.description = description;
+    }
+
+    public void assignEventToTicket(Event2 event){ this.event = event;}
+
+    public Event2 getEvent(){ return this.event; }
+
+    public void setEvent(Event2 event){ this.event = event; }
+
+    public int getTicketID() {
+        return ticketID;
+    }
+
+    public void setTicketID(int ticketID) {
+        this.ticketID = ticketID;
     }
 
     public boolean isGLOBAL() {

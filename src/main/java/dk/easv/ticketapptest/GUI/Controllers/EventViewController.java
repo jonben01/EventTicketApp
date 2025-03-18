@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
@@ -63,6 +64,12 @@ public class EventViewController {
 
     @FXML
     private TableColumn<Ticket, Double> clnPrice;
+
+    private Event2 selectedEvent;
+
+    public void setSelectedEvent(Event2 event2) {
+        this.selectedEvent = event2;
+    }
 
     public void setPanel(BorderPane root)
     {
@@ -157,6 +164,7 @@ public class EventViewController {
         Parent root = loader.load();
         CreateTicketViewController controller = loader.getController();
         controller.setParent(this);
+        controller.setSelectedEvent(selectedEvent);
         Stage stage = new Stage();
         stage.setTitle("Create Ticket");
         Scene scene = new Scene(root);

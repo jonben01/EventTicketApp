@@ -6,7 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Event2 {
-    private LocalDate date;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String title;
     private String description;
     private LocalTime startTime;
@@ -19,12 +20,14 @@ public class Event2 {
     private String locationGuidance;
     private String status;
 
-    public Event2(String title, Location location, String locationGuidance, LocalDate date, LocalTime startTime, LocalTime endTime,
+    public Event2(String title, Location location, String description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
                   String[] ticketTypes, List<User> eventCoordinators) {
         this.title = title;
         this.location = location;
+        this.description = description;
         this.locationGuidance = locationGuidance;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.ticketTypes = ticketTypes;
@@ -32,13 +35,15 @@ public class Event2 {
 
     }
 
-    public Event2(int eventID, String title, Location location, String locationGuidance, LocalDate date, LocalTime startTime, LocalTime endTime,
+    public Event2(int eventID, String title, Location location, String Description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
                   String[] ticketTypes, List<User> eventCoordinators, String status) {
         this.eventID = eventID;
         this.title = title;
         this.location = location;
+        this.description = Description;
         this.locationGuidance = locationGuidance;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.ticketTypes = ticketTypes;
@@ -73,12 +78,20 @@ public class Event2 {
         this.status = status;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public String getTitle() {

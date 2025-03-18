@@ -3,13 +3,18 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class CreateEventViewController {
@@ -43,11 +48,15 @@ public class CreateEventViewController {
 
     TemporaryDataClass data;
 
+    //todo bad. fix.
+    EventManagementModel model;
+
 
     private EventEventManagementController parent;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws SQLException, IOException {
+        model = new EventManagementModel();
         data = new TemporaryDataClass();
         String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
         btnCreateEvent.getStylesheets().add(cssFile);
@@ -61,7 +70,7 @@ public class CreateEventViewController {
     }
 
 
-    public void CreateEvent(ActionEvent actionEvent) {
+    public void CreateEvent(ActionEvent actionEvent) throws SQLException {
 
         if (!txtNameEvent.getText().isEmpty()
                 && !dateStartDate.getValue().toString().isEmpty()
@@ -73,10 +82,10 @@ public class CreateEventViewController {
                 && !txtCity.getText().isEmpty()
                 && !txtAddress.getText().isEmpty()
                 && !txtPostalCode.getText().isEmpty()) {
-          //  parent.createEvent(txtNameEvent.getText(), txtLocationGuidance.getText(), txtDateEvent.getText(), txtStartEvent.getText(), txtEndEvent.getText(), new String[]{"Early Bird $299", "Regular $399"}, data.getUsers() );
             Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
-            Event2 event = new Event2(txtNameEvent.getText(), location, txtLocationGuidance.getText(), LocalDateTime date, LocalDateTime startTime, LocalDateTime endTime,
-                    String[] ticketTypes, List< User > eventCoordinators);
+            Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers());
+            parent.createEvent(event);
+            model.createEvent(event);
             ((Stage) txtNameEvent.getScene().getWindow()).close();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

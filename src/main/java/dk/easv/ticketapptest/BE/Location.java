@@ -23,6 +23,10 @@ public class Location {
         return locationID;
     }
 
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
+    }
+
     public String getAddress() {
         return address;
     }

@@ -2,10 +2,14 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class CreateTicketViewController {
 
@@ -20,7 +24,12 @@ public class CreateTicketViewController {
     private EventViewController parent2;
 
     private Event2 selectedEvent;
+    private TicketModel ticketModel;
 
+
+    public CreateTicketViewController() throws IOException {
+        ticketModel = new TicketModel();
+    }
     // todo: find a better way to do this:
     public void setParent(TicketPrintController parent) {
         this.parent = parent;
@@ -32,12 +41,13 @@ public class CreateTicketViewController {
     }
 
     @FXML
-    private void handleCreateTicket(ActionEvent actionEvent) {
+    private void handleCreateTicket(ActionEvent actionEvent) throws SQLException {
         String name = txtTicketName.getText();
         String description = txtTicketDesc.getText();
         double price = Double.parseDouble(txtTicketPrice.getText());
 
         Ticket ticket = new Ticket(selectedEvent, price, false, name, description);
+        ticketModel.createTicket(ticket);
         if(parent != null) {
             parent.addTicket(ticket);
         }

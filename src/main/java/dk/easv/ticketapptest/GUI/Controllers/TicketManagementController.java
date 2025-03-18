@@ -61,7 +61,7 @@ public class TicketManagementController {
 
             gridPane.setAlignment(Pos.CENTER);
         }
-        addExistingEvents(dataClass.getEvents());
+        //addExistingEvents(dataClass.getEvents());
         gridPane.getStylesheets().add(eventCSS);
         gridPane.setStyle("-fx-background-color: #F8F8F8;");
     }
@@ -138,13 +138,13 @@ public class TicketManagementController {
         currentX++;
     }
 
-    private void addExistingEvents(List<Event2> events){
+   /* private void addExistingEvents(List<Event2> events){
         if(!events.isEmpty()){
             for(Event2 event : events){
                 createEvent(event.getTitle(), event.getLocation(), event.getDate(), event.getStartTime(), event.getEndTime(), event.getDescription());
             }
         }
-    }
+    }*/
 
     private int getNextX() {
         return currentX % 3;

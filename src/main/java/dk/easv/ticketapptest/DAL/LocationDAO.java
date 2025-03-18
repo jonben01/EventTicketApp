@@ -16,13 +16,19 @@ public class LocationDAO implements ILocationDataAccess {
 
     @Override
     public Location createLocation(Location location) throws SQLException {
-        String sql = "INSERT INTO dbo.Locations(Address, City, PostalCode) " + "VALUES(?,?,?);";
+        String sql = "INSERT INTO dbo.Locations(Address, City, PostalCode) VALUES(?,?,?);";
         try (Connection conn = connector.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, location.getAddress());
             ps.setString(2, location.getCity());
             ps.setInt(3, location.getPostalCode());
             ps.executeUpdate();
+
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                location.setLocationID(rs.getInt(1)); // Set the generated ID
+            }
             return location;
         } catch (SQLException e) {
             throw new SQLException("Could not create new location", e);
@@ -42,7 +48,7 @@ public class LocationDAO implements ILocationDataAccess {
         try (Connection conn = connector.getConnection();
              Statement stmt = conn.createStatement()) {
 
-            String sql = "SELECT LocationID, Address, City, PostalCode FROM Category";
+            String sql = "SELECT LocationID, Address, City, PostalCode FROM dbo.Locations";
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -54,7 +60,7 @@ public class LocationDAO implements ILocationDataAccess {
             }
             return allLocations;
         } catch (SQLException e) {
-            throw new SQLException("Could not get all categories from database", e);
+            throw new SQLException("Could not get all locations from database", e);
         }
     }
 
