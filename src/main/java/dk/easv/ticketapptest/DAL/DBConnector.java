@@ -15,6 +15,7 @@ public class DBConnector {
 
     public DBConnector() throws IOException {
 
+
         Properties dbProps = new Properties();
         dbProps.load(new FileInputStream(PROPERTY_FILE));
 
@@ -27,7 +28,7 @@ public class DBConnector {
         dataSource.setTrustServerCertificate(true);
 
     }
-    public static Connection getConnection() throws SQLServerException {
+    public Connection getConnection() throws SQLServerException {
         return dataSource.getConnection();
     }
 }

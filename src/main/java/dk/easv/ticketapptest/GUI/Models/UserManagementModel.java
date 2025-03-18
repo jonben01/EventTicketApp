@@ -7,7 +7,7 @@ public class UserManagementModel {
 
     private UserManagementLogic userManagementLogic;
 
-    public UserManagementModel() {
+    public UserManagementModel() throws Exception {
         userManagementLogic = new UserManagementLogic();
     }
 

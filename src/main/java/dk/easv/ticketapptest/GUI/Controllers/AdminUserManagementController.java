@@ -39,7 +39,12 @@ public class AdminUserManagementController implements Initializable {
 
 
     public AdminUserManagementController() {
-        model = new UserManagementModel();
+        try {
+            model = new UserManagementModel();
+            //TODO IMPLEMENT BETTER EXCEPTION HANDLING HERE.
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

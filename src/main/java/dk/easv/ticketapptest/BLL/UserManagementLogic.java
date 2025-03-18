@@ -7,7 +7,7 @@ public class UserManagementLogic {
 
     private UserDAO userDAO;
 
-    public UserManagementLogic() {
+    public UserManagementLogic() throws Exception {
         userDAO = new UserDAO();
     }
 

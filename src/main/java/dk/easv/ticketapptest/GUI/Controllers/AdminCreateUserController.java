@@ -41,6 +41,8 @@ public class AdminCreateUserController implements Initializable {
         //TODO make sure the setting of styles here, doesnt actually fuck with the eventual CSS
         //brother this is the most cooked code i have ever made.
 
+
+        //TODO HANDLE EDGE CASES WHERE USERS TYPE STUFF THEY SHOULDNT
         if (txtUsername.getText().isEmpty() ||
                 txtPassword.getText().isEmpty() ||
                 txtFirstName.getText().isEmpty() ||

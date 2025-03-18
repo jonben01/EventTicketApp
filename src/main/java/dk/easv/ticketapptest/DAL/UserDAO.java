@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.DAL;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.User;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +11,18 @@ import java.sql.SQLException;
 
 public class UserDAO {
 
+    private DBConnector dbConnector;
+    
+    public UserDAO() throws IOException {
+        dbConnector = new DBConnector();
+    }
+
+
     //TODO figure out if i should return the new user, or just manually creating it in is fine.
     public void createUserDB (User user) {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DBConnector.getConnection(); PreparedStatement pstmt = connection.prepareStatement(userSQL)) {
+        try (Connection connection = dbConnector.getConnection(); PreparedStatement pstmt = connection.prepareStatement(userSQL)) {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
@@ -31,7 +39,7 @@ public class UserDAO {
 
     public String getPassword(String username) {
         String passwordSQL = "SELECT password_hash FROM dbo.Users WHERE username = ?";
-        try (Connection conn = DBConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(passwordSQL)) {
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(passwordSQL)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
