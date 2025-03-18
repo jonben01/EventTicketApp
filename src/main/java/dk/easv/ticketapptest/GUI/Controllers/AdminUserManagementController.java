@@ -265,6 +265,7 @@ public class AdminUserManagementController implements Initializable {
 
         User newUser = controller.getCreatedUser();
         if (newUser != null) {
+            //TODO figure out if i am stupid for putting this here and not in the create user window????????????????????? - jonas 18/03
             model.createUserDB(newUser);
             lstUsers.getSelectionModel().select(newUser);
             lstUsers.scrollTo(newUser);
