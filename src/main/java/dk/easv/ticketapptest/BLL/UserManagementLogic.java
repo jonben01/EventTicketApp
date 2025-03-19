@@ -11,7 +11,10 @@ public class UserManagementLogic {
         userDAO = new UserDAO();
     }
 
-    public void createUserDB (User user) {
-        userDAO.createUserDB(user);
+    public User createUserDB (User user) throws Exception {
+
+        user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
+
+        return userDAO.createUserDB(user);
     }
 }

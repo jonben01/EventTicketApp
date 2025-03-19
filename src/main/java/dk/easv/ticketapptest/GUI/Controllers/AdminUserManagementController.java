@@ -256,7 +256,7 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    public void handleCreateUser(ActionEvent actionEvent) throws IOException {
+    public void handleCreateUser(ActionEvent actionEvent) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-user-creation-view.fxml"));
         Parent root = loader.load();
 

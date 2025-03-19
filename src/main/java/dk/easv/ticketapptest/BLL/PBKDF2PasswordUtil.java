@@ -10,13 +10,13 @@ import java.util.Base64;
 public class PBKDF2PasswordUtil {
     private static final int SALT_LENGTH = 16;
     private static final int HASH_LENGTH = 32;
-    private static final int ITERATIONS = 50000;
+    private static final int ITERATIONS = 5000;
 
     //TODO at some point explain that methods here are static due to the fact that theres no need to make objects of this class
     // it just does business logic. static makes it easier to call the methods globally, which is fine for this usage(i think??)
 
 
-    public static String hashPassword(String password) {
+    public static String hashPassword(String password) throws Exception {
         byte[] salt = generateSalt();
         byte[] hash = pbkdf2Hash(password, salt, ITERATIONS, HASH_LENGTH);
 
@@ -37,7 +37,7 @@ public class PBKDF2PasswordUtil {
      * @param hashedPassword password stored in db, containing salt + iterations + password hash.
      * @return true or false depending on whether they're the same.
      */
-    public static boolean verifyPassword(String password, String hashedPassword) {
+    public static boolean verifyPassword(String password, String hashedPassword) throws Exception {
         //split String on :
         String[] parts = hashedPassword.split(":");
         //get iterations from String array
@@ -65,7 +65,7 @@ public class PBKDF2PasswordUtil {
 
 
     //TODO comments
-    private static byte[] pbkdf2Hash(String password, byte[] salt, int iterations, int hashLength) {
+    private static byte[] pbkdf2Hash(String password, byte[] salt, int iterations, int hashLength) throws Exception {
         try {
             PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, hashLength * 8);
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -74,7 +74,7 @@ public class PBKDF2PasswordUtil {
 
             //TODO IMPLEMENT ACTUAL EXCEPTION HANDLING
             System.out.println("Error: " + e.getMessage() + "at PBKDF2WithHmacSHA256");
-            throw new RuntimeException(e);
+            throw new Exception();
         }
     }
 

@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.DAL;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 
 import java.io.IOException;
@@ -76,7 +77,7 @@ public class UserDAO {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return rs.getString("password_hash");
+                return rs.getString("PasswordHash");
             }
 
             //TODO IMPLEMENT BETTER EXCEPTION HANDLING, NO RUNTIMEEXCEPTIONS PLS
@@ -84,6 +85,43 @@ public class UserDAO {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+        return null;
+    }
+
+    public User getUserByUsername(String username) {
+
+        String userSQL = "SELECT U.*, R.RoleName FROM dbo.Users U " +
+                        "INNER JOIN dbo.User_Roles AS UR ON U.UserID = UR.UserID " +
+                        "INNER JOIN dbo.Roles AS R ON UR.RoleID = R.RoleID " +
+                        "WHERE Username = ?";
+
+
+
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                User userFromUsername = new User();
+
+                userFromUsername.setUsername(rs.getString("Username"));
+                userFromUsername.setPassword(rs.getString("PasswordHash"));
+                userFromUsername.setEmail(rs.getString("Email"));
+                userFromUsername.setPhone(rs.getString("PhoneNumber"));
+                userFromUsername.setFirstName(rs.getString("FirstName"));
+                userFromUsername.setLastName(rs.getString("LastName"));
+
+                String roleName = rs.getString("RoleName");
+                userFromUsername.setRole(Role.valueOf(roleName));
+                System.out.println("User created: " + userFromUsername);
+
+                return userFromUsername;
+
+            }
+        } catch (SQLException e) {
+            System.out.println("OOPSIE WOOPSIE IN GET USER BY USERNAME");
+            e.printStackTrace();
+        }
+        //TODO fix exception handling here, and this return.
         return null;
     }
 }

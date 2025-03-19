@@ -6,7 +6,7 @@ public class TempLoginClass {
 
     private UserDAO userDAO;
 
-    public boolean login(String username, String inputPassword) {
+    public boolean login(String username, String inputPassword) throws Exception {
         String storedHash = userDAO.getPassword(username);
         return storedHash != null && PBKDF2PasswordUtil.verifyPassword(storedHash, inputPassword);
     }

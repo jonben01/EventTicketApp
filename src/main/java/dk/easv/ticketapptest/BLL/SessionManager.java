@@ -3,9 +3,11 @@ package dk.easv.ticketapptest.BLL;
 
 //Thread-safe singleton user session manager class
 
+import dk.easv.ticketapptest.BE.User;
+
 public class SessionManager {
     private static volatile SessionManager instance;
-    private String currentUser;
+    private User currentUser;
 
     private SessionManager() {}
 
@@ -24,10 +26,10 @@ public class SessionManager {
         return instance;
     }
 
-    public void setCurrentUser(String currentUser) {
+    public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    public String getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 

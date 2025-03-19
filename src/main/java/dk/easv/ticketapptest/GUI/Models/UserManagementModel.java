@@ -11,8 +11,8 @@ public class UserManagementModel {
         userManagementLogic = new UserManagementLogic();
     }
 
-    public void createUserDB(User user) {
-        userManagementLogic.createUserDB(user);
+    public User createUserDB(User user) throws Exception {
+        return userManagementLogic.createUserDB(user);
 
     }
 }

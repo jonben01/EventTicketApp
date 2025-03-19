@@ -19,6 +19,10 @@ public class User {
     //should arguably not be a string, but its just easier to work with.
     private String phone;
 
+    public User() {
+
+    }
+
 
     //TODO IMPLEMENT USERNAME AND PASSWORD
 
