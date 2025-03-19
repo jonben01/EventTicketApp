@@ -38,6 +38,7 @@ public class CreateTicketViewController {
 
     public void setSelectedEvent(Event2 event2) {
         this.selectedEvent = event2;
+
     }
 
     @FXML
@@ -48,13 +49,7 @@ public class CreateTicketViewController {
 
         Ticket ticket = new Ticket(selectedEvent, price, false, name, description);
         ticketModel.createTicket(ticket);
-        if(parent != null) {
-            parent.addTicket(ticket);
-        }
-        else{
-            parent2.addTicket(ticket);
-        }
-
+        parent2.updateTicketList();
         Stage stage = (Stage) txtTicketName.getScene().getWindow();
         stage.close();
 

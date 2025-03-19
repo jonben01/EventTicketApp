@@ -65,7 +65,22 @@ public class EventDAO implements IEventDataAccess {
     }
 
     @Override
-    public void updateEvent(Event2 event) throws SQLException {
+    public void updateEvent(Event2 event, Location location ) throws SQLException {
+
+        String sql = "UPDATE dbo.Events SET Title = ?, StartTime = ?, EndTime = ?, LocationID = ?, LocationGuidance = ?, Description = ?, StartDate = ?, EndDate = ? WHERE EventID = ?";
+        try (Connection conn = connector.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, event.getTitle());
+            stmt.setTime(2, Time.valueOf(event.getStartTime()));
+            stmt.setTime(3, Time.valueOf(event.getEndTime()));
+            stmt.setInt(4, location.getLocationID());
+            stmt.setString(5, event.getLocationGuidance());
+            stmt.setString(6, event.getDescription());
+            stmt.setDate(7, Date.valueOf(event.getStartDate()));
+            stmt.setDate(8, Date.valueOf(event.getEndDate()));
+            stmt.setInt(9, event.getEventID());
+            stmt.executeUpdate();
+        }
 
     }
 

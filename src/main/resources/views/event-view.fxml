@@ -57,7 +57,7 @@
                               </Label>
                               <AnchorPane maxHeight="30.0" prefHeight="25.0" prefWidth="379.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="btnEditDesc" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Edit Description" AnchorPane.rightAnchor="0.0" />
+                                    <Button fx:id="btnEditEvent" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" onAction="#onEditEvent" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Edit Event" AnchorPane.rightAnchor="0.0" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />

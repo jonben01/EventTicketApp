@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -42,6 +43,8 @@ public class CreateEventViewController {
     @FXML
     private TextField txtPostalCode;
 
+    private Event2 selectedEvent;
+
 
 
 
@@ -53,6 +56,7 @@ public class CreateEventViewController {
 
 
     private EventEventManagementController parent;
+    private EventViewController eventViewController;
 
     @FXML
     private void initialize() throws SQLException, IOException {
@@ -63,39 +67,63 @@ public class CreateEventViewController {
         //btnAddTicket.getStylesheets().add(cssFile);
     }
 
+    public void selectEvent(Event2 event)
+    {
+        selectedEvent = event;
+        txtNameEvent.setText(selectedEvent.getTitle());
+        dateStartDate.setValue(selectedEvent.getStartDate());
+        dateEndDate.setValue(selectedEvent.getEndDate());
+        txtDescriptionEvent.setText(selectedEvent.getDescription());
+        txtLocationGuidance.setText(selectedEvent.getLocationGuidance());
+        txtStartEvent.setText(selectedEvent.getStartTime().toString());
+        txtEndEvent.setText(selectedEvent.getEndTime().toString());
+        txtCity.setText(selectedEvent.getLocation().getCity());
+        txtAddress.setText(selectedEvent.getLocation().getAddress());
+        txtPostalCode.setText(String.valueOf(selectedEvent.getLocation().getPostalCode()));
+        btnCreateEvent.setText("Update Event");
 
+    }
 
     public void setParent(EventEventManagementController parent) {
         this.parent = parent;
     }
 
-
-    public void CreateEvent(ActionEvent actionEvent) throws SQLException {
-
-        if (!txtNameEvent.getText().isEmpty()
-                && !dateStartDate.getValue().toString().isEmpty()
-                && !dateEndDate.getValue().toString().isEmpty()
-                && !txtEndEvent.getText().isEmpty()
-                && !txtDescriptionEvent.getText().isEmpty()
-                && !txtStartEvent.getText().isEmpty()
-                && !txtLocationGuidance.getText().isEmpty()
-                && !txtCity.getText().isEmpty()
-                && !txtAddress.getText().isEmpty()
-                && !txtPostalCode.getText().isEmpty()) {
-            Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
-            Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers());
-            parent.createEvent(event);
-            model.createEvent(event);
-            ((Stage) txtNameEvent.getScene().getWindow()).close();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Please fill in all the fields");
-            alert.setContentText("You must fill in all the fields to create an event.");
-            alert.showAndWait();
-        }
-
+    public void setEventViewController(EventViewController eventViewController) {
+        this.eventViewController = eventViewController;
     }
 
 
-}
+    public void CreateEvent(ActionEvent actionEvent) throws SQLException {
+
+            if (!txtNameEvent.getText().isEmpty()
+                    && !dateStartDate.getValue().toString().isEmpty()
+                    && !dateEndDate.getValue().toString().isEmpty()
+                    && !txtEndEvent.getText().isEmpty()
+                    && !txtDescriptionEvent.getText().isEmpty()
+                    && !txtStartEvent.getText().isEmpty()
+                    && !txtLocationGuidance.getText().isEmpty()
+                    && !txtCity.getText().isEmpty()
+                    && !txtAddress.getText().isEmpty()
+                    && !txtPostalCode.getText().isEmpty()) {
+                Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
+                if(selectedEvent != null) {
+                    Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers(), "Scheduled");
+                    model.updateEvent(event);
+                    eventViewController.updateInformation(1);
+                }
+                else {
+                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers());
+                    parent.createEvent(event);
+                    model.createEvent(event);
+                }
+                ((Stage) txtNameEvent.getScene().getWindow()).close();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Please fill in all the fields");
+                alert.setContentText("You must fill in all the fields to create an event.");
+                alert.showAndWait();
+            }
+        }
+
+    }

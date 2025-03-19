@@ -12,7 +12,7 @@ public interface IEventDataAccess {
 
     List<Event2> getAllEvents () throws SQLException;
 
-    void updateEvent (Event2 event) throws SQLException;
+    void updateEvent (Event2 event, Location location) throws SQLException;
 
     void deleteEvent (Event2 event) throws SQLException;
 

@@ -165,9 +165,15 @@ public class EventEventManagementController {
                     Parent eventInDepth = fxmlLoader.load();
                     EventViewController controller = fxmlLoader.getController();
                     controller.setSelectedEvent(event2);
+                    controller.updateTicketList();
+                    controller.updateInformation(0);
                     controller.setPanel(mainPane);
                     mainPane.setCenter(eventInDepth);
+
+                    //TODO VERY BAD. MAKE THIS LESS BAD. PLEASEEEE
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -214,7 +220,7 @@ public class EventEventManagementController {
         }
     }
 
-    private void updateList(){
+    private void updateList() throws SQLException {
         gridPane.getChildren().clear();
         addExistingEvents(eventModel.getObservableEvents());
     }

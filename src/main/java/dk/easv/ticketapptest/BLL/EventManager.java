@@ -34,4 +34,10 @@ public class EventManager {
     public void DeleteEvent(Event2 eventToBeDeleted) throws SQLException {
         eventDAO.deleteEvent(eventToBeDeleted);
     }
+
+    public void updateEvent(Event2 event) throws SQLException {
+        Location createdLocation = locationDAO.createLocation(event.getLocation());
+        eventDAO.updateEvent(event, createdLocation);
+
+    }
 }

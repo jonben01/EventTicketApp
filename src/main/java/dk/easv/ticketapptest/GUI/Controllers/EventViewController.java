@@ -1,8 +1,11 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
+import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class EventViewController {
     BorderPane root;
@@ -33,7 +40,7 @@ public class EventViewController {
     @FXML
     private Label lblDesc;
     @FXML
-    private Button btnEditDesc;
+    private Button btnEditEvent;
     @FXML
     private TextField txtDesc;
     @FXML
@@ -52,6 +59,8 @@ public class EventViewController {
     private Button btnReturn;
     @FXML
     private VBox vboxLeft;
+    private TicketModel ticketModel;
+    private EventManagementModel eventModel;
     @FXML
     private VBox vboxRight;
     private TemporaryDataClass dataClass;
@@ -77,7 +86,9 @@ public class EventViewController {
     }
 
         @FXML
-        public void initialize() {
+        public void initialize() throws IOException, SQLException {
+        eventModel = new EventManagementModel();
+        ticketModel = new TicketModel();
         dataClass = new TemporaryDataClass();
         tblTicket.getStylesheets().add("css/admineventstyle.css");
         tblTicket.getStyleClass().add("table-view");
@@ -90,7 +101,7 @@ public class EventViewController {
             lblDesc.getStyleClass().add("h3");
             lblTicket.getStyleClass().add("h2");
             lblCoords.getStyleClass().add("h2");
-            btnEditDesc.getStyleClass().add("button2");
+            btnEditEvent.getStyleClass().add("button2");
             btnAddTicket.getStyleClass().add("button2");
             btnAddCoord.getStyleClass().add("button2");
             btnReturn.getStyleClass().add("returnButton");
@@ -100,8 +111,18 @@ public class EventViewController {
             populateList();
             clnTicket.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getTicketName()));
             clnDescription.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getDescription()));
-            clnPrice.setCellValueFactory(cellData -> new SimpleObjectProperty<>(( cellData.getValue()).getPrice()));
-
+            clnPrice.setCellValueFactory(cellData -> new SimpleObjectProperty<>((cellData.getValue()).getPrice()));
+            clnPrice.setCellFactory(tc -> new TableCell<Ticket, Double>() {
+                @Override
+                protected void updateItem(Double price, boolean empty) {
+                    super.updateItem(price, empty);
+                    if (empty || price == null) {
+                        setText(null);
+                    } else {
+                        setText(String.format("%.2f", price));
+                    }
+                }
+            });
 
         }
 
@@ -173,7 +194,54 @@ public class EventViewController {
         stage.show();
     }
 
-    public void addTicket(Ticket ticket) {
-        tblTicket.getItems().add(ticket);
+    public void updateTicketList() throws SQLException {
+        tblTicket.getItems().clear();
+        tblTicket.getItems().addAll(ticketModel.getTicketsForEvent(selectedEvent));
     }
+
+    public void updateInformation(int version) throws SQLException {
+        if(version == 1) {
+            eventModel.updateList();
+            List<Event2> events = new ArrayList<>(eventModel.getObservableEvents());
+            for (Event2 event : events) {
+                if (selectedEvent.getEventID() == event.getEventID()) {
+                    System.out.println("event found");
+                    selectedEvent = event;
+                }
+            }
+        }
+
+        lblTitle.setText(selectedEvent.getTitle());
+        lblLocation.setText(selectedEvent.getLocation().getAddress());
+        if(Objects.equals(selectedEvent.getStartDate(), selectedEvent.getEndDate()))
+        {
+            lblDate.setText(selectedEvent.getStartDate().toString());
+        }
+        else {
+            lblDate.setText(selectedEvent.getStartDate() + " to " + selectedEvent.getEndDate());
+        }
+        lblTime.setText(selectedEvent.getStartTime().toString() + " - " + selectedEvent.getEndTime().toString());
+        txtDesc.setText(selectedEvent.getDescription());
+    }
+
+    @FXML
+    private void onEditEvent(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-event-view.fxml"));
+            Parent root = loader.load();
+            CreateEventViewController controller = loader.getController();
+            controller.setEventViewController(this);
+            controller.selectEvent(selectedEvent);
+            Stage stage = new Stage();
+            stage.setTitle("Create Event");
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error loading create event view: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }
