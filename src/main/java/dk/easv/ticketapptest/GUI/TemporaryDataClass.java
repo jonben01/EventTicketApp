@@ -27,6 +27,8 @@ public class TemporaryDataClass {
 
         User dude = new User("Gingerino", "password", "David", "Jonas", "ye", "2", Role.COORDINATOR);
         usersToBeViewed.add(dude);
+        User dude2 = new User("Bananamaster", "password", "Peteris", "Meiris", "ye", "3", Role.COORDINATOR);
+        usersToBeViewed.add(dude2);
         //Mock data - Event
         /*Event2 event1 = new Event2("Summer Music Festival", "Central Park, New York", "July 15, 2025", "2:00pm", "10:00pm", new String[]{"good one", "not as good one"}, usersToBeViewed);
         Event2 event2 = new Event2("Tech Conference 2025", "Convention Center", "August 20, 2025", "9:00am", "6:00pm", new String[]{"VIP", "Standard"}, usersToBeViewed);

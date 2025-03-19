@@ -33,6 +33,7 @@ public class AdminUserManagementController implements Initializable {
     @FXML private TextField txtPassword;
     @FXML private CheckBox chkEditable;
     @FXML private ListView<User> lstUsers;
+    @FXML private Button btnSaveEditUser;
 
     private TemporaryDataClass tdc;
     private UserManagementModel model;
@@ -321,4 +322,62 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
+    public void handleSaveEditUser(ActionEvent actionEvent) {
+        User selectedUser = lstUsers.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            // Update the user object with the new values from the text fields
+            String newUsername = txtUsername.getText();
+            String newPassword = txtPassword.getText();
+            String newFirstName = txtFirstName.getText();
+            String newLastName = txtLastName.getText();
+            String newEmail = txtEmail.getText();
+            String newPhone = txtPhone.getText();
+
+            selectedUser.setUsername(newUsername);
+            selectedUser.setPassword(newPassword);
+            selectedUser.setFirstName(newFirstName);
+            selectedUser.setLastName(newLastName);
+            selectedUser.setEmail(newEmail);
+            selectedUser.setPhone(newPhone);
+
+            // Update the user in the database
+            try {
+                model.updateUserDB(selectedUser);
+            } catch (Exception e) {
+                // Handle database update error
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Database Error");
+                errorAlert.setHeaderText("Failed to update user in the database.");
+                errorAlert.setContentText("An error occurred while trying to update the user's information in the database. Please try again later.");
+                errorAlert.showAndWait();
+                e.printStackTrace();
+                return; // Exit if There is an error
+            }
+
+            // Update the user in the TemporaryDataClass
+            tdc.updateUser(selectedUser, selectedUser);
+
+            // Refresh the ListView to reflect the changes
+            lstUsers.refresh();
+
+            // Update the user info labels
+            lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+
+            // Disable editing after saving
+            txtUsername.setEditable(false);
+            txtPassword.setEditable(false);
+            txtFirstName.setEditable(false);
+            txtLastName.setEditable(false);
+            txtEmail.setEditable(false);
+            txtPhone.setEditable(false);
+            chkEditable.setSelected(false);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("User Updated");
+            alert.setHeaderText(null);
+            alert.setContentText("User information has been updated.");
+            alert.showAndWait();
+        }
+    }
 }
+

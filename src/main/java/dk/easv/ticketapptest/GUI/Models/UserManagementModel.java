@@ -15,4 +15,7 @@ public class UserManagementModel {
         return userManagementLogic.createUserDB(user);
 
     }
+
+    public void updateUserDB(User selectedUser) {
+    }
 }
