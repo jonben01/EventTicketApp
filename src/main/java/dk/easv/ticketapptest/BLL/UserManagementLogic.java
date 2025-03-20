@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.BLL;
 
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.DAL.UserDAO;
 
 public class UserManagementLogic {
@@ -14,8 +15,8 @@ public class UserManagementLogic {
     public User createUserDB (User user) throws Exception {
 
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
-
         return userDAO.createUserDB(user);
+
     }
 
     public User updateUserDB(User user) throws Exception {

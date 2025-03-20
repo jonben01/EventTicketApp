@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
@@ -293,7 +294,17 @@ public class AdminUserManagementController implements Initializable {
         User newUser = controller.getCreatedUser();
         if (newUser != null) {
             //TODO figure out if i am stupid for putting this here and not in the create user window????????????????????? - jonas 18/03
-            model.createUserDB(newUser);
+            try {
+                model.createUserDB(newUser);
+            } catch (UsernameAlreadyExistsException e) {
+                //TODO probable use the error message that was bubbled up from DAO.
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText(null);
+                alert.setContentText("Username already exists!");
+                alert.showAndWait();
+                return;
+            }
             lstUsers.getSelectionModel().select(newUser);
             lstUsers.scrollTo(newUser);
         }

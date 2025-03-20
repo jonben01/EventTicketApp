@@ -3,12 +3,10 @@ package dk.easv.ticketapptest.DAL;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +19,24 @@ public class UserDAO {
     }
 
 
-    //TODO figure out if i should return the new user, or just manually creating it in is fine.
-    public User createUserDB (User user) {
+    public User createUserDB (User user) throws Exception {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?)";
 
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
 
         String setRoleSQL = "INSERT INTO dbo.User_Roles (UserID, RoleID) VALUES (?, ?) ";
-        //TODO check typings here
+
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(userSQL, PreparedStatement.RETURN_GENERATED_KEYS);
              PreparedStatement pstmt2 = connection.prepareStatement(getRoleSQL);
              PreparedStatement pstmt3 = connection.prepareStatement(setRoleSQL)) {
             connection.setAutoCommit(false);
 
+            //TODO handle the bubbling up of this quicker, so it doesnt even make it to the 2627 and 2601
+            // race conditions are handled by those, but you shouldnt have to make it it there in "non-race" conditions.
+            if (user != null && usernameExists(user.getUsername())) {
+                throw new UsernameAlreadyExistsException("Username already exists");
+            }
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
@@ -50,7 +52,6 @@ public class UserDAO {
                 userID = rs.getInt(1);
             }
 
-            //TODO might cause issues later, using toString, not sure.
             pstmt2.setString(1, user.getRole().toString());
             ResultSet rs2 = pstmt2.executeQuery();
             //TODO else throw exception. for this if statement.
@@ -68,8 +69,16 @@ public class UserDAO {
                             user.getLastName(), user.getEmail(), user.getPhone(), user.getRole());
 
             //TODO implement better exception handling, drop runtimeexception
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        } catch (SQLException err) {
+            //ERROR CODES FOR BREAKING UNIQUE CONSTRAINTS as a workaround, since SQLIntegrityConstraintViolationException
+            //is not used.
+            //TODO fix this, only pass this inital message and keep bubbling it up
+            if (err.getErrorCode() == 2627 || err.getErrorCode() == 2601) {
+                throw new UsernameAlreadyExistsException("Username: " + user.getUsername() + "already exists", err);
+            } else {
+                throw new Exception(err);
+            }
         }
     }
 
@@ -230,4 +239,22 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean usernameExists(String username) throws Exception {
+        String userSQL = "SELECT Username FROM dbo.Users WHERE Username = ?";
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
+
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+            //TODO better exception handling.
+        } catch (SQLException e) {
+            throw new Exception("SQLException in usernameExists: " + e.getMessage());
+        }
+        return false;
+    }
+
 }
