@@ -1,11 +1,13 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
+import dk.easv.ticketapptest.GUI.Models.UserModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -75,10 +77,11 @@ public class EventViewController {
     private TableColumn<Ticket, Double> clnPrice;
 
     private Event2 selectedEvent;
+    private UserModel userModel;
 
-    public void setSelectedEvent(Event2 event2) {
+    public void setSelectedEvent(Event2 event2) throws SQLServerException {
         this.selectedEvent = event2;
-        for(User coordinator : selectedEvent.getEventCoordinators())
+        for(User coordinator : userModel.getAllCoordinators())
         {
             lstCoords.getItems().add(coordinator);
         }
@@ -90,7 +93,8 @@ public class EventViewController {
     }
 
         @FXML
-        public void initialize() throws IOException, SQLException {
+        public void initialize() throws Exception {
+        userModel = new UserModel();
         eventModel = new EventManagementModel();
         ticketModel = new TicketModel();
         dataClass = new TemporaryDataClass();

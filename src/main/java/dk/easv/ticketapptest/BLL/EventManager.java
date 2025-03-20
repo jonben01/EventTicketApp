@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.BLL;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.DAL.EventDAO;
 import dk.easv.ticketapptest.DAL.LocationDAO;
 
@@ -40,4 +41,6 @@ public class EventManager {
         eventDAO.updateEvent(event, createdLocation);
 
     }
+
+
 }

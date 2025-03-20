@@ -2,12 +2,14 @@ package dk.easv.ticketapptest.GUI.Models;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class EventManagementModel {
 
@@ -41,4 +43,5 @@ public class EventManagementModel {
         eventManager.updateEvent(event);
         updateList();
     }
+
 }

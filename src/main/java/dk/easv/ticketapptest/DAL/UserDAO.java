@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -126,6 +128,8 @@ public class UserDAO {
         return null;
     }
 
+
+
     public User updateUserDB(User user) throws Exception {
         String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
@@ -181,7 +185,7 @@ public class UserDAO {
             }
         }
     }
-
+        // was planned to be used in events. Did not use. It is here if you think is pretty.
     public User getUserByID(int userID) throws SQLServerException {
         String sql = "SELECT * FROM dbo.Users WHERE UserID = ?";
         try(Connection connection = dbConnector.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -203,5 +207,27 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
         throw new RuntimeException("User not found: " + userID);
+    }
+
+    public List<User> getAllCoordinators() throws SQLServerException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT u.* FROM dbo.User_Roles ru RIGHT JOIN dbo.Users u ON u.UserID = ru.UserID WHERE RoleID = 2";
+        try(Connection conn = dbConnector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("PhoneNumber"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

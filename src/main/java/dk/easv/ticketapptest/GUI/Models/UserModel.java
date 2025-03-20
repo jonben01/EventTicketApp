@@ -1,11 +1,13 @@
 package dk.easv.ticketapptest.GUI.Models;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.UserManager;
 import dk.easv.ticketapptest.DAL.UserDAO;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserModel {
 
@@ -33,5 +35,9 @@ public class UserModel {
 
     public String hashPassword(String inputPassword) throws Exception {
         return PBKDF2PasswordUtil.hashPassword(inputPassword);
+    }
+
+    public List<User> getAllCoordinators() throws SQLServerException {
+        return userManager.getAllCoordinators();
     }
 }

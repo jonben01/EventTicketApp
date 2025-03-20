@@ -1,9 +1,11 @@
 package dk.easv.ticketapptest.BLL;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.DAL.UserDAO;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserManager {
 
@@ -20,5 +22,9 @@ public class UserManager {
 
     public User getUserByUsername (String username) {
         return userDAO.getUserByUsername(username);
+    }
+
+    public List<User> getAllCoordinators() throws SQLServerException {
+        return userDAO.getAllCoordinators();
     }
 }
