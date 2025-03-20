@@ -262,19 +262,19 @@ public class EventViewController {
 
     @FXML
     private void handleRemoveEvent(ActionEvent actionEvent) {
-        User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
-        if(temp != null){
-            for(User user : usersWithAccess){
-                if(user.getId() == temp.getId())
-                {
-                    usersWithAccess.remove(user);
-                }
+        try {
+            User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
+            if (temp != null) {
+                usersWithAccess.removeIf(user -> user.getId() == temp.getId());
+
+                Event2 tempEvent = new Event2();
+                tempEvent.setEventID(selectedEvent.getEventID());
+                tempEvent.addCoordinator(temp);
+                eventModel.removeFromEventUsers(tempEvent);
+                lstCoords.refresh();
             }
-            Event2 tempEvent = new Event2();
-            tempEvent.setEventID(selectedEvent.getEventID());
-            tempEvent.addCoordinator(temp);
-            eventModel.removeFromEventUsers(selectedEvent);
-            lstCoords.refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
