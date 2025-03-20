@@ -55,4 +55,7 @@ public class EventManager {
     public void removeFromEventUsers(Event2 selectedEvent) {
         eventDAO.removeFromEventUsers(selectedEvent);
     }
+
+    public List<Event2> getAllEventsForUser(int userid) throws SQLException {return eventDAO.getAllEventsForUser(userid);}
 }
+

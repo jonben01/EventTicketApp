@@ -56,4 +56,6 @@ public class EventManagementModel {
     public void removeFromEventUsers(Event2 selectedEvent) {
         eventManager.removeFromEventUsers(selectedEvent);
     }
+
+    public List<Event2> getAllEventsForUser(int userid) throws SQLException {return eventManager.getAllEventsForUser(userid);}
 }

@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -20,6 +21,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TicketPrintController {
 
@@ -43,6 +48,14 @@ public class TicketPrintController {
     private TableColumn<Ticket, String> colDescription;
     @FXML
     private TableColumn<Ticket, Double> colPrice;
+    @FXML
+    private TextField txtCustomerFirstName;
+    @FXML
+    private TextField txtCustomerLastName;
+    @FXML
+    private TextField txtCustomerEmail;
+    @FXML
+    private TextField txtCustomerPhone;
 
     @FXML
     private Label lblCoords;
@@ -96,11 +109,17 @@ public class TicketPrintController {
 
     }
 
-    public void setEventDetails(String title, String location, String date, String time){
-        this.lblTitle.setText(title);
-        this.lblLocationTicket.setText(location);
-        this.lblDateTicket.setText(date);
-        this.lblTimeTicket.setText(time);
+    public void setEventDetails(Event2 event){
+        this.lblTitle.setText(event.getTitle());
+        this.lblLocationTicket.setText(event.getLocation().getAddress() + ", " + event.getLocation().getCity());
+        this.lblDateTicket.setText(event.getStartDate() + " - " + event.getEndDate());
+        this.lblTimeTicket.setText(event.getStartTime() + " - " + event.getEndTime());
+        this.selectedEvent = event;
+
+        for(Ticket ticket : selectedEvent.getTicketTypes()){
+            tblTicket.getItems().add(ticket);
+        }
+
     }
 
 
@@ -117,36 +136,36 @@ public class TicketPrintController {
             }
     }
 
-    public void setSelectedEvent(Event2 event2){
-        this.selectedEvent = event2;
-    }
 
     public Event2 getSelectedEvent(){
         return selectedEvent;
     }
 
-    @FXML
-    private void handleAddTicketType(ActionEvent actionEvent) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
-            Parent root = fxmlLoader.load();
-            CreateTicketViewController controller = fxmlLoader.getController();
-
-            controller.setParent(this);
-            controller.setSelectedEvent(selectedEvent);
-
-            Stage stage = new Stage();
-            stage.setTitle("Create Ticket");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            System.out.println("Error loading create-ticket-view.fxml: " + e.getMessage());
-        }
-    }
 
     public void addTicket(Ticket ticket) {
         tblTicket.getItems().add(ticket);
     }
+
+    public void onHandlePrintTicket(ActionEvent actionEvent) {
+        Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
+
+        if(selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
+
+            System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
+            showAlert(Alert.AlertType.CONFIRMATION,"Ticket Printed", "Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
+
 
 }
 

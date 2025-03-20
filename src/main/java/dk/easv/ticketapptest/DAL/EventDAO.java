@@ -185,4 +185,45 @@ public class EventDAO implements IEventDataAccess {
             throw new RuntimeException("Could not remove user from event.");
         }
     }
+
+    public List<Event2> getAllEventsForUser(int userid) throws SQLException {
+        List<Event2> events = new ArrayList<>();
+        String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Events u ON u.EventID = d.EventID LEFT JOIN dbo.Locations l ON l.LocationID = u.LocationID WHERE d.UserID = ?;";
+        try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, userid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                List<User> users = new ArrayList<>();
+                List<Ticket> tickets = new ArrayList<>();
+                int locationID = rs.getInt("LocationID");
+                String address = rs.getString("Address");
+                String city = rs.getString("City");
+                int postalCode = rs.getInt("PostalCode");
+                Location location = new Location(locationID, address, city, postalCode);
+
+                int id = rs.getInt("EventID");
+                String title = rs.getString("Title");
+                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                String locationGuidance = rs.getString("LocationGuidance");
+                String description = rs.getString("Description");
+                String status = rs.getString("Status");
+                LocalDate startDate = rs.getDate("StartDate").toLocalDate();
+                LocalDate endDate = rs.getDate("EndDate").toLocalDate();
+                int userID = rs.getInt("CreatedBy");
+
+                users.addAll(getAllUsersForEvent(id));
+                Event2 tempEvent = new Event2();
+                tempEvent.setEventID(id);
+                tickets.addAll(ticketDAO.getTicketsForEvent(tempEvent));
+
+                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, tickets, users, status);
+                events.add(event);
+            }
+            return events;
+        } catch (SQLException ex) {
+            throw new SQLException("Could not get events for user from database", ex);
+        }
+    }
 }

@@ -2,6 +2,8 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +16,10 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TicketManagementController {
     BorderPane mainPane;
@@ -23,19 +27,20 @@ public class TicketManagementController {
     private GridPane gridPane;
     int currentX = 0;
     int currentY = 0;
-    private TemporaryDataClass dataClass;
     private String eventCSS;
     private int h = 150;
     private int w = 300;
+
     @FXML
     private AnchorPane windowPane;
     private List<VBox> vboxList;
 
+    private EventManagementModel eventModel;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws SQLException, IOException {
         vboxList = new ArrayList<>();
-        dataClass = new TemporaryDataClass();
+        eventModel = new EventManagementModel();
         eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
         gridPane.setPadding(new Insets(70, 0, 0, 0));
         gridPane.setHgap(10);
@@ -61,7 +66,7 @@ public class TicketManagementController {
 
             gridPane.setAlignment(Pos.CENTER);
         }
-        //addExistingEvents(dataClass.getEvents());
+        addExistingEvents(eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId()));
         gridPane.getStylesheets().add(eventCSS);
         gridPane.setStyle("-fx-background-color: #F8F8F8;");
     }
@@ -71,39 +76,36 @@ public class TicketManagementController {
     }
 
     private class EventDetails {
-        String title;
-        String location;
-        String date;
-        String time;
-        String description;
+      private Event2 event;
 
-        public EventDetails(String title, String location, String date, String time, String description) {
-            this.title = title;
-            this.location = location;
-            this.date = date;
-            this.time = time;
-            this.description = description;
-        }
+
     }
 
-    private VBox createEventPanel(String title, String location, String date, String time, String description) {
-        EventDetails eventDetails = new EventDetails(title, location, date, time, description);
+    private VBox createEventPanel(Event2 event2) {
+
         VBox vbox = new VBox();
         vboxList.add(vbox);
         trackWindowSize();
         vbox.getStyleClass().add("vBoxBorder");
         vbox.setCursor(javafx.scene.Cursor.HAND);
 
-        Label titleLabel = new Label(title);
+        Label titleLabel = new Label(event2.getTitle());
         titleLabel.getStyleClass().add("h1");
 
-        Label locationLabel = new Label("📍 " + location);
+        Label locationLabel = new Label("📍 " + event2.getLocation().getAddress());
         locationLabel.getStyleClass().add("h2");
 
-        Label dateLabel = new Label("📅 " + date);
+        Label dateLabel = new Label();
+        if(Objects.equals(event2.getStartDate(), event2.getEndDate()))
+        {
+            dateLabel = new Label("📅 " + event2.getStartDate());
+        }
+        else {
+            dateLabel = new Label("📅 " + event2.getStartDate() + " to " + event2.getEndDate());
+        }
         dateLabel.getStyleClass().add("h2");
 
-        Label timeLabel = new Label("🕒 " + time);
+        Label timeLabel = new Label("🕒 " + event2.getStartTime() + " - " + event2.getEndTime());
         timeLabel.getStyleClass().add("h2");
 
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel);
@@ -117,7 +119,7 @@ public class TicketManagementController {
                     TicketPrintController controller = fxmlLoader.getController();
                     controller.setPanel(mainPane);
                     controller.setParent(this);
-                    controller.setEventDetails(eventDetails.title, eventDetails.location, eventDetails.date, eventDetails.time);
+                    controller.setEventDetails(event2);
                     mainPane.setCenter(eventInDepth);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -128,23 +130,23 @@ public class TicketManagementController {
         return vbox;
     }
 
-    public void createEvent(String title, String location, String date, String starttime, String endtime, String description) {
+    public void createEvent(Event2 event) {
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
 
-        gridPane.add(createEventPanel(title, location, date, starttime + " - " + endtime, description), x, y);
+        gridPane.add(createEventPanel(event), x, y);
 
         currentX++;
     }
 
-   /* private void addExistingEvents(List<Event2> events){
+   private void addExistingEvents(List<Event2> events){
         if(!events.isEmpty()){
             for(Event2 event : events){
-                createEvent(event.getTitle(), event.getLocation(), event.getDate(), event.getStartTime(), event.getEndTime(), event.getDescription());
+                createEvent(event);
             }
         }
-    }*/
+    }
 
     private int getNextX() {
         return currentX % 3;

@@ -60,7 +60,6 @@
                                     <Insets />
                                  </HBox.margin>
                               </AnchorPane>
-                              <Button fx:id="btnAddTicketType" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddTicketType" prefHeight="26.0" prefWidth="137.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Tickettype" />
                            </children>
                         </HBox>
                         <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -103,7 +102,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer first name">
+                        <TextField fx:id="txtCustomerFirstName" prefHeight="31.0" prefWidth="361.0" promptText="Enter customer first name">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -113,7 +112,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer last name">
+                        <TextField fx:id="txtCustomerLastName" prefHeight="31.0" prefWidth="361.0" promptText="Enter customer last name">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -123,7 +122,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer email address">
+                        <TextField fx:id="txtCustomerEmail" prefHeight="31.0" prefWidth="361.0" promptText="Enter customer email address">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -133,12 +132,12 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="361.0" promptText="Enter customer phone number">
+                        <TextField fx:id="txtCustomerPhone" prefHeight="31.0" prefWidth="361.0" promptText="Enter customer phone number">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="btnPrintTicket" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="97.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
+                        <Button fx:id="btnPrintTicket" alignment="CENTER" mnemonicParsing="false" onAction="#onHandlePrintTicket" prefHeight="26.0" prefWidth="97.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
