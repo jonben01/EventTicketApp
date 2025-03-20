@@ -74,14 +74,6 @@ public class LoginController implements Initializable {
             //TODO implement error message here
         }
 
-        //hardcoded login credentials only for showing off application.
-        if (username.equals("admin") && password.equals("admin")) {
-            handleAdminDash();
-        }
-        if (username.equals("event") && password.equals("event")) {
-            handleEventDash();
-        }
-
         User user = userModel.getUserByUsername(username);
 
         if (user == null) {
