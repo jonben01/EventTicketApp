@@ -50,4 +50,9 @@ public class Location {
     public void setPostalCode(int postalCode) {
         this.postalCode = postalCode;
     }
+
+    @Override
+    public String toString() {
+        return address + " - " + city;
+    }
 }

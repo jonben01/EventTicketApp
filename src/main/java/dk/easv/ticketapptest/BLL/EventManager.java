@@ -33,7 +33,7 @@ public class EventManager {
 
     }
 
-    public void DeleteEvent(Event2 eventToBeDeleted) throws SQLException {
+    public void deleteEvent(Event2 eventToBeDeleted) throws SQLException {
         eventDAO.deleteEvent(eventToBeDeleted);
     }
 

@@ -153,6 +153,7 @@ public class EventEventManagementController {
         Separator separator2 = new Separator();
 
         Label coordinatorLabel = new Label("Coordinator: " + event2.getEventCoordinators().get(0).getFirstName() + " " + event2.getEventCoordinators().get(0).getLastName());
+
         coordinatorLabel.getStyleClass().add("h4");
 
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,

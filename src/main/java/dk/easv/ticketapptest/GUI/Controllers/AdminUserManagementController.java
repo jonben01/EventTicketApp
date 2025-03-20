@@ -4,6 +4,7 @@ import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
+import dk.easv.ticketapptest.GUI.Models.UserModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,10 +44,12 @@ public class AdminUserManagementController implements Initializable {
     private User selectedUser;
     private Map<TextField, String> originalValues = new HashMap<>();
     private final String PASSWORD_PLACEHOLDER = "*****";
+    private UserModel userModel;
 
 
     public AdminUserManagementController() {
         try {
+            userModel = new UserModel();
             model = new UserManagementModel();
             //TODO IMPLEMENT BETTER EXCEPTION HANDLING HERE.
         } catch (Exception e) {
@@ -157,7 +160,7 @@ public class AdminUserManagementController implements Initializable {
     // because it is VERY annoying to change anything now.
 
     public void populateUserList() {
-        lstUsers.setItems(tdc.getUsers());
+        lstUsers.setItems(userModel.getUsers());
         lstUsers.setCellFactory(param -> new ListCell<User>() {
             @Override
             protected void updateItem(User item, boolean empty) {

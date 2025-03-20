@@ -4,6 +4,8 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.*;
@@ -124,7 +126,7 @@ public class UserDAO {
 
                 String roleName = rs.getString("RoleName");
                 userFromUsername.setRole(Role.valueOf(roleName));
-                System.out.println("User created: " + userFromUsername);
+                System.out.println("User: " + userFromUsername);
 
                 return userFromUsername;
 
@@ -255,6 +257,35 @@ public class UserDAO {
             throw new Exception("SQLException in usernameExists: " + e.getMessage());
         }
         return false;
+    }
+
+    public ObservableList<User> getUsers() {
+        String userSQL = "SELECT u.*, r.RoleName FROM dbo.Users u JOIN dbo.User_Roles ur ON u.UserID = ur.UserID JOIN dbo.Roles r ON r.RoleID = ur.RoleID; ";
+
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
+
+            ResultSet rs = pstmt.executeQuery();
+            ObservableList<User> users = FXCollections.observableArrayList();
+
+            while(rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("PhoneNumber"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                String roleName = rs.getString("RoleName");
+                user.setRole(Role.valueOf(roleName));
+                users.add(user);
+            }
+            return users;
+
+            //TODO implement better exception handling, drop runtime
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

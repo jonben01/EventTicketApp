@@ -92,10 +92,6 @@ public class LoginController implements Initializable {
             } else if (user.getRole() == Role.COORDINATOR) {
                 handleEventDash();
             }
-            //if user role = ADMIN send to admin
-            //if user role = COORDINATOR send to coordinator.
-            //set current user in sessionManager
-
 
         }
     }

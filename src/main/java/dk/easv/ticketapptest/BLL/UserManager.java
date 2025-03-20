@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.BLL;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.DAL.UserDAO;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,5 +27,11 @@ public class UserManager {
 
     public List<User> getAllCoordinators() throws SQLServerException {
         return userDAO.getAllCoordinators();
+    }
+
+
+
+    public ObservableList<User> getUsers() {
+        return userDAO.getUsers();
     }
 }

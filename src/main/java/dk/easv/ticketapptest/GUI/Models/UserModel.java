@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.UserManager;
 import dk.easv.ticketapptest.DAL.UserDAO;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,6 @@ public class UserModel {
 
 
     }
-    
 
     public String getPassword(String username) {
         return userManager.getPassword(username);
@@ -39,5 +39,9 @@ public class UserModel {
 
     public List<User> getAllCoordinators() throws SQLServerException {
         return userManager.getAllCoordinators();
+    }
+
+    public ObservableList<User> getUsers() {
+        return userManager.getUsers();
     }
 }

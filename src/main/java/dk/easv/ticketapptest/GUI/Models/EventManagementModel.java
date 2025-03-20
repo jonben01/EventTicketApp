@@ -2,7 +2,6 @@ package dk.easv.ticketapptest.GUI.Models;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
-import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import javafx.collections.FXCollections;
@@ -31,7 +30,7 @@ public class EventManagementModel {
     }
 
     public void deleteEvent(Event2 eventToBeDeleted) throws SQLException {
-        eventManager.DeleteEvent(eventToBeDeleted);
+        eventManager.deleteEvent(eventToBeDeleted);
         updateList();
     }
 
