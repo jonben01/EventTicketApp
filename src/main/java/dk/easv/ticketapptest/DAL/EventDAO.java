@@ -72,7 +72,7 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
-    private List<User> getAllUsersForEvent(int id) throws SQLServerException {
+    public List<User> getAllUsersForEvent(int id) throws SQLServerException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Users u ON u.UserID = d.UserID WHERE d.EventID = ?;";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -143,7 +143,7 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
-    private void addToEventUsers(Event2 event) throws SQLServerException {
+    public void addToEventUsers(Event2 event) throws SQLServerException {
         String sql = "INSERT INTO dbo.Event_Users(EventID, UserID) VALUES (?,?)";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -163,6 +163,19 @@ public class EventDAO implements IEventDataAccess {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Could not delete event: " + eventToBeDeleted.getTitle(), e);
+        }
+    }
+
+    public void removeFromEventUsers(Event2 event) {
+        String sql = "DELETE FROM dbo.Event_Users WHERE EventID = ? AND UserID = ?";
+        try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, event.getEventID());
+            ps.setInt(2, event.getEventCoordinators().get(0).getId());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not remove user from event.");
         }
     }
 }

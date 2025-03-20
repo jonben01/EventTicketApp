@@ -78,6 +78,7 @@ public class EventViewController {
 
     private Event2 selectedEvent;
     private UserModel userModel;
+    private List<User> usersWithAccess;
 
     public void setSelectedEvent(Event2 event2) throws SQLServerException {
         this.selectedEvent = event2;
@@ -85,6 +86,8 @@ public class EventViewController {
         {
             lstCoords.getItems().add(coordinator);
         }
+        usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
+        lstCoords.refresh();
     }
 
     public void setPanel(BorderPane root)
@@ -94,6 +97,7 @@ public class EventViewController {
 
         @FXML
         public void initialize() throws Exception {
+        usersWithAccess = new ArrayList<>();
         userModel = new UserModel();
         eventModel = new EventManagementModel();
         ticketModel = new TicketModel();
@@ -167,23 +171,28 @@ public class EventViewController {
                     nameLabel.setText(item.getFirstName() + " " + item.getLastName());
                     emailLabel.setText(item.getEmail());
                     phoneLabel.setText(item.getPhone());
-                    if (selectionState.getOrDefault(item, false)) {
+                    if(userHasAssignedEvent(item))
+                    {
                         checkMarkLabel.setText("✓");
-                    } else {
-                        checkMarkLabel.setText(null);
+                    }
+                    else
+                    {
+                        checkMarkLabel.setText("");
                     }
                 }
             }
         });
     }
 
-    @FXML
-    private void handleAddEvent(ActionEvent actionEvent) {
-        User temp = (User  ) lstCoords.getSelectionModel().getSelectedItem();
-        if (temp != null) {
-            selectionState.put(temp, !selectionState.getOrDefault(temp, false));
-            lstCoords.refresh();
+    private Boolean userHasAssignedEvent(User user){
+        for(User allUser : usersWithAccess)
+        {
+        if(user.getId() == allUser.getId())
+        {
+            return true;
         }
+        }
+        return false;
     }
 
     @FXML
@@ -251,4 +260,35 @@ public class EventViewController {
         }
     }
 
+    @FXML
+    private void handleRemoveEvent(ActionEvent actionEvent) {
+        User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
+        if(temp != null){
+            for(User user : usersWithAccess){
+                if(user.getId() == temp.getId())
+                {
+                    usersWithAccess.remove(user);
+                }
+            }
+            Event2 tempEvent = new Event2();
+            tempEvent.setEventID(selectedEvent.getEventID());
+            tempEvent.addCoordinator(temp);
+            eventModel.removeFromEventUsers(selectedEvent);
+            lstCoords.refresh();
+        }
+    }
+
+    @FXML
+    private void handleAddEvent(ActionEvent actionEvent) throws SQLServerException {
+        User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
+        System.out.println(temp.getFirstName() + " " + temp.getLastName());
+        if (temp != null) {
+            usersWithAccess.add(temp);
+            Event2 tempEvent = new Event2();
+            tempEvent.setEventID(selectedEvent.getEventID());
+            tempEvent.addCoordinator(temp);
+            eventModel.addToEventUsers(tempEvent);
+            lstCoords.refresh();
+        }
+    }
 }

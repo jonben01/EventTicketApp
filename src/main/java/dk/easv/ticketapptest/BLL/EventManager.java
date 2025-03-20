@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.BLL;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
@@ -43,4 +44,15 @@ public class EventManager {
     }
 
 
+    public List<User> getAllUsersForEvent(int eventID) throws SQLServerException {
+        return eventDAO.getAllUsersForEvent(eventID);
+    }
+
+    public void addToEventUsers(Event2 selectedEvent) throws SQLServerException {
+        eventDAO.addToEventUsers(selectedEvent);
+    }
+
+    public void removeFromEventUsers(Event2 selectedEvent) {
+        eventDAO.removeFromEventUsers(selectedEvent);
+    }
 }

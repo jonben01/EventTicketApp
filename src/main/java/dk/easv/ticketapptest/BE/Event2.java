@@ -52,9 +52,17 @@ public class Event2 {
 
     }
 
+    public Event2(){
+        eventCoordinators = new ArrayList<>();
+    }
+
     //use DateTimeFormatter on localDate types in actual project instead of this
     //also use a date picker, to avoid edge cases where someone types something stupid.
     //should validate either way and handle those cases.
+
+    public void addCoordinator(User user){
+        eventCoordinators.add(user);
+    }
 
     public int getEventID() {
         return this.eventID;

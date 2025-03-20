@@ -119,11 +119,16 @@
                         <ListView fx:id="lstCoords" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="531.0" prefWidth="413.0" VBox.vgrow="ALWAYS" />
                         <VBox alignment="BOTTOM_RIGHT" maxHeight="30.0" prefHeight="31.0" prefWidth="413.0">
                            <children>
-                              <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="26.0" prefWidth="207.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+  Add Event Coordinator">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Button>
+                              <HBox prefHeight="127.0" prefWidth="361.0">
+                                 <children>
+                                    <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="25.0" prefWidth="175.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Coordinator" />
+                                    <Button fx:id="btnRemoveCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleRemoveEvent" prefHeight="17.0" prefWidth="180.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="- Remove Coordinator">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
