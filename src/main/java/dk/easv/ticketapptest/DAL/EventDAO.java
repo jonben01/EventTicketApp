@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.DAL;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 
@@ -21,12 +22,14 @@ public class EventDAO implements IEventDataAccess {
     List<User> tempData;
     TemporaryDataClass tempDataClass;
     UserDAO userDAO;
+    TicketDAO ticketDAO;
 
     public EventDAO() throws IOException {
-    connector = new DBConnector();
-    tempData = new ArrayList<>();
-    tempDataClass = new TemporaryDataClass();
-    userDAO = new UserDAO();
+        ticketDAO = new TicketDAO();
+        connector = new DBConnector();
+        tempData = new ArrayList<>();
+        tempDataClass = new TemporaryDataClass();
+        userDAO = new UserDAO();
 
    // tempData.add(tempDataClass.getUsers().get(0));
     }
@@ -44,6 +47,7 @@ public class EventDAO implements IEventDataAccess {
 
             while (rs.next()) {
                 List<User> users = new ArrayList<>();
+                List<Ticket> tickets = new ArrayList<>();
                 int locationID = rs.getInt("LocationID");
                 String address = rs.getString("Address");
                 String city = rs.getString("City");
@@ -62,8 +66,11 @@ public class EventDAO implements IEventDataAccess {
                 int userID = rs.getInt("CreatedBy");
 
                 users.addAll(getAllUsersForEvent(id));
+                Event2 tempEvent = new Event2();
+                tempEvent.setEventID(id);
+                tickets.addAll(ticketDAO.getTicketsForEvent(tempEvent));
 
-                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new String[]{"Ticket Example #1", "Ticket Example #2"}, users, status);
+                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, tickets, users, status);
                 events.add(event);
             }
             return events;

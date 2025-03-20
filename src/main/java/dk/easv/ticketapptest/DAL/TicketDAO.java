@@ -120,25 +120,25 @@ public class TicketDAO implements ITicketDataAccess {
                 Ticket ticket = new Ticket(ticketID, price, GLOBAL, title, description);
                 eventtickets.add(ticket);
             }
-        } catch (SQLException e) {
-            throw new SQLException("Could not get tickets for event" , e);
-        }
 
          sql = "Select t.* FROM dbo.Tickets t WHERE Global = 1";
-        try(Connection conn = connector.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int ticketID = rs.getInt("TicketID");
-                String title = rs.getString("Title");
-                String description = rs.getString("Description");
-                double price = rs.getDouble("Price");
-                boolean GLOBAL = rs.getBoolean("Global");
+        try(Connection conn2 = connector.getConnection();
+        PreparedStatement ps2 = conn2.prepareStatement(sql)) {
+            ResultSet rs2 = ps2.executeQuery();
+            while (rs2.next()) {
+                int ticketID = rs2.getInt("TicketID");
+                String title = rs2.getString("Title");
+                String description = rs2.getString("Description");
+                double price = rs2.getDouble("Price");
+                boolean GLOBAL = rs2.getBoolean("Global");
                 Ticket ticket = new Ticket(ticketID, price, GLOBAL, title, description);
                 eventtickets.add(ticket);
             }
         }
         return eventtickets;
+        } catch (SQLException e) {
+            throw new SQLException("Could not get tickets for event" , e);
+        }
     }
 
     @Override

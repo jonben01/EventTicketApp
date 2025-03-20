@@ -14,14 +14,14 @@ public class Event2 {
     private LocalTime endTime;
     private User leadEventCoordinator;
     private List<User> eventCoordinators;
-    private String[] ticketTypes;
+    private List<Ticket> ticketTypes;
     private int eventID;
     private Location location;
     private String locationGuidance;
     private String status;
 
     public Event2(String title, Location location, String description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
-                  String[] ticketTypes, List<User> eventCoordinators) {
+                  List<Ticket> ticketTypes, List<User> eventCoordinators) {
         this.title = title;
         this.location = location;
         this.description = description;
@@ -36,7 +36,7 @@ public class Event2 {
     }
 
     public Event2(int eventID, String title, Location location, String Description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
-                  String[] ticketTypes, List<User> eventCoordinators, String status) {
+                  List<Ticket> ticketTypes, List<User> eventCoordinators, String status) {
         this.eventID = eventID;
         this.title = title;
         this.location = location;
@@ -158,11 +158,11 @@ public class Event2 {
         this.eventCoordinators = eventCoordinators;
     }
 
-    public String[] getTicketTypes() {
+    public List<Ticket> getTicketTypes() {
         return ticketTypes;
     }
 
-    public void setTicketTypes(String[] ticketTypes) {
+    public void setTicketTypes(List<Ticket> ticketTypes) {
         this.ticketTypes = ticketTypes;
     }
 }

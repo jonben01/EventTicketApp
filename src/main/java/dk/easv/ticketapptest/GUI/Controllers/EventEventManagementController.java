@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
@@ -144,8 +145,8 @@ public class EventEventManagementController {
         Label ticketsLabel = new Label("Tickets Sold");
         ticketsLabel.getStyleClass().add("h2");
         StringBuilder ticketInfo = new StringBuilder();
-        for (String ticket : event2.getTicketTypes()) {
-            ticketInfo.append(ticket).append("\n");
+        for (Ticket ticket : event2.getTicketTypes()) {
+            ticketInfo.append(ticket.getTicketName()).append("\n");
         }
         Label ticketInfoLabel = new Label(ticketInfo.toString().trim());
         ticketInfoLabel.getStyleClass().add("h3");
