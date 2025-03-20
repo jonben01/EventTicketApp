@@ -20,12 +20,15 @@ public class EventDAO implements IEventDataAccess {
     private DBConnector connector;
     List<User> tempData;
     TemporaryDataClass tempDataClass;
+    UserDAO userDAO;
 
     public EventDAO() throws IOException {
     connector = new DBConnector();
     tempData = new ArrayList<>();
     tempDataClass = new TemporaryDataClass();
-    tempData.add(tempDataClass.getUsers().get(0));
+    userDAO = new UserDAO();
+
+   // tempData.add(tempDataClass.getUsers().get(0));
     }
 
     public List<Event2> getAllEvents() throws SQLException {
@@ -34,12 +37,13 @@ public class EventDAO implements IEventDataAccess {
         try (Connection conn = connector.getConnection();
              Statement stmt = conn.createStatement()) {
 
-            //Execute an SQL query to join the Movie, CatMov_Junction, and Category tables
-            String sql = "SELECT e.EventID, e.Title, e.StartTime, e.EndTime, e.LocationID, e.LocationGuidance, e.Description, e.Status, e.StartDate, e.EndDate, l.Address, l.City, l.PostalCode " +
+
+            String sql = "SELECT e.EventID, e.Title, e.StartTime, e.EndTime, e.LocationID, e.LocationGuidance, e.Description, e.Status, e.StartDate, e.EndDate, e.CreatedBy, l.Address, l.City, l.PostalCode " +
             "FROM Events e JOIN Locations l ON e.LocationID = l.LocationID;";
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
+                List<User> users = new ArrayList<>();
                 int locationID = rs.getInt("LocationID");
                 String address = rs.getString("Address");
                 String city = rs.getString("City");
@@ -55,13 +59,38 @@ public class EventDAO implements IEventDataAccess {
                 String status = rs.getString("Status");
                 LocalDate startDate = rs.getDate("StartDate").toLocalDate();
                 LocalDate endDate = rs.getDate("EndDate").toLocalDate();
+                int userID = rs.getInt("CreatedBy");
 
-                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new String[]{"Ticket Example #1", "Ticket Example #2"}, tempData, status);
+                users.addAll(getAllUsersForEvent(id));
+
+                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new String[]{"Ticket Example #1", "Ticket Example #2"}, users, status);
                 events.add(event);
             }
             return events;
         } catch (SQLException ex) {
-            throw new SQLException("Could not get movies from database", ex);
+            throw new SQLException("Could not get events from database", ex);
+        }
+    }
+
+    private List<User> getAllUsersForEvent(int id) throws SQLServerException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Users u ON u.UserID = d.UserID WHERE d.EventID = ?;";
+        try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("UserID"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setEmail(rs.getString("Email"));
+                user.setPassword(rs.getString("PasswordHash"));
+                users.add(user);
+            }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

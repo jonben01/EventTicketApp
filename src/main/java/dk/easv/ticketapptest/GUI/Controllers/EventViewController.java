@@ -78,6 +78,10 @@ public class EventViewController {
 
     public void setSelectedEvent(Event2 event2) {
         this.selectedEvent = event2;
+        for(User coordinator : selectedEvent.getEventCoordinators())
+        {
+            lstCoords.getItems().add(coordinator);
+        }
     }
 
     public void setPanel(BorderPane root)
@@ -128,7 +132,6 @@ public class EventViewController {
 
 
     private void populateList(){
-        lstCoords.setItems(dataClass.getUsers());
         lstCoords.setCellFactory(param -> new ListCell<User>() {
             private Label nameLabel = new Label();
             private Label emailLabel = new Label();

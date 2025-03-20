@@ -181,4 +181,27 @@ public class UserDAO {
             }
         }
     }
+
+    public User getUserByID(int userID) throws SQLServerException {
+        String sql = "SELECT * FROM dbo.Users WHERE UserID = ?";
+        try(Connection connection = dbConnector.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setPassword(rs.getString("PasswordHash"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhone(rs.getString("PhoneNumber"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                return user;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        throw new RuntimeException("User not found: " + userID);
+    }
 }
