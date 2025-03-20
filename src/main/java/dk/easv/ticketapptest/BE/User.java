@@ -46,6 +46,25 @@ public class User {
         this.role = role;
     }
 
+    public User(int eventID, String username, String password, String firstName, String lastName, String email, String phone, Role role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+        this.id = eventID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return getFirstName() + " " + getLastName();

@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.application.Platform;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreateEventViewController {
@@ -45,6 +48,9 @@ public class CreateEventViewController {
 
     private Event2 selectedEvent;
 
+    private User sessionUser;
+
+
 
 
 
@@ -60,6 +66,8 @@ public class CreateEventViewController {
 
     @FXML
     private void initialize() throws SQLException, IOException {
+        sessionUser = SessionManager.getInstance().getCurrentUser();
+
         model = new EventManagementModel();
         data = new TemporaryDataClass();
         String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
@@ -107,12 +115,12 @@ public class CreateEventViewController {
                     && !txtPostalCode.getText().isEmpty()) {
                 Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
                 if(selectedEvent != null) {
-                    Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers(), "Scheduled");
+                    Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{}, selectedEvent.getEventCoordinators(), "Scheduled");
                     model.updateEvent(event);
                     eventViewController.updateInformation(1);
                 }
                 else {
-                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{"ticket 1", "ticket 2"}, data.getUsers());
+                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new String[]{}, new ArrayList<>(Arrays.asList(sessionUser)));
                     parent.createEvent(event);
                     model.createEvent(event);
                 }

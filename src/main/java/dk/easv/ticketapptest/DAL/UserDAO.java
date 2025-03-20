@@ -103,6 +103,7 @@ public class UserDAO {
             if (rs.next()) {
                 User userFromUsername = new User();
 
+                userFromUsername.setId(rs.getInt("UserID"));
                 userFromUsername.setUsername(rs.getString("Username"));
                 userFromUsername.setPassword(rs.getString("PasswordHash"));
                 userFromUsername.setEmail(rs.getString("Email"));

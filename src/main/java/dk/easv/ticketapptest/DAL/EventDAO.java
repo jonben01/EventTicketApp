@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.DAL;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
@@ -55,7 +56,7 @@ public class EventDAO implements IEventDataAccess {
                 LocalDate startDate = rs.getDate("StartDate").toLocalDate();
                 LocalDate endDate = rs.getDate("EndDate").toLocalDate();
 
-                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new String[]{"pain", "pain2"}, tempData, status);
+                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new String[]{"Ticket Example #1", "Ticket Example #2"}, tempData, status);
                 events.add(event);
             }
             return events;
@@ -96,7 +97,7 @@ public class EventDAO implements IEventDataAccess {
             ps.setInt(4, location.getLocationID());
             ps.setString(5, event.getLocationGuidance());
             ps.setString(6, event.getDescription());
-            ps.setInt(7, 101);
+            ps.setInt(7, event.getEventCoordinators().get(0).getId());
             ps.setDate(8, Date.valueOf(event.getStartDate()));
             ps.setDate(9, Date.valueOf(event.getEndDate()));
             ps.executeUpdate();
@@ -105,10 +106,24 @@ public class EventDAO implements IEventDataAccess {
             if (rs.next()) {
                 event.setEventID(rs.getInt(1));
             }
+            addToEventUsers(event);
             return event;
 
         } catch (SQLException e) {
             throw new SQLException("Could not create new Event", e);
+        }
+    }
+
+    private void addToEventUsers(Event2 event) throws SQLServerException {
+        String sql = "INSERT INTO dbo.Event_Users(EventID, UserID) VALUES (?,?)";
+        try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, event.getEventID());
+            ps.setInt(2, event.getEventCoordinators().get(0).getId());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not add user to event.");
         }
     }
 
