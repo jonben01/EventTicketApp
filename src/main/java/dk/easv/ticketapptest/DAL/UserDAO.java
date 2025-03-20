@@ -124,4 +124,60 @@ public class UserDAO {
         //TODO fix exception handling here, and this return.
         return null;
     }
+
+    public User updateUserDB(User user) throws Exception {
+        String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
+        String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
+        String updateRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
+
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql);
+             PreparedStatement pstmt2 = connection.prepareStatement(getRoleSQL);
+             PreparedStatement pstmt3 = connection.prepareStatement(updateRoleSQL)) {
+
+            connection.setAutoCommit(false);
+
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getPhone());
+            pstmt.setString(5, user.getFirstName());
+            pstmt.setString(6, user.getLastName());
+            pstmt.setInt(7, getUserId(user.getUsername()));
+
+            pstmt.executeUpdate();
+
+            pstmt2.setString(1, user.getRole().toString());
+            ResultSet rs2 = pstmt2.executeQuery();
+            int roleID = -1;
+            if (rs2.next()) {
+                roleID = rs2.getInt("RoleID");
+            }
+
+            pstmt3.setInt(1, roleID);
+            pstmt3.setInt(2, getUserId(user.getUsername()));
+            pstmt3.executeUpdate();
+
+            connection.commit();
+
+            return user;
+
+        } catch (SQLException e) {
+            throw new Exception("Could not update user", e);
+        }
+    }
+
+    private int getUserId(String username) throws SQLException {
+        String sql = "SELECT UserID FROM dbo.Users WHERE Username = ?";
+        try (Connection connection = dbConnector.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("UserID");
+            } else {
+                throw new SQLException("User not found: " + username);
+            }
+        }
+    }
 }

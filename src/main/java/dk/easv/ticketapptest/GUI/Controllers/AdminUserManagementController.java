@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -37,6 +39,9 @@ public class AdminUserManagementController implements Initializable {
 
     private TemporaryDataClass tdc;
     private UserManagementModel model;
+    private User selectedUser;
+    private Map<TextField, String> originalValues = new HashMap<>();
+    private final String PASSWORD_PLACEHOLDER = "*****";
 
 
     public AdminUserManagementController() {
@@ -52,6 +57,8 @@ public class AdminUserManagementController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         tdc = new TemporaryDataClass();
         populateUserList();
+
+        btnSaveEditUser.setVisible(false);
 
         if (lstUsers.getItems() != null) {
             lstUsers.getSelectionModel().select(0);
@@ -74,60 +81,74 @@ public class AdminUserManagementController implements Initializable {
     // SO THERE ISNT 6 LISTENERS DOING THE SAME THING
     private void userChangeListeners() {
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setUsername(newValue);
+            if (selectedUser != null) {
+                selectedUser.setUsername(newValue);
+                checkIfChanged();
             }
         });
         txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setPassword(newValue);
+            if (selectedUser != null) {
+                // Only update the password if the user has typed something new
+                if (!newValue.equals(PASSWORD_PLACEHOLDER) && !newValue.isEmpty()) {
+                    selectedUser.setPassword(newValue);
+                }
+                checkIfChanged();
             }
         });
         txtEmail.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setEmail(newValue);
+            if (selectedUser != null) {
+                selectedUser.setEmail(newValue);
+                checkIfChanged();
             }
         });
         txtFirstName.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setFirstName(newValue);
+            if (selectedUser != null) {
+                selectedUser.setFirstName(newValue);
+                checkIfChanged();
             }
         });
         txtLastName.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setLastName(newValue);
+            if (selectedUser != null) {
+                selectedUser.setLastName(newValue);
+                checkIfChanged();
             }
         });
         txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
-            User user = lstUsers.getSelectionModel().getSelectedItem();
-            if (user != null) {
-                user.setPhone(newValue);
+            if (selectedUser != null) {
+                selectedUser.setPhone(newValue);
+                checkIfChanged();
             }
         });
     }
 
     private void setUserInfo() {
-        User user = lstUsers.getSelectionModel().getSelectedItem();
-        if (user != null) {
-            txtUsername.setText(user.getUsername());
-            txtPassword.setText(user.getPassword());
-            txtFirstName.setText(user.getFirstName());
-            txtLastName.setText(user.getLastName());
-            txtEmail.setText(user.getEmail());
-            txtPhone.setText(user.getPhone());
-            lblName.setText(user.getFirstName() + " " + user.getLastName());
-            if (user.getRole() != null) {
-                lblRole.setText(user.getRole().toString().toLowerCase());
+        selectedUser = lstUsers.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            // Store the original values
+            originalValues.put(txtUsername, selectedUser.getUsername());
+            // Store the actual password, not the placeholder
+            originalValues.put(txtPassword, selectedUser.getPassword());
+            originalValues.put(txtFirstName, selectedUser.getFirstName());
+            originalValues.put(txtLastName, selectedUser.getLastName());
+            originalValues.put(txtEmail, selectedUser.getEmail());
+            originalValues.put(txtPhone, selectedUser.getPhone());
+
+            txtUsername.setText(selectedUser.getUsername());
+            // Show the placeholder instead of the actual password
+            txtPassword.setText(PASSWORD_PLACEHOLDER);
+            txtFirstName.setText(selectedUser.getFirstName());
+            txtLastName.setText(selectedUser.getLastName());
+            txtEmail.setText(selectedUser.getEmail());
+            txtPhone.setText(selectedUser.getPhone());
+            lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+            if (selectedUser.getRole() != null) {
+                lblRole.setText(selectedUser.getRole().toString().toLowerCase());
                 lblRole.setStyle("-fx-background-color: #DBEBFF");
             } else {
                 lblRole.setText("no role");
                 lblRole.setStyle("-fx-background-color: #FFE5E5");
             }
+            checkIfChanged();
         }
     }
 
@@ -293,41 +314,29 @@ public class AdminUserManagementController implements Initializable {
     }
 
     public void handleEditable(ActionEvent actionEvent) {
-
-        lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            txtUsername.setEditable(false);
-            txtPassword.setEditable(false);
-            txtFirstName.setEditable(false);
-            txtLastName.setEditable(false);
-            txtEmail.setEditable(false);
-            txtPhone.setEditable(false);
-            chkEditable.setSelected(false);
-        });
-
-        if (chkEditable.selectedProperty().getValue()) {
+        if (chkEditable.isSelected()) {
             txtUsername.setEditable(true);
             txtPassword.setEditable(true);
             txtFirstName.setEditable(true);
             txtLastName.setEditable(true);
             txtEmail.setEditable(true);
             txtPhone.setEditable(true);
-        }
-        if (!chkEditable.selectedProperty().getValue()) {
+        } else {
             txtUsername.setEditable(false);
             txtPassword.setEditable(false);
             txtFirstName.setEditable(false);
             txtLastName.setEditable(false);
             txtEmail.setEditable(false);
             txtPhone.setEditable(false);
+            btnSaveEditUser.setVisible(false);
         }
     }
 
     public void handleSaveEditUser(ActionEvent actionEvent) {
-        User selectedUser = lstUsers.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
-            // Update the user object with the new values from the text fields
             String newUsername = txtUsername.getText();
-            String newPassword = txtPassword.getText();
+            // Only get the new password if it's not the placeholder
+            String newPassword = txtPassword.getText().equals(PASSWORD_PLACEHOLDER) ? originalValues.get(txtPassword) : txtPassword.getText();
             String newFirstName = txtFirstName.getText();
             String newLastName = txtLastName.getText();
             String newEmail = txtEmail.getText();
@@ -340,30 +349,22 @@ public class AdminUserManagementController implements Initializable {
             selectedUser.setEmail(newEmail);
             selectedUser.setPhone(newPhone);
 
-            // Update the user in the database
             try {
                 model.updateUserDB(selectedUser);
             } catch (Exception e) {
-                // Handle database update error
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Database Error");
                 errorAlert.setHeaderText("Failed to update user in the database.");
-                errorAlert.setContentText("An error occurred while trying to update the user's information in the database. Please try again later.");
+                errorAlert.setContentText("An error occurred while trying to update the user's information in the database.");
                 errorAlert.showAndWait();
                 e.printStackTrace();
-                return; // Exit if There is an error
+                return;
             }
 
-            // Update the user in the TemporaryDataClass
             tdc.updateUser(selectedUser, selectedUser);
-
-            // Refresh the ListView to reflect the changes
             lstUsers.refresh();
-
-            // Update the user info labels
             lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
 
-            // Disable editing after saving
             txtUsername.setEditable(false);
             txtPassword.setEditable(false);
             txtFirstName.setEditable(false);
@@ -371,6 +372,7 @@ public class AdminUserManagementController implements Initializable {
             txtEmail.setEditable(false);
             txtPhone.setEditable(false);
             chkEditable.setSelected(false);
+            btnSaveEditUser.setVisible(false);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("User Updated");
@@ -378,6 +380,35 @@ public class AdminUserManagementController implements Initializable {
             alert.setContentText("User information has been updated.");
             alert.showAndWait();
         }
+
+    }
+    private void checkIfChanged() {
+        if (!chkEditable.isSelected()){
+            btnSaveEditUser.setVisible(false);
+            return;
+        }
+        boolean changed = false;
+        if (selectedUser != null) {
+            if (!txtUsername.getText().equals(originalValues.get(txtUsername))) {
+                changed = true;
+            }
+            if (!txtPassword.getText().equals(originalValues.get(txtPassword))) {
+                changed = true;
+            }
+            if (!txtFirstName.getText().equals(originalValues.get(txtFirstName))) {
+                changed = true;
+            }
+            if (!txtLastName.getText().equals(originalValues.get(txtLastName))) {
+                changed = true;
+            }
+            if (!txtEmail.getText().equals(originalValues.get(txtEmail))) {
+                changed = true;
+            }
+            if (!txtPhone.getText().equals(originalValues.get(txtPhone))) {
+                changed = true;
+            }
+        }
+        btnSaveEditUser.setVisible(changed);
     }
 }
 

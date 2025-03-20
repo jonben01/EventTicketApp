@@ -16,6 +16,7 @@ public class UserManagementModel {
 
     }
 
-    public void updateUserDB(User selectedUser) {
+    public User updateUserDB(User selectedUser) throws Exception {
+        return userManagementLogic.updateUserDB(selectedUser);
     }
 }

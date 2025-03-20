@@ -17,4 +17,9 @@ public class UserManagementLogic {
 
         return userDAO.createUserDB(user);
     }
+
+    public User updateUserDB(User user) throws Exception {
+        user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
+        return userDAO.updateUserDB(user);
+    }
 }
