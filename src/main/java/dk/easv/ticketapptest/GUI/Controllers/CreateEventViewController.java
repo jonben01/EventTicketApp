@@ -64,6 +64,10 @@ public class CreateEventViewController {
 
     private EventEventManagementController parent;
     private EventViewController eventViewController;
+    @FXML
+    private Label txtTitle;
+    @FXML
+    private Label txtInfo;
 
     @FXML
     private void initialize() throws SQLException, IOException {
@@ -90,6 +94,8 @@ public class CreateEventViewController {
         txtAddress.setText(selectedEvent.getLocation().getAddress());
         txtPostalCode.setText(String.valueOf(selectedEvent.getLocation().getPostalCode()));
         btnCreateEvent.setText("Update Event");
+        txtTitle.setText("Update Event!");
+        txtInfo.setText("Fill in the details to update the selected event!");
 
     }
 

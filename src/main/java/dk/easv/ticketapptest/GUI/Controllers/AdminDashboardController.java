@@ -1,5 +1,7 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,5 +41,14 @@ public class AdminDashboardController {
         btnUserManagement.setStyle("");
 
         rootPaneAdmin.setCenter(adminDashboard);
+    }
+
+    @FXML
+    private void onLogOut(ActionEvent actionEvent) throws IOException {
+        SessionManager.getInstance().logout();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/views/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1152, 768);
+        ((Stage) rootPaneAdmin.getScene().getWindow()).setTitle("Login");
+        ((Stage) rootPaneAdmin.getScene().getWindow()).setScene(scene);
     }
 }

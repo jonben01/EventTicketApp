@@ -1,14 +1,19 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class EventDashboardController {
     @FXML
@@ -39,6 +44,15 @@ public class EventDashboardController {
         TicketManagementController controller = fxmlLoader.getController();
         controller.setPanel(rootPaneEvent);
         rootPaneEvent.setCenter(eventDashboard);
+    }
+
+    @FXML
+    private void onLogOut(ActionEvent actionEvent) throws IOException {
+        SessionManager.getInstance().logout();
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/views/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1152, 768);
+        ((Stage) rootPaneEvent.getScene().getWindow()).setTitle("Login");
+        ((Stage) rootPaneEvent.getScene().getWindow()).setScene(scene);
     }
 }
 

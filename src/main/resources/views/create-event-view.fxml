@@ -11,18 +11,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="701.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
+<ScrollPane prefHeight="701.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
    <content>
       <AnchorPane fx:id="rootNewEvent" prefHeight="697.0" prefWidth="971.0">
          <children>
             <VBox layoutX="7.0" layoutY="12.0" prefHeight="614.0" prefWidth="955.0" spacing="15.0">
                <children>
-                  <Label prefHeight="36.0" prefWidth="262.0" text="Create New Event">
+                  <Label fx:id="txtTitle" prefHeight="36.0" prefWidth="262.0" text="Create New Event">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Label prefHeight="20.0" prefWidth="329.0" text="Fill in the details below to create your event2">
+                  <Label fx:id="txtInfo" prefHeight="20.0" prefWidth="329.0" text="Fill in the details below to create your event">
                      <font>
                         <Font size="16.0" />
                      </font>

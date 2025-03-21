@@ -21,7 +21,6 @@ public class SessionManager {
                     instance = new SessionManager();
                 }
             }
-
         }
         return instance;
     }
