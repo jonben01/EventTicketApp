@@ -6,17 +6,20 @@ package dk.easv.ticketapptest.BLL;
 import dk.easv.ticketapptest.BE.User;
 
 public class SessionManager {
+    //volatile to stop partially created objects from being used.
     private static volatile SessionManager instance;
     private User currentUser;
 
     private SessionManager() {}
 
-    //Double-checked locking to ensure thread safety. APPARENTLY BILL PUGH SINGLETONS ARE GOOD TOO
-    //But I think this is neat
+    //Double-checked locking to ensure thread safety.
     public static SessionManager getInstance() {
-        //TODO add more comments based on https://www.youtube.com/watch?v=tSZn4wkBIu8 to show a better understanding
+        //if the instance is null at the time of accessing enter if statement
         if (instance == null) {
+            //if multiple threads wants to access this at the same time - race conditions - the synchronized keyword
+            //locks this to only allow one thread at a time.
             synchronized (SessionManager.class) {
+                //if the instance is null, create a new object.
                 if (instance == null) {
                     instance = new SessionManager();
                 }
@@ -31,6 +34,7 @@ public class SessionManager {
     public User getCurrentUser() {
         return currentUser;
     }
+
 
     //TODO remove souts when this works
     public void logout() {

@@ -23,4 +23,8 @@ public class UserManagementLogic {
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
         return userDAO.updateUserDB(user);
     }
+
+    public void deleteUser(User user) throws Exception {
+        userDAO.deleteUser(user);
+    }
 }

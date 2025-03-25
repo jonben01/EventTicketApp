@@ -288,4 +288,15 @@ public class UserDAO {
         }
     }
 
+    public void deleteUser(User user) throws Exception {
+        String deleteSQL = "DELETE FROM dbo.Users WHERE UserID = ?";
+        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
+
+            pstmt.setInt(1, user.getId());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new Exception("SQLException in deleteUser: " + e.getMessage());
+        }
+    }
 }

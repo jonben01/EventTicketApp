@@ -18,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class AdminUserManagementController implements Initializable {
     @FXML private Button btnSaveEditUser;
 
     private TemporaryDataClass tdc;
-    private UserManagementModel model;
+    private UserManagementModel userManagementModel;
     private User selectedUser;
     private Map<TextField, String> originalValues = new HashMap<>();
     private final String PASSWORD_PLACEHOLDER = "*****";
@@ -50,7 +49,7 @@ public class AdminUserManagementController implements Initializable {
     public AdminUserManagementController() {
         try {
             userModel = new UserModel();
-            model = new UserManagementModel();
+            userManagementModel = new UserManagementModel();
             //TODO IMPLEMENT BETTER EXCEPTION HANDLING HERE.
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,19 +58,19 @@ public class AdminUserManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tdc = new TemporaryDataClass();
+        //tdc = new TemporaryDataClass();
         populateUserList();
 
         btnSaveEditUser.setVisible(false);
 
         if (lstUsers.getItems() != null) {
             lstUsers.getSelectionModel().select(0);
-            setUserInfo();
+            User user = lstUsers.getSelectionModel().getSelectedItem();
+            setUserInfo(user);
         }
 
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setUserInfo();
-
+            setUserInfo(newValue);
         });
 
 
@@ -125,8 +124,8 @@ public class AdminUserManagementController implements Initializable {
         });
     }
 
-    private void setUserInfo() {
-        selectedUser = lstUsers.getSelectionModel().getSelectedItem();
+    private void setUserInfo(User selectedUser) {
+        //selectedUser = lstUsers.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
             // Store the original values
             originalValues.put(txtUsername, selectedUser.getUsername());
@@ -239,6 +238,7 @@ public class AdminUserManagementController implements Initializable {
     }
 
     //TODO MAKE AN ALERT METHOD LOL
+    //TODO fix this.
     public void handleSetAdmin(ActionEvent actionEvent) {
         User user = lstUsers.getSelectionModel().getSelectedItem();
         if (user != null) {
@@ -298,7 +298,7 @@ public class AdminUserManagementController implements Initializable {
         if (newUser != null) {
             //TODO figure out if i am stupid for putting this here and not in the create user window????????????????????? - jonas 18/03
             try {
-                model.createUserDB(newUser);
+                userManagementModel.createUserDB(newUser);
             } catch (UsernameAlreadyExistsException e) {
                 //TODO probable use the error message that was bubbled up from DAO.
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -313,7 +313,7 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    public void handleDeleteUser(ActionEvent actionEvent) {
+    public void handleDeleteUser(ActionEvent actionEvent) throws Exception {
         User user = lstUsers.getSelectionModel().getSelectedItem();
         if (user != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -322,7 +322,22 @@ public class AdminUserManagementController implements Initializable {
             alert.setContentText("Delete this user?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                tdc.deleteUser(user);
+                try {
+                    //TODO check if this causes errors on an empty list, not going to try right now -- jonas 25/03
+                    userManagementModel.deleteUser(user);
+                    lstUsers.getItems().remove(user);
+                    if (!lstUsers.getItems().isEmpty()) {
+                        lstUsers.getSelectionModel().select(0);
+                        User defaultUser = lstUsers.getSelectionModel().getSelectedItem();
+                        setUserInfo(defaultUser);
+                    }
+
+
+                    //TODO improve exception handling
+                } catch (Exception e) {
+                    //show alert here
+                }
+
             }
         }
     }
@@ -364,7 +379,7 @@ public class AdminUserManagementController implements Initializable {
             selectedUser.setPhone(newPhone);
 
             try {
-                model.updateUserDB(selectedUser);
+                userManagementModel.updateUserDB(selectedUser);
             } catch (Exception e) {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Database Error");
