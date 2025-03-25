@@ -19,12 +19,16 @@ public class CreateTicketViewController {
     private TextArea txtTicketDesc;
     @FXML
     private TextField txtTicketPrice;
+    @FXML
+    private Button btnCreateTicket;
 
     private TicketPrintController parent;
     private EventViewController parent2;
 
     private Event2 selectedEvent;
     private TicketModel ticketModel;
+    private Ticket selectedTicket;
+
     @FXML
     private CheckBox chkGlobal;
 
@@ -49,14 +53,32 @@ public class CreateTicketViewController {
         String description = txtTicketDesc.getText();
         double price = Double.parseDouble(txtTicketPrice.getText());
 
-        Ticket ticket = new Ticket(selectedEvent, price, chkGlobal.isSelected(), name, description);
-        ticketModel.createTicket(ticket);
+
+        if (selectedTicket == null) {
+            // Create new ticket
+            Ticket ticket = new Ticket(selectedEvent, price, chkGlobal.isSelected(), name, description);
+            ticketModel.createTicket(ticket);
+
+        } else {
+            // Update existing ticket
+            selectedTicket.setTicketName(name);
+            selectedTicket.setDescription(description);
+            selectedTicket.setPrice(price);
+            selectedTicket.setGLOBAL(chkGlobal.isSelected());
+            ticketModel.updateTicket(selectedTicket);
+        }
         parent2.updateTicketList();
         Stage stage = (Stage) txtTicketName.getScene().getWindow();
         stage.close();
 
 
     }
-
-
+    public void setSelectedTicket(Ticket selectedTicket) {
+        this.selectedTicket = selectedTicket;
+        txtTicketName.setText(selectedTicket.getTicketName());
+        txtTicketDesc.setText(selectedTicket.getDescription());
+        txtTicketPrice.setText(String.valueOf(selectedTicket.getPrice()));
+        chkGlobal.setSelected(selectedTicket.isGLOBAL());
+        btnCreateTicket.setText("Update Ticket");
+    }
 }

@@ -21,16 +21,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class EventViewController {
+
     BorderPane root;
     @FXML
     private Label lblTitle;
@@ -45,11 +44,15 @@ public class EventViewController {
     @FXML
     private Button btnEditEvent;
     @FXML
-    private TextField txtDesc;
+    private TextArea txtDesc;
     @FXML
     private Label lblTicket;
     @FXML
     private Button btnAddTicket;
+    @FXML
+    public Button btnEditTicket;
+    @FXML
+    public Button btnDeleteTicket;
     @FXML
     private TableView<Ticket> tblTicket;
     @FXML
@@ -314,5 +317,61 @@ public class EventViewController {
             eventModel.addToEventUsers(tempEvent);
             lstCoords.refresh();
         }
+    }
+
+    public void handleEditTicket(ActionEvent actionEvent) {
+        Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
+        if (selectedTicket != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
+                Parent root = loader.load();
+                CreateTicketViewController controller = loader.getController();
+                controller.setParent(this);
+                controller.setSelectedTicket(selectedTicket);
+                controller.setSelectedEvent(selectedEvent);
+                Stage stage = new Stage();
+                stage.setTitle("Edit Ticket");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+                updateTicketList();
+            } catch (IOException | SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not edit ticket");
+                e.printStackTrace();
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to edit.");
+        }
+    }
+
+    public void handleDeleteTicket(ActionEvent actionEvent) {
+        Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
+        if (selectedTicket != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Ticket");
+            alert.setHeaderText("Are you sure you want to delete this ticket?");
+            alert.setContentText("Ticket: " + selectedTicket.getTicketName());
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    ticketModel.deleteTicket(selectedTicket);
+                    updateTicketList();
+                } catch (SQLException e) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Could not delete ticket");
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to delete.");
+        }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

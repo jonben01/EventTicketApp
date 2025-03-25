@@ -22,4 +22,12 @@ public class TicketManager {
     public List<Ticket> getTicketsForEvent(Event2 event) throws SQLException {
         return ticketDAO.getTicketsForEvent(event);
     }
+
+    public void updateTicket(Ticket selectedTicket) throws SQLException {
+        ticketDAO.updateTicket(selectedTicket);
+    }
+
+    public void deleteTicket(Ticket selectedTicket) throws SQLException {
+        ticketDAO.deleteTicket(selectedTicket);
+    }
 }

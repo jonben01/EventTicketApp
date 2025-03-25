@@ -32,4 +32,12 @@ public class TicketModel {
         tickets.addAll(ticketManager.getTicketsForEvent(event));
         return tickets;
     }
+
+    public void updateTicket(Ticket selectedTicket) throws SQLException {
+        ticketManager.updateTicket(selectedTicket);
+    }
+
+    public void deleteTicket(Ticket selectedTicket) throws SQLException {
+        ticketManager.deleteTicket(selectedTicket);
+    }
 }

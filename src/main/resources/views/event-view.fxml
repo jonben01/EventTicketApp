@@ -6,13 +6,13 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -71,26 +71,21 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TextField fx:id="txtDesc" editable="false" prefHeight="107.0" prefWidth="429.0">
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </VBox.margin>
-                        </TextField>
+                        <TextArea fx:id="txtDesc" prefHeight="149.0" prefWidth="444.0" />
                         <HBox maxHeight="25.0" prefHeight="39.0" prefWidth="429.0">
                            <children>
-                              <Label fx:id="lblTicket" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
+                              <Label fx:id="lblTicket" prefHeight="25.0" prefWidth="144.0" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Button fx:id="btnAddTicket" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" onAction="#handleAddTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" AnchorPane.rightAnchor="0.0" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </AnchorPane>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="444.0">
+                           <children>
+                              <Button fx:id="btnAddTicket" mnemonicParsing="false" onAction="#handleAddTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" />
+                              <Button fx:id="btnEditTicket" mnemonicParsing="false" onAction="#handleEditTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Edit Ticket Type" />
+                              <Button fx:id="btnDeleteTicket" mnemonicParsing="false" onAction="#handleDeleteTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Delete Ticket Type" />
                            </children>
                         </HBox>
                         <TableView fx:id="tblTicket" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -98,7 +93,6 @@
                             <TableColumn fx:id="clnTicket" maxWidth="1.7976931348623157E308" prefWidth="121.99999749660492" text="Ticket Type" />
                             <TableColumn fx:id="clnDescription" maxWidth="1.7976931348623157E308" prefWidth="152.6666488647461" text="Description" />
                               <TableColumn fx:id="clnPrice" maxWidth="1.7976931348623157E308" prefWidth="77.33331298828125" text="Price" />
-                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="82.00002034505206" text="Sold" />
                           </columns>
                            <VBox.margin>
                               <Insets top="10.0" />

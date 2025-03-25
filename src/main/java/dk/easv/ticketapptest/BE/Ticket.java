@@ -69,4 +69,6 @@ public class Ticket {
     public void setPrice(double price) {
         this.price = price;
     }
-}
+    public void setGLOBAL(boolean global) {this.GLOBAL = global;}
+    }
+
