@@ -31,9 +31,8 @@ public class TicketDAO implements ITicketDataAccess {
                 ticket.setTicketID(rs.getInt(1)); // Set the generated ID
             }
 
-            if(ticket.getEvent() != null)
+            if(ticket.getEvent() != null && ticket.isGLOBAL() == false)
             {
-                System.out.println("THIS CODE IS RUNNING");
                  sql = "INSERT INTO dbo.TicketEvent_Junction(TicketID, EventID) " + "VALUES(?, ?);";
                 try (Connection connection = connector.getConnection();
                      PreparedStatement ps2 = connection.prepareStatement(sql)) {
@@ -42,7 +41,6 @@ public class TicketDAO implements ITicketDataAccess {
                     ps2.executeUpdate();
                 }
             }
-            System.out.println("THE CODE SHOULD HAVE RUN BY NOW.");
             return ticket;
         } catch (SQLException e) {
             throw new SQLException("Could not create new ticket", e);

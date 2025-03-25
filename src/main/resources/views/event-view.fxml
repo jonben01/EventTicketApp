@@ -16,14 +16,20 @@
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="btnReturn" mnemonicParsing="false" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
-               <VBox.margin>
-                  <Insets left="15.0" top="15.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
+            <HBox prefHeight="36.0" prefWidth="875.0">
+               <children>
+                  <Button fx:id="btnReturn" mnemonicParsing="false" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="lblAccess" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="hAccess" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="40.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="418.0" prefWidth="875.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox fx:id="vboxLeft" prefHeight="409.0" prefWidth="147.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
@@ -65,7 +71,7 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TextField fx:id="txtDesc" prefHeight="107.0" prefWidth="429.0">
+                        <TextField fx:id="txtDesc" editable="false" prefHeight="107.0" prefWidth="429.0">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>
@@ -87,7 +93,7 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TableView fx:id="tblTicket" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tblTicket" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="clnTicket" maxWidth="1.7976931348623157E308" prefWidth="121.99999749660492" text="Ticket Type" />
                             <TableColumn fx:id="clnDescription" maxWidth="1.7976931348623157E308" prefWidth="152.6666488647461" text="Description" />

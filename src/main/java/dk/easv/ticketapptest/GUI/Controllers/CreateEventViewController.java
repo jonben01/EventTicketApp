@@ -129,7 +129,7 @@ public class CreateEventViewController {
                 else {
                     Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>() {
                     }, new ArrayList<>(Arrays.asList(sessionUser)));
-                    parent.createEvent(event);
+                    parent.createEvent(event, true);
                     model.createEvent(event);
                 }
                 ((Stage) txtNameEvent.getScene().getWindow()).close();

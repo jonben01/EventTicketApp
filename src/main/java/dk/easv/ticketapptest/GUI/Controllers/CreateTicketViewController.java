@@ -25,6 +25,8 @@ public class CreateTicketViewController {
 
     private Event2 selectedEvent;
     private TicketModel ticketModel;
+    @FXML
+    private CheckBox chkGlobal;
 
 
     public CreateTicketViewController() throws IOException {
@@ -47,7 +49,7 @@ public class CreateTicketViewController {
         String description = txtTicketDesc.getText();
         double price = Double.parseDouble(txtTicketPrice.getText());
 
-        Ticket ticket = new Ticket(selectedEvent, price, false, name, description);
+        Ticket ticket = new Ticket(selectedEvent, price, chkGlobal.isSelected(), name, description);
         ticketModel.createTicket(ticket);
         parent2.updateTicketList();
         Stage stage = (Stage) txtTicketName.getScene().getWindow();

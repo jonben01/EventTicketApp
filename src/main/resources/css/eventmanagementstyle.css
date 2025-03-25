@@ -109,3 +109,24 @@
 .tblTicket .table-column .label {
     -fx-text-fill: #333;
 }
+
+.vBoxBorderBlocked {
+    -fx-background-color: #dcdcdc;
+    -fx-border-color: #c3c3c3;
+    -fx-border-width: 2;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.vBoxBorderBlocked:hover {
+    -fx-border-color: #4242ff;
+    -fx-border-width: 3;
+}
+
+.hAccess {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-text-fill: red;
+}

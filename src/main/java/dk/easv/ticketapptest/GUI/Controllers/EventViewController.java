@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
@@ -79,6 +80,11 @@ public class EventViewController {
     private Event2 selectedEvent;
     private UserModel userModel;
     private List<User> usersWithAccess;
+    private boolean userHasAccess = false;
+    @FXML
+    private Button btnRemoveCoord;
+    @FXML
+    private Label lblAccess;
 
     public void setSelectedEvent(Event2 event2) throws SQLServerException {
         this.selectedEvent = event2;
@@ -87,7 +93,25 @@ public class EventViewController {
             lstCoords.getItems().add(coordinator);
         }
         usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
+        for(User coordinator : usersWithAccess){
+            if(SessionManager.getInstance().getCurrentUser().getId() == coordinator.getId() ){
+                userHasAccess = true;
+            }
+        }
         lstCoords.refresh();
+        checkUserAccess();
+    }
+
+    private void checkUserAccess() {
+        if(!userHasAccess){
+            btnEditEvent.setDisable(true);
+            btnAddCoord.setDisable(true);
+            btnRemoveCoord.setDisable(true);
+            btnAddTicket.setDisable(true);
+            lblAccess.setText("You do not have access to modify this event.");
+            lblAccess.getStylesheets().add("hAccess");
+
+        }
     }
 
     public void setPanel(BorderPane root)

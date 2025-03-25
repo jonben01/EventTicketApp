@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
+import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
@@ -87,7 +88,7 @@ public class EventEventManagementController {
         this.mainPane = mainPane;
     }
 
-    private VBox createEventPanel(Event2 event2) {
+    private VBox createEventPanel(Event2 event2, Boolean hasEvent) {
 
         VBox vbox = new VBox();
         vBoxList.add(vbox);
@@ -105,6 +106,12 @@ public class EventEventManagementController {
 
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("button2");
+
+        if(!hasEvent)
+        {
+            vbox.getStyleClass().add("vBoxBorderBlocked");
+            deleteButton.setDisable(true);
+        }
 
         deleteButton.setOnAction(event -> {
 
@@ -204,20 +211,30 @@ public class EventEventManagementController {
     }
 
 
-    public void createEvent(Event2 event) {
+    public void createEvent(Event2 event, Boolean hasEvent) {
         int x = getNextX();
         int y = getNextY();
         System.out.println("(" + x + "," + y + ")");
 
-        gridPane.add(createEventPanel(event), x, y);
+        gridPane.add(createEventPanel(event, hasEvent), x, y);
 
         currentX++;
     }
 
-    private void addExistingEvents(List<Event2> events){
+    private void addExistingEvents(List<Event2> events) throws SQLException {
+        List<Event2> eventsForUser = eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId());
         if(!events.isEmpty()){
             for(Event2 event : events){
-                createEvent(event);
+                Boolean hasEvent = false;
+                for(Event2 eventForUser : eventsForUser){
+                    if(event.getEventID() == eventForUser.getEventID()){
+                        hasEvent = true;
+                        createEvent(event, hasEvent);
+                    }
+                }
+                if(!hasEvent){
+                    createEvent(event, hasEvent);
+                }
             }
         }
     }
