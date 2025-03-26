@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.PdfGeneratorUtil;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -152,7 +153,8 @@ public class TicketPrintController {
         if(selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
 
             System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
-            showAlert(Alert.AlertType.CONFIRMATION,"Ticket Printed", "Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
+            //showAlert(Alert.AlertType.CONFIRMATION,"Ticket Printed", "Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
+           // PdfGeneratorUtil.generateTicket("/resources/PrintedTickets/ticket.pdf", "test");
         }
     }
 

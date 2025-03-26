@@ -159,9 +159,14 @@ public class EventEventManagementController {
         ticketInfoLabel.getStyleClass().add("h3");
         Separator separator2 = new Separator();
 
-        Label coordinatorLabel = new Label("Coordinator: " + event2.getEventCoordinators().get(0).getFirstName() + " " + event2.getEventCoordinators().get(0).getLastName());
-
-        coordinatorLabel.getStyleClass().add("h4");
+        Label coordinatorLabel;
+        if(!event2.getEventCoordinators().isEmpty()) {
+            coordinatorLabel = new Label("Coordinator: " + event2.getEventCoordinators().get(0).getFirstName() + " " + event2.getEventCoordinators().get(0).getLastName());
+        }
+        else {
+            coordinatorLabel = new Label("Missing User (Contact admin)");
+        }
+            coordinatorLabel.getStyleClass().add("h4");
 
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,
                 ticketsLabel, ticketInfoLabel, separator2, coordinatorLabel, deleteButton);
