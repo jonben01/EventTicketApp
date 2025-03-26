@@ -1,9 +1,14 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BLL.PdfGeneratorUtil;
+import dk.easv.ticketapptest.BLL.QRImageUtil;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +26,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -155,9 +162,14 @@ public class TicketPrintController {
 
             System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
             try {
-                String rndString = generateRandomString(10);
+                String rndString = generateRandomString();
+                String qrFilePath = "src/main/resources/images/" + rndString + ".png";
                 // THIS IS GOD: PdfGeneratorUtil.generateTicket("C:/Users/melon/Downloads/test.pdf", "test");
-                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", rndString);
+
+                generateQRCode(rndString, qrFilePath);
+                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", "This is a cool ticket.", qrFilePath);
+                File file = new File(qrFilePath);
+                file.delete();
             }
             catch (Exception e) {
                 System.err.println("Problem printing PDF: " + e);
@@ -165,9 +177,10 @@ public class TicketPrintController {
         }
     }
         //TODO: TEMP KLASSE. MAKE THIS STUFF ACTUALLY GOOD.
-    public static String generateRandomString(int length) {
+    public static String generateRandomString() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
+        int length = random.nextInt(150);
         StringBuilder randomString = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
@@ -177,6 +190,20 @@ public class TicketPrintController {
 
         return randomString.toString();
     }
+
+    private void generateQRCode(String data, String filePath) {
+        File file = new File(filePath);
+        file.getParentFile().mkdirs(); // Creates the parent directories if they don't exist
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+            ImageIO.write(QRImageUtil.toBufferedImage(bitMatrix), "PNG", file);
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
