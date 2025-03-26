@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.PdfGeneratorUtil;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
@@ -64,7 +65,6 @@ public class LoginController implements Initializable {
 
     //TODO handle exceptions better, make Alert class, change css in code to being in fxml instead
     public void handleLogin(ActionEvent actionEvent) throws Exception {
-
 
         String username = txtUsername.getText();
         String password = txtPassword.getText();
