@@ -10,7 +10,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 
 public class PdfGeneratorUtil {
 
-    public static void generateTicket(String filePath, String ticketInfo, String qrCodePath) {
+    public static void generateTicket(String filePath, String ticketInfo, String qrCodePath, String barCodePath) {
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -26,6 +26,13 @@ public class PdfGeneratorUtil {
                 qrImage.setWidth(200);
                 qrImage.setHeight(200);
                 document.add(qrImage);
+            }
+            File barFile = new File(barCodePath);
+            if (barFile.exists()) {
+                Image barImage = new Image(ImageDataFactory.create(barFile.getAbsolutePath()));
+                barImage.setWidth(400);
+                barImage.setHeight(100);
+                document.add(barImage);
             }
             document.close();
         } catch (Exception e) {

@@ -27,6 +27,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -158,52 +159,46 @@ public class TicketPrintController {
     public void onHandlePrintTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
 
-        if(selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
+        if (selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
 
             System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
             try {
                 String rndString = generateRandomString();
-                String qrFilePath = "src/main/resources/images/" + rndString + ".png";
-                // THIS IS GOD: PdfGeneratorUtil.generateTicket("C:/Users/melon/Downloads/test.pdf", "test");
+                String qrFilePath = "src/main/resources/images/" + rndString + "_qr.png";
+                String barcodeFilePath = "src/main/resources/images/" + rndString + "_barcode.png";
 
-                generateQRCode(rndString, qrFilePath);
-                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", "This is a cool ticket.", qrFilePath);
-                File file = new File(qrFilePath);
-                file.delete();
-            }
-            catch (Exception e) {
+                // Generate QR code and Barcode
+                BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 200, 200);
+                BufferedImage barcodeImage = QRImageUtil.generateBarcode(rndString, 400, 100);
+
+                // Save images
+                ImageIO.write(qrImage, "PNG", new File(qrFilePath));
+                ImageIO.write(barcodeImage, "PNG", new File(barcodeFilePath));
+
+                // Generate the ticket PDF with both the QR code and barcode
+                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", "This is a cool ticket.", qrFilePath, barcodeFilePath);
+
+                new File(qrFilePath).delete();
+                new File(barcodeFilePath).delete();
+            } catch (Exception e) {
                 System.err.println("Problem printing PDF: " + e);
             }
         }
     }
+
         //TODO: TEMP KLASSE. MAKE THIS STUFF ACTUALLY GOOD.
     public static String generateRandomString() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
-        int length = random.nextInt(150);
+        int length = random.nextInt(30) + 15;
         StringBuilder randomString = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(characters.length());
             randomString.append(characters.charAt(index));
         }
-
-        return randomString.toString();
+        return length + "abc" + randomString.toString();
     }
-
-    private void generateQRCode(String data, String filePath) {
-        File file = new File(filePath);
-        file.getParentFile().mkdirs(); // Creates the parent directories if they don't exist
-
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        try {
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
-            ImageIO.write(QRImageUtil.toBufferedImage(bitMatrix), "PNG", file);
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -212,9 +207,6 @@ public class TicketPrintController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-
-
 
 }
 
