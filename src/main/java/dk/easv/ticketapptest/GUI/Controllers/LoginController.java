@@ -65,8 +65,6 @@ public class LoginController implements Initializable {
 
     //TODO handle exceptions better, make Alert class, change css in code to being in fxml instead
     public void handleLogin(ActionEvent actionEvent) throws Exception {
-        PdfGeneratorUtil.generateTicket("target/PrintedTickets", "test");
-
 
         String username = txtUsername.getText();
         String password = txtPassword.getText();

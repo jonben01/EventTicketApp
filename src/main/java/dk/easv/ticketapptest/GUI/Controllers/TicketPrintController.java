@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -153,9 +154,28 @@ public class TicketPrintController {
         if(selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
 
             System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
-            //showAlert(Alert.AlertType.CONFIRMATION,"Ticket Printed", "Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
-           // PdfGeneratorUtil.generateTicket("/resources/PrintedTickets/ticket.pdf", "test");
+            try {
+                String rndString = generateRandomString(10);
+                // THIS IS GOD: PdfGeneratorUtil.generateTicket("C:/Users/melon/Downloads/test.pdf", "test");
+                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", rndString);
+            }
+            catch (Exception e) {
+                System.err.println("Problem printing PDF: " + e);
+            }
         }
+    }
+        //TODO: TEMP KLASSE. MAKE THIS STUFF ACTUALLY GOOD.
+    public static String generateRandomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder randomString = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            randomString.append(characters.charAt(index));
+        }
+
+        return randomString.toString();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
