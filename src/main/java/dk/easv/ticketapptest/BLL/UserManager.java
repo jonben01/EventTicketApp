@@ -25,7 +25,7 @@ public class UserManager {
         return userDAO.getUserByUsername(username);
     }
 
-    public List<User> getAllCoordinators() throws SQLServerException {
+    public List<User> getAllCoordinators() throws Exception {
         return userDAO.getAllCoordinators();
     }
 
@@ -33,5 +33,9 @@ public class UserManager {
 
     public ObservableList<User> getUsers() {
         return userDAO.getUsers();
+    }
+
+    public void editRole(User user) throws Exception {
+        userDAO.editRole(user);
     }
 }

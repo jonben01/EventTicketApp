@@ -13,11 +13,14 @@
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField prefHeight="30.0" prefWidth="919.0" promptText="search" HBox.hgrow="ALWAYS">
+                <TextField fx:id="txtEventSearch" prefHeight="36.0" prefWidth="927.0" promptText="search" HBox.hgrow="ALWAYS">
                <HBox.margin>
-                  <Insets />
+                  <Insets top="5.0" />
                </HBox.margin></TextField>
             </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
         </HBox>
     </top>
    <center>

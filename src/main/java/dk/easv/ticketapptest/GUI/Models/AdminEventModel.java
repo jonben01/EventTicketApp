@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class AdminEventModel {
 
@@ -27,5 +28,14 @@ public class AdminEventModel {
     public void deleteEvent(Event2 event) throws SQLException {
         eventManager.deleteEvent(event);
         eventsToBeViewed.remove(event);
+    }
+
+    public ObservableList<Event2> searchEvent(String searchQuery) throws Exception {
+        return eventManager.searchEvent(searchQuery);
+    }
+
+    public ObservableList<Event2> getAllEvents() throws Exception {
+        List<Event2> allEvents = eventManager.getAllEvents();
+        return FXCollections.observableArrayList(allEvents);
     }
 }

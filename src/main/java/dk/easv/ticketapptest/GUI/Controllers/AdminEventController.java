@@ -3,14 +3,16 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,14 +22,23 @@ import java.util.ResourceBundle;
 
 public class AdminEventController implements Initializable {
 
-    @FXML public TableView<Event2> tblEvents;
-    @FXML private TableColumn<Event2, String> clnEventName;
-    @FXML private TableColumn<Event2, String> clnDateTime;
-    @FXML private TableColumn<Event2, String> clnLocation;
-    @FXML private TableColumn<Event2, Void> clnStatus;
-    @FXML private TableColumn<Event2, Button> clnActions;
+    @FXML
+    public TableView<Event2> tblEvents;
+    @FXML
+    public TextField txtEventSearch;
+    @FXML
+    private TableColumn<Event2, String> clnEventName;
+    @FXML
+    private TableColumn<Event2, String> clnDateTime;
+    @FXML
+    private TableColumn<Event2, String> clnLocation;
+    @FXML
+    private TableColumn<Event2, Void> clnStatus;
+    @FXML
+    private TableColumn<Event2, Button> clnActions;
 
     private AdminEventModel adminEventModel;
+    private PauseTransition searchDebounce;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,6 +49,16 @@ public class AdminEventController implements Initializable {
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
+
+        searchDebounce = new PauseTransition(Duration.millis(200));
+        searchDebounce.setOnFinished(event -> {
+            searchEvent();
+        });
+
+        txtEventSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchDebounce.stop();
+            searchDebounce.playFromStart();
+        });
 
         tblEvents.setFixedCellSize(40);
 
@@ -79,6 +100,52 @@ public class AdminEventController implements Initializable {
             throw new RuntimeException(e);
         }
 
+    }
 
+    public void searchEvent() {
+        String searchQuery = txtEventSearch.getText();
+        if (txtEventSearch.getText().isEmpty()) {
+            try {
+                tblEvents.setItems(adminEventModel.getAllEvents());
+                //TODO implement the custom alert class instead.
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+            return;
+        }
+
+        Task<ObservableList<Event2>> searchTask = new Task<>() {
+            @Override
+            protected ObservableList<Event2> call() throws Exception {
+                return adminEventModel.searchEvent(searchQuery);
+            }
+        };
+
+        searchTask.setOnSucceeded(e -> {
+            ObservableList<Event2> filteredList = searchTask.getValue();
+            if (filteredList != null) {
+                tblEvents.setItems(filteredList);
+            } else {
+                tblEvents.setItems(FXCollections.observableArrayList());
+            }
+        });
+
+        //TODO change this
+        searchTask.setOnFailed(event -> {
+            Throwable error = searchTask.getException();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText(null);
+            alert.setContentText(error.getMessage());
+            alert.showAndWait();
+        });
+
+        Thread thread = new Thread(searchTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

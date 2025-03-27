@@ -1,8 +1,8 @@
 package dk.easv.ticketapptest.GUI.Models;
 
 import dk.easv.ticketapptest.BE.User;
-import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.BLL.UserManagementLogic;
+import javafx.collections.ObservableList;
 
 public class UserManagementModel {
 
@@ -25,4 +25,9 @@ public class UserManagementModel {
     public void deleteUser(User user) throws Exception {
         userManagementLogic.deleteUser(user);
     }
+
+    public ObservableList<User> searchUser(String searchQuery) {
+        return userManagementLogic.searchUser(searchQuery);
+    }
+
 }

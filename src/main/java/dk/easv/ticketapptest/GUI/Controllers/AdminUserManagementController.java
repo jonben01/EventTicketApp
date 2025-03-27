@@ -3,9 +3,15 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
+import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,27 +22,40 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AdminUserManagementController implements Initializable {
 
-    @FXML private TextField txtPhone;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtLastName;
-    @FXML private TextField txtFirstName;
-    @FXML private Label lblRole;
-    @FXML private Label lblName;
-    @FXML private TextField txtUsername;
-    @FXML private TextField txtPassword;
-    @FXML private CheckBox chkEditable;
-    @FXML private ListView<User> lstUsers;
-    @FXML private Button btnSaveEditUser;
+    @FXML
+    public Button btnSwapRole;
+    @FXML
+    public TextField txtUserSearch;
+    @FXML
+    private TextField txtPhone;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtLastName;
+    @FXML
+    private TextField txtFirstName;
+    @FXML
+    private Label lblRole;
+    @FXML
+    private Label lblName;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtPassword;
+    @FXML
+    private CheckBox chkEditable;
+    @FXML
+    private ListView<User> lstUsers;
+    @FXML
+    private Button btnSaveEditUser;
 
     private TemporaryDataClass tdc;
     private UserManagementModel userManagementModel;
@@ -45,6 +64,8 @@ public class AdminUserManagementController implements Initializable {
     private final String PASSWORD_PLACEHOLDER = "*****";
     private UserModel userModel;
     private boolean hasChanged = false;
+
+    private PauseTransition searchDebounce;
 
 
 
@@ -71,8 +92,25 @@ public class AdminUserManagementController implements Initializable {
             setUserInfo(user);
         }
 
+        //Debounce the search function -- to stop the user from creating loads of new threads in the search method.
+        searchDebounce = new PauseTransition(Duration.millis(200));
+        searchDebounce.setOnFinished(event -> {
+           searchUser();
+        });
+
+        txtUserSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchDebounce.stop();
+            searchDebounce.playFromStart();
+        });
+
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setUserInfo(newValue);
+            //TODO check if this works
+            if (newValue == SessionManager.getInstance().getCurrentUser()) {
+                btnSwapRole.setDisable(true);
+            } else if (btnSwapRole.isDisable()) {
+                btnSwapRole.setDisable(false);
+            }
         });
 
 
@@ -83,9 +121,21 @@ public class AdminUserManagementController implements Initializable {
 
 
 
-
-    //TODO IMPLEMENT USE OF BEANS OR USERDATA FOR ACTUAL PROJECT
-    // SO THERE ISNT 6 LISTENERS DOING THE SAME THING
+    //TODO REFACTOR userChangeListeners -- helper method that creates a listener for a textfield
+    //TODO call it 6 times in userChangeListeners instead.
+    /*
+    //SETTER SHOULD BE RELEVANT TO THE TEXT FIELD.
+    private void addChangeListener(TextField textField, Consumer<String> setter) {
+    //listens to the text field for changes
+    textField.textProperty().addListener((obs, oldValue, newValue) -> {
+        if (selectedUser != null) {
+        //use the setter param to set the new value
+            setter.accept(newValue);
+            checkIfChanged();
+        }
+    });
+}
+     */
     private void userChangeListeners() {
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
             if (selectedUser != null) {
@@ -147,6 +197,10 @@ public class AdminUserManagementController implements Initializable {
             txtEmail.setText(selectedUser.getEmail());
             txtPhone.setText(selectedUser.getPhone());
             lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+
+            //TODO change this. Not sure what to call it, if role name is wanted, make if statements
+            btnSwapRole.setText("PLACEHOLDER :)");
+
             if (selectedUser.getRole() != null) {
                 lblRole.setText(selectedUser.getRole().toString().toLowerCase());
                 lblRole.setStyle("-fx-background-color: #DBEBFF");
@@ -212,79 +266,7 @@ public class AdminUserManagementController implements Initializable {
         });
     }
 
-    public void handleSetEventCoordinator(ActionEvent actionEvent) {
-        User user = lstUsers.getSelectionModel().getSelectedItem();
-        if (user != null) {
-            if (user.getRole() == Role.COORDINATOR) {
-                user.setRole(null);
-                lblRole.setText("no role");
-                lblRole.setStyle("-fx-background-color: #FFE5E5 ;");
-                lstUsers.refresh();
-            } else if (user.getRole() == Role.ADMIN) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Set this user to COORDINATOR instead of ADMIN?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    user.setRole(Role.COORDINATOR);
-                    lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: #DBEBFF ;");
-                    lstUsers.refresh();
-                }
-            } else {
-                user.setRole(Role.COORDINATOR);
-                lblRole.setText(user.getRole().toString().toLowerCase());
-                lblRole.setStyle("-fx-background-color: #DBEBFF ;");
-                lstUsers.refresh();
-            }
-        }
-    }
 
-    //TODO MAKE AN ALERT METHOD LOL
-    //TODO fix this.
-    public void handleSetAdmin(ActionEvent actionEvent) {
-        User user = lstUsers.getSelectionModel().getSelectedItem();
-        if (user != null) {
-            if (user.getRole() == Role.ADMIN) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Remove ADMIN role from this user?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    user.setRole(null);
-                    lblRole.setText("no role");
-                    lblRole.setStyle("-fx-background-color: #FFE5E5 ;");
-                    lstUsers.refresh();
-                }
-            } else if (user.getRole() == Role.COORDINATOR) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Set this user to ADMIN instead of COORDINATOR?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    user.setRole(Role.ADMIN);
-                    lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: #DBEBFF ;");
-                    lstUsers.refresh();
-                }
-            } else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to make this user ADMIN?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    user.setRole(Role.ADMIN);
-                    lblRole.setText(user.getRole().toString().toLowerCase());
-                    lblRole.setStyle("-fx-background-color: #DBEBFF");
-                    lstUsers.refresh();
-                }
-            }
-        }
-    }
 
     public void handleCreateUser(ActionEvent actionEvent) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-user-creation-view.fxml"));
@@ -346,6 +328,8 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 /*
+
+    //TODO remove this
     public void handleEditable(ActionEvent actionEvent) {
         if (chkEditable.isSelected()) {
             txtUsername.setEditable(true);
@@ -418,6 +402,97 @@ public class AdminUserManagementController implements Initializable {
     }
     private void checkIfChanged() {
         btnSaveEditUser.setVisible(hasChanged);
+    }
+
+
+    //TODO move the btnSwapRole text to setUserInfo instead, so it changes when u press
+    public void handleSwapRole(ActionEvent actionEvent) throws Exception {
+        User user = lstUsers.getSelectionModel().getSelectedItem();
+        System.out.println(user);
+        if (user != null && Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("You can't change your own role");
+            alert.showAndWait();
+            return;
+        }
+
+        //TODO use alert class
+        if (user != null && !Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
+            userModel.editRole(user);
+            lstUsers.refresh();
+            if (user.getRole() == Role.ADMIN) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Event coordinator?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    user.setRole(Role.COORDINATOR);
+                    lblRole.setText("coordinator");
+                }
+
+            } else if (user.getRole() == Role.COORDINATOR) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Admin?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    user.setRole(Role.ADMIN);
+                    lblRole.setText("admin");
+                }
+            }
+        }
+    }
+
+    public void searchUser() {
+
+        String searchQuery = txtUserSearch.getText();
+
+        if (txtUserSearch.getText().isEmpty()) {
+            lstUsers.setItems(userModel.getUsers());
+            return;
+        }
+        //create a new task
+        Task<ObservableList<User>> searchTask = new Task<>() {
+            @Override
+            //tell the task what to do
+            protected ObservableList<User> call() throws Exception {
+                return userManagementModel.searchUser(searchQuery);
+            }
+        };
+
+        //if the task succeeds filter the list view
+        searchTask.setOnSucceeded(event -> {
+            ObservableList<User> filteredList = searchTask.getValue();
+            if (filteredList != null) {
+                SortedList<User> sortedList = new SortedList<>(filteredList);
+                lstUsers.setItems(sortedList);
+            } else {
+                lstUsers.setItems(FXCollections.observableArrayList());
+            }
+        });
+
+        //TODO change this
+        //if the task fails, show the user theres a db issue.
+        searchTask.setOnFailed(event -> {
+            Throwable error = searchTask.getException();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText(null);
+            alert.setContentText(error.getMessage());
+            alert.showAndWait();
+        });
+
+        //put the task in a new thread and run it. -- technically should make something to prevent creating loads of threads
+        //but the search debounce is probably fine.
+        Thread thread = new Thread(searchTask);
+        //doesnt block jvm from exiting, despite the task still running.
+        thread.setDaemon(true);
+        thread.start();
     }
 }
 

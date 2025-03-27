@@ -37,11 +37,15 @@ public class UserModel {
         return PBKDF2PasswordUtil.hashPassword(inputPassword);
     }
 
-    public List<User> getAllCoordinators() throws SQLServerException {
+    public List<User> getAllCoordinators() throws Exception {
         return userManager.getAllCoordinators();
     }
 
     public ObservableList<User> getUsers() {
         return userManager.getUsers();
+    }
+
+    public void editRole(User user) throws Exception {
+        userManager.editRole(user);
     }
 }

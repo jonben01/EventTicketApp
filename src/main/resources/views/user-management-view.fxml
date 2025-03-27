@@ -17,7 +17,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="928.0" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField prefHeight="36.0" prefWidth="807.0" promptText="search" HBox.hgrow="ALWAYS">
+                  <TextField fx:id="txtUserSearch" prefHeight="36.0" prefWidth="807.0" promptText="search" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="12.0" />
                      </HBox.margin>
@@ -88,18 +88,11 @@
                                  </font>
                               </Label>
                               <Region prefHeight="42.0" prefWidth="72.0" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="btnSetAdmin" mnemonicParsing="false" onAction="#handleSetAdmin" prefHeight="30.0" prefWidth="81.0" text="+ Admin">
-                                 <HBox.margin>
-                                    <Insets right="12.0" />
-                                 </HBox.margin>
+                              <Button fx:id="btnSwapRole" mnemonicParsing="false" onAction="#handleSwapRole" prefHeight="30.0" prefWidth="110.0" text="Swap role">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnSetEventCoordinator" mnemonicParsing="false" onAction="#handleSetEventCoordinator" prefHeight="30.0" prefWidth="157.0" text="+ Event Coordinator">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font></Button>
                            </children>
                            <VBox.margin>
                               <Insets bottom="24.0" />

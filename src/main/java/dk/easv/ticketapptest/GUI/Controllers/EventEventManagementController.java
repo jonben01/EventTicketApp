@@ -185,9 +185,7 @@ public class EventEventManagementController {
                     mainPane.setCenter(eventInDepth);
 
                     //TODO VERY BAD. MAKE THIS LESS BAD. PLEASEEEE
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }

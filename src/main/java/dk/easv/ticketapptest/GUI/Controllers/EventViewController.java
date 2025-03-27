@@ -89,7 +89,7 @@ public class EventViewController {
     @FXML
     private Label lblAccess;
 
-    public void setSelectedEvent(Event2 event2) throws SQLServerException {
+    public void setSelectedEvent(Event2 event2) throws Exception {
         this.selectedEvent = event2;
         for(User coordinator : userModel.getAllCoordinators())
         {
