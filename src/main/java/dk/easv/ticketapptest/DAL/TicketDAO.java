@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.DAL;
 
+import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
 
@@ -150,7 +151,22 @@ public class TicketDAO implements ITicketDataAccess {
         } catch (SQLException e) {
             throw new SQLException("Could not assign ticket to event", e);
         }
+    }
 
-
+    public void savePrintedTicket(String generatedID, Ticket ticket, Event2 event, Customer customer) throws SQLException {
+        String sql = "INSERT INTO dbo.Printed_Tickets(GeneratedTicket, TicketID, EventID, FirstName, LastName, Email, PhoneNumber) " + "VALUES(?, ?, ?, ?, ?, ?, ?);";
+        try (Connection conn = connector.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, generatedID);
+            ps.setInt(2, ticket.getTicketID());
+            ps.setInt(3, event.getEventID());
+            ps.setString(4, customer.getFirstName());
+            ps.setString(5, customer.getLastName());
+            ps.setString(6, customer.getEmail());
+            ps.setInt(7, customer.getPhoneNumber());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Could not save printed ticket information", e);
+        }
     }
 }

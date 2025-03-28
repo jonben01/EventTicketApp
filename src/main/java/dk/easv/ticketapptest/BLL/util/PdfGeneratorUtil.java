@@ -1,4 +1,4 @@
-package dk.easv.ticketapptest.BLL;
+package dk.easv.ticketapptest.BLL.util;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;

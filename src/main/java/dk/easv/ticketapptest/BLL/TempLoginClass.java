@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.BLL;
 
+import dk.easv.ticketapptest.BLL.util.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.DAL.UserDAO;
 
 public class TempLoginClass {

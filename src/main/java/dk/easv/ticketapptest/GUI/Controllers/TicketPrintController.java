@@ -1,40 +1,28 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
+import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
-import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
-import dk.easv.ticketapptest.BLL.PdfGeneratorUtil;
-import dk.easv.ticketapptest.BLL.QRImageUtil;
+import dk.easv.ticketapptest.BLL.util.EmailSenderUtil;
+import dk.easv.ticketapptest.BLL.util.PdfGeneratorUtil;
+import dk.easv.ticketapptest.BLL.util.QRImageUtil;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
+import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TicketPrintController {
 
@@ -67,6 +55,8 @@ public class TicketPrintController {
     @FXML
     private TextField txtCustomerPhone;
 
+    private TicketModel ticketModel;
+
     @FXML
     private Label lblCoords;
     @FXML
@@ -93,7 +83,8 @@ public class TicketPrintController {
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+        ticketModel = new TicketModel();
 
         tblTicket.getStylesheets().add("css/admineventstyle.css");
         tblTicket.getStyleClass().add("table-view");
@@ -177,6 +168,9 @@ public class TicketPrintController {
 
                 // Generate the ticket PDF with both the QR code and barcode
                 PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", "This is a cool ticket.", qrFilePath, barcodeFilePath);
+                Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
+                ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
+                EmailSenderUtil.sendEmail(txtCustomerEmail.getText(), "Your new tickets are here!", "Test text", new File("target/PrintedTickets/" + rndString + ".pdf"));
 
                 new File(qrFilePath).delete();
                 new File(barcodeFilePath).delete();

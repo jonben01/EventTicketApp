@@ -1,4 +1,4 @@
-package dk.easv.ticketapptest.BLL;
+package dk.easv.ticketapptest.BLL.util;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

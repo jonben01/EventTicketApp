@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.BLL;
 
+import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.DAL.TicketDAO;
@@ -29,5 +30,9 @@ public class TicketManager {
 
     public void deleteTicket(Ticket selectedTicket) throws SQLException {
         ticketDAO.deleteTicket(selectedTicket);
+    }
+
+    public void savePrintedTicket(String rndString, Ticket selectedTicket, Event2 selectedEvent, Customer customer) throws SQLException {
+        ticketDAO.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
     }
 }

@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.GUI.Models;
 
+import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BLL.TicketManager;
@@ -39,5 +40,9 @@ public class TicketModel {
 
     public void deleteTicket(Ticket selectedTicket) throws SQLException {
         ticketManager.deleteTicket(selectedTicket);
+    }
+
+    public void savePrintedTicket(String rndString, Ticket selectedTicket, Event2 selectedEvent, Customer customer) throws SQLException {
+        ticketManager.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
     }
 }

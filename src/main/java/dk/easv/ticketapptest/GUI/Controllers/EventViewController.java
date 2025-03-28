@@ -111,6 +111,8 @@ public class EventViewController {
             btnAddCoord.setDisable(true);
             btnRemoveCoord.setDisable(true);
             btnAddTicket.setDisable(true);
+            btnEditTicket.setDisable(true);
+            btnDeleteTicket.setDisable(true);
             lblAccess.setText("You do not have access to modify this event.");
             lblAccess.getStylesheets().add("hAccess");
 

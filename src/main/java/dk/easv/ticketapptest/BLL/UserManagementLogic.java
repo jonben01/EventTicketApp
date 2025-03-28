@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.BLL;
 
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.util.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.util.UserSearcher;
 import dk.easv.ticketapptest.DAL.UserDAO;
 import javafx.collections.ObservableList;
