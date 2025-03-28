@@ -3,7 +3,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
-import dk.easv.ticketapptest.BLL.util.EmailSenderUtil;
+import dk.easv.ticketapptest.BLL.util.Gmailer;
 import dk.easv.ticketapptest.BLL.util.PdfGeneratorUtil;
 import dk.easv.ticketapptest.BLL.util.QRImageUtil;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Random;
 
 public class TicketPrintController {
@@ -70,6 +71,8 @@ public class TicketPrintController {
     @FXML
     private VBox vboxRight;
 
+    private Gmailer gMailer;
+
     public void setPanel(BorderPane root)
     {
         this.root = root;
@@ -83,8 +86,9 @@ public class TicketPrintController {
 
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, GeneralSecurityException {
         ticketModel = new TicketModel();
+        gMailer = new Gmailer();
 
         tblTicket.getStylesheets().add("css/admineventstyle.css");
         tblTicket.getStyleClass().add("table-view");
@@ -167,11 +171,11 @@ public class TicketPrintController {
                 ImageIO.write(barcodeImage, "PNG", new File(barcodeFilePath));
 
                 // Generate the ticket PDF with both the QR code and barcode
-                PdfGeneratorUtil.generateTicket("target/PrintedTickets/" + rndString + ".pdf", "This is a cool ticket.", qrFilePath, barcodeFilePath);
+                String ticketPath = "target/PrintedTickets/" + rndString + ".pdf";
+                PdfGeneratorUtil.generateTicket(ticketPath, "This is a cool ticket.", qrFilePath, barcodeFilePath);
                 Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
                 ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
-                EmailSenderUtil.sendEmail(txtCustomerEmail.getText(), "Your new tickets are here!", "Test text", new File("target/PrintedTickets/" + rndString + ".pdf"));
-
+                gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
                 new File(qrFilePath).delete();
                 new File(barcodeFilePath).delete();
             } catch (Exception e) {

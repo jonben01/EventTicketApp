@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 config/database.settings
+src/main/resources/client_secrets.json
