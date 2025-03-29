@@ -7,6 +7,7 @@ import dk.easv.ticketapptest.BLL.util.Gmailer;
 import dk.easv.ticketapptest.BLL.util.PdfGeneratorUtil;
 import dk.easv.ticketapptest.BLL.util.QRImageUtil;
 import dk.easv.ticketapptest.DAL.TicketDataStore;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -137,6 +138,7 @@ public class TicketPrintController {
                 controller.setPanel(root);
                 root.setCenter(ticketManagementView);
             } catch (IOException e) {
+                AlertClass.alertError("Error", "An error occurred while returning");
                 e.printStackTrace();
             }
     }
@@ -155,12 +157,12 @@ public class TicketPrintController {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
 
         if (selectedTicket == null) {
-            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to print.");
+            AlertClass.alertInfo("Missing ticket", "Please select a ticket to print");
             return;
         }
 
         if (txtCustomerFirstName.getText().isEmpty() || txtCustomerLastName.getText().isEmpty() || txtCustomerEmail.getText().isEmpty() || txtCustomerPhone.getText().isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Missing Customer Information", "Please fill in all customer details.");
+            AlertClass.alertInfo("Missing information", "Please fill out all customer details.");
             return;
         }
 
@@ -189,8 +191,8 @@ public class TicketPrintController {
             new File(qrFilePath).delete();
             new File(barcodeFilePath).delete();
         } catch (Exception e) {
-            System.err.println("Problem printing PDF: " + e);
-            showAlert(Alert.AlertType.ERROR, "Error Printing Ticket", "An error occurred while printing the ticket: " + e.getMessage());
+            AlertClass.alertError("Error", "An error occurred while printing PDF");
+            e.printStackTrace();
         }
     }
 
@@ -207,14 +209,5 @@ public class TicketPrintController {
         }
         return length + "abc" + randomString.toString();
     }
-
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
 }
 

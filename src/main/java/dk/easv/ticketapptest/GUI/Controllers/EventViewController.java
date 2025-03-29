@@ -6,6 +6,7 @@ import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
@@ -284,7 +285,7 @@ public class EventViewController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            System.out.println("Error loading create event view: " + e.getMessage());
+            AlertClass.alertError("Error", "An error occurred while loading event panel");
             e.printStackTrace();
         }
     }
@@ -303,6 +304,7 @@ public class EventViewController {
                 lstCoords.refresh();
             }
         } catch (Exception e) {
+            AlertClass.alertError("Error", "An error occurred while removing event");
             e.printStackTrace();
         }
     }
@@ -338,11 +340,11 @@ public class EventViewController {
                 stage.showAndWait();
                 updateTicketList();
             } catch (IOException | SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Could not edit ticket");
+                AlertClass.alertError("Error", "An error while editing the ticket");
                 e.printStackTrace();
             }
         } else {
-            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to edit.");
+            AlertClass.alertWarning("Missing ticket", "Please select a ticket to edit");
         }
     }
 
@@ -360,20 +362,12 @@ public class EventViewController {
                     ticketModel.deleteTicket(selectedTicket);
                     updateTicketList();
                 } catch (SQLException e) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Could not delete ticket");
+                    AlertClass.alertError("Error", "An error occurred while deleting the ticket");
                     e.printStackTrace();
                 }
             }
         } else {
-            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to delete.");
+            AlertClass.alertWarning("Missing ticket", "Please select a ticket to delete");
         }
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }

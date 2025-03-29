@@ -4,6 +4,7 @@ import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
@@ -287,11 +288,7 @@ public class AdminUserManagementController implements Initializable {
                 userManagementModel.createUserDB(newUser);
             } catch (UsernameAlreadyExistsException e) {
                 //TODO probable use the error message that was bubbled up from DAO.
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Username already exists!");
-                alert.showAndWait();
+                AlertClass.alertError("Username Already Exists", "An error occurred while creating user\n the username already exists");
                 return;
             }
             lstUsers.getSelectionModel().select(newUser);
@@ -302,12 +299,8 @@ public class AdminUserManagementController implements Initializable {
     public void handleDeleteUser(ActionEvent actionEvent) throws Exception {
         User user = lstUsers.getSelectionModel().getSelectedItem();
         if (user != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText(null);
-            alert.setContentText("Delete this user?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
+            Optional<ButtonType> result = AlertClass.alertConfirmation("Delete User", "Are you sure you want to delete this user: " + user.getUsername());
+            if (result.isPresent() && result.get() == ButtonType.OK) {
                 try {
                     //TODO check if this causes errors on an empty list, not going to try right now -- jonas 25/03
                     userManagementModel.deleteUser(user);
@@ -318,10 +311,11 @@ public class AdminUserManagementController implements Initializable {
                         setUserInfo(defaultUser);
                     }
 
-
                     //TODO improve exception handling
                 } catch (Exception e) {
-                    //show alert here
+                    AlertClass.alertError("Delete Error", "An error occurred while deleting user");
+                    //since we arent creating a logger class, this will have to do
+                    e.printStackTrace();
                 }
 
             }
@@ -378,11 +372,8 @@ public class AdminUserManagementController implements Initializable {
                 originalValues.put(txtPhone, newPhone);
                 hasChanged = false;
             } catch (Exception e) {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Database Error");
-                errorAlert.setHeaderText("Failed to update user in the database.");
-                errorAlert.setContentText("An error occurred while trying to update the user's information in the database.");
-                errorAlert.showAndWait();
+                AlertClass.alertError("Save Error", "An error occurred while updating user");
+                //since we arent creating a logger class, this will have to do
                 e.printStackTrace();
                 return;
             }
@@ -392,11 +383,7 @@ public class AdminUserManagementController implements Initializable {
 
             btnSaveEditUser.setVisible(false);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("User Updated");
-            alert.setHeaderText(null);
-            alert.setContentText("User information has been updated.");
-            alert.showAndWait();
+            AlertClass.alertInfo("User updated", "The user has successfully been updated");
         }
 
     }
@@ -411,11 +398,7 @@ public class AdminUserManagementController implements Initializable {
         System.out.println(user);
         if (user != null && Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText("You can't change your own role");
-            alert.showAndWait();
+            AlertClass.alertInfo("Role change error", "You cannot change your own role");
             return;
         }
 
@@ -424,23 +407,19 @@ public class AdminUserManagementController implements Initializable {
             userModel.editRole(user);
             lstUsers.refresh();
             if (user.getRole() == Role.ADMIN) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Event coordinator?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                //confirmation check with Alert
+                Optional<ButtonType> result = AlertClass.alertConfirmation("Role change confirmation",
+                        "Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Event coordinator?");
+                if (result.isPresent() && result.get() == ButtonType.OK) {
                     user.setRole(Role.COORDINATOR);
                     lblRole.setText("coordinator");
                 }
 
             } else if (user.getRole() == Role.COORDINATOR) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Admin?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                //confirmation check with Alert
+                Optional<ButtonType> result = AlertClass.alertConfirmation("Role change confirmation",
+                        "Are you sure you want to swap " + user.getFirstName() + " " + user.getLastName() + "to Admin?");
+                if (result.isPresent() && result.get() == ButtonType.OK) {
                     user.setRole(Role.ADMIN);
                     lblRole.setText("admin");
                 }
@@ -480,11 +459,7 @@ public class AdminUserManagementController implements Initializable {
         //if the task fails, show the user theres a db issue.
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Database Error");
-            alert.setHeaderText(null);
-            alert.setContentText(error.getMessage());
-            alert.showAndWait();
+            AlertClass.alertError("Search Error","An error occurred while searching for users" + error.getMessage());
         });
 
         //put the task in a new thread and run it. -- technically should make something to prevent creating loads of threads

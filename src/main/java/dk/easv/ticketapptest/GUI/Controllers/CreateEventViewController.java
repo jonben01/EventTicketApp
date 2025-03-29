@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.application.Platform;
@@ -134,11 +135,7 @@ public class CreateEventViewController {
                 }
                 ((Stage) txtNameEvent.getScene().getWindow()).close();
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Please fill in all the fields");
-                alert.setContentText("You must fill in all the fields to create an event.");
-                alert.showAndWait();
+                AlertClass.alertError("Missing information", "Please fill all the fields");
             }
         }
 

@@ -6,6 +6,7 @@ import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.event.ActionEvent;
@@ -208,7 +209,7 @@ public class EventEventManagementController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            System.out.println("Error loading create event view: " + e.getMessage());
+            AlertClass.alertError("Error", "An error occurred while creating the event");
             e.printStackTrace();
         }
     }

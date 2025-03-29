@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.BE;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Event2 {
     private Location location;
     private String locationGuidance;
     private String status;
+    private LocalDateTime startDateTime;
 
     public Event2(String title, Location location, String description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
                   List<Ticket> ticketTypes, List<User> eventCoordinators) {
@@ -59,6 +61,10 @@ public class Event2 {
     //use DateTimeFormatter on localDate types in actual project instead of this
     //also use a date picker, to avoid edge cases where someone types something stupid.
     //should validate either way and handle those cases.
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime = LocalDateTime.of(startDate, startTime);
+    }
 
     public void addCoordinator(User user){
         eventCoordinators.add(user);

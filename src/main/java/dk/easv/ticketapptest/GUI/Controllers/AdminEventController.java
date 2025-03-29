@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
 import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.animation.PauseTransition;
@@ -17,6 +18,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -29,7 +32,7 @@ public class AdminEventController implements Initializable {
     @FXML
     private TableColumn<Event2, String> clnEventName;
     @FXML
-    private TableColumn<Event2, String> clnDateTime;
+    private TableColumn<Event2, LocalDateTime> clnDateTime;
     @FXML
     private TableColumn<Event2, String> clnLocation;
     @FXML
@@ -43,7 +46,7 @@ public class AdminEventController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //TODO FIX THIS Garbo code
+        //TODO FIX THIS Garbo code - exception
         try {
             adminEventModel = new AdminEventModel();
         } catch (IOException | SQLException e) {
@@ -64,14 +67,21 @@ public class AdminEventController implements Initializable {
 
         clnEventName.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        clnDateTime.setCellValueFactory(cellData -> {
-           Event2 event = cellData.getValue();
-           if (event.getStartDate() != null && event.getStartTime() != null) {
-               String dateTime = event.getStartDate().toString() + " " + event.getStartTime().toString();
-               return new SimpleObjectProperty<>(dateTime);
-           }
-           return new SimpleObjectProperty<>("N/A");
+        clnDateTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+
+        clnDateTime.setCellFactory(cellData -> new TableCell<Event2, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d. - HH:mm");
+                    setText(item.format(formatter));
+                }
+            }
         });
+
 
         clnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
 
@@ -107,17 +117,21 @@ public class AdminEventController implements Initializable {
         if (txtEventSearch.getText().isEmpty()) {
             try {
                 tblEvents.setItems(adminEventModel.getAllEvents());
-                //TODO implement the custom alert class instead.
+                //TODO use custom exception
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                AlertClass.alertError("Search Error", "An error occurred while searching for events" + e.getMessage());
             }
             return;
         }
 
+        Task<ObservableList<Event2>> searchTask = getObservableListTask(searchQuery);
+
+        Thread thread = new Thread(searchTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private Task<ObservableList<Event2>> getObservableListTask(String searchQuery) {
         Task<ObservableList<Event2>> searchTask = new Task<>() {
             @Override
             protected ObservableList<Event2> call() throws Exception {
@@ -134,18 +148,10 @@ public class AdminEventController implements Initializable {
             }
         });
 
-        //TODO change this
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Database Error");
-            alert.setHeaderText(null);
-            alert.setContentText(error.getMessage());
-            alert.showAndWait();
+            AlertClass.alertError("Search Error", "An error occurred while searching for events" + error.getMessage());
         });
-
-        Thread thread = new Thread(searchTask);
-        thread.setDaemon(true);
-        thread.start();
+        return searchTask;
     }
 }
