@@ -46,29 +46,60 @@ public class AdminEventController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //TODO FIX THIS Garbo code - exception
-        try {
-            adminEventModel = new AdminEventModel();
-        } catch (IOException | SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Label loadingLabel = new Label("Loading Events...");
+        loadingLabel.styleProperty().set("-fx-font-size: 20px;");
+        tblEvents.setPlaceholder(loadingLabel);
 
-        searchDebounce = new PauseTransition(Duration.millis(200));
-        searchDebounce.setOnFinished(event -> {
-            searchEvent();
+        Task<AdminEventModel> initTask = new Task<>() {
+
+            @Override
+            protected AdminEventModel call() throws Exception {
+                return new AdminEventModel();
+            }
+        };
+        initTask.setOnSucceeded(e -> {
+            this.adminEventModel = initTask.getValue();
+            loadTableData();
+            setupSearchDebounce();
         });
-
-        txtEventSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchDebounce.stop();
-            searchDebounce.playFromStart();
+        initTask.setOnFailed(e -> {
+            Throwable error = initTask.getException();
+            AlertClass.alertError("Setup Error", "An error occurred while setup up events");
+            error.printStackTrace();
         });
+        Thread thread = new Thread(initTask);
+        thread.setDaemon(true);
+        thread.start();
 
+        setupColumns();
+
+    }
+    public void loadTableData() {
+        Task<ObservableList<Event2>> loadDataTask = new Task<>() {
+
+            @Override
+            protected ObservableList<Event2> call() throws Exception {
+                return adminEventModel.getObservableEvents();
+            }
+        };
+        loadDataTask.setOnSucceeded(event -> {
+            tblEvents.setItems(loadDataTask.getValue());
+        });
+        loadDataTask.setOnFailed(event -> {
+            Throwable error = loadDataTask.getException();
+            AlertClass.alertError("Load Error","An error occurred while loading events");
+            error.printStackTrace();
+        });
+        Thread thread = new Thread(loadDataTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    public void setupColumns() {
         tblEvents.setFixedCellSize(40);
 
         clnEventName.setCellValueFactory(new PropertyValueFactory<>("title"));
-
         clnDateTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-
         clnDateTime.setCellFactory(cellData -> new TableCell<Event2, LocalDateTime>() {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
@@ -76,41 +107,59 @@ public class AdminEventController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
+                    //format dates to FULL MONTH + DAY - HOURS + MINUTES
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d. - HH:mm");
                     setText(item.format(formatter));
                 }
             }
         });
-
-
         clnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-
         clnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        //creates delete buttons on tableview.
         clnActions.setCellValueFactory(param -> {
             Event2 event = param.getValue();
-
             Button deleteButton = new Button("Delete");
+
             deleteButton.setOnAction(e -> {
-                //TODO implement this better AND DONT USE RUNTIME E
-                //TODO IMPLEMENT ALERT HERE, IF STATUS IS ACTIVE
-                try {
-                    adminEventModel.deleteEvent(event);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                //handle deletion in a different thread using Task
+                Task<Void> deleteTask = new Task<>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        //delete the event then exit
+                        adminEventModel.deleteEvent(event);
+                        return null;
+                    }
+                };
+                //if it fails, inform the user
+                deleteTask.setOnFailed(ev -> {
+                    deleteTask.getException().printStackTrace();
+                    AlertClass.alertError("Deletion error", "An error occurred while deleting event");
+                });
+                //if it succeeds manually refresh the list using blank search
+                deleteTask.setOnSucceeded(ev -> {
+                    searchEvent();
+                });
+                //run the task in a new thread
+                new Thread(deleteTask).start();
             });
+            //return the delete button
             return new SimpleObjectProperty<>(deleteButton);
         });
 
-        //TODO FIX THIS - figure out of try/catch should be here, maybe it should be handled better
-        try {
-            tblEvents.setItems(adminEventModel.getObservableEvents());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
+
+    public void setupSearchDebounce() {
+        searchDebounce = new PauseTransition(Duration.millis(200));
+        searchDebounce.setOnFinished(event -> {
+            searchEvent();
+        });
+        txtEventSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchDebounce.stop();
+            searchDebounce.playFromStart();
+        });
+    }
+
 
     public void searchEvent() {
         String searchQuery = txtEventSearch.getText();
