@@ -154,33 +154,43 @@ public class TicketPrintController {
     public void onHandlePrintTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
 
-        if (selectedTicket != null && txtCustomerFirstName.getText() != null && txtCustomerLastName.getText() != null && txtCustomerEmail.getText() != null && txtCustomerPhone.getText() != null) {
+        if (selectedTicket == null) {
+            showAlert(Alert.AlertType.WARNING, "No Ticket Selected", "Please select a ticket to print.");
+            return;
+        }
 
-            System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
-            try {
-                String rndString = generateRandomString();
-                String qrFilePath = "src/main/resources/images/" + rndString + "_qr.png";
-                String barcodeFilePath = "src/main/resources/images/" + rndString + "_barcode.png";
+        if (txtCustomerFirstName.getText().isEmpty() || txtCustomerLastName.getText().isEmpty() || txtCustomerEmail.getText().isEmpty() || txtCustomerPhone.getText().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Missing Customer Information", "Please fill in all customer details.");
+            return;
+        }
 
-                // Generate QR code and Barcode
-                BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 200, 200);
-                BufferedImage barcodeImage = QRImageUtil.generateBarcode(rndString, 400, 100);
+        System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
+        try {
+            String rndString = generateRandomString();
+            String qrFilePath = "src/main/resources/images/" + rndString + "_qr.png";
+            String barcodeFilePath = "src/main/resources/images/" + rndString + "_barcode.png";
+            String logoFilePath = "src/main/resources/images/logo.png"; // Replace with your logo path
 
-                // Save images
-                ImageIO.write(qrImage, "PNG", new File(qrFilePath));
-                ImageIO.write(barcodeImage, "PNG", new File(barcodeFilePath));
+            // Generate QR code and Barcode
+            BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 100, 100);
+            BufferedImage barcodeImage = QRImageUtil.generateBarcode(rndString, 200, 100);
 
-                // Generate the ticket PDF with both the QR code and barcode
-                String ticketPath = "target/PrintedTickets/" + rndString + ".pdf";
-                PdfGeneratorUtil.generateTicket(ticketPath, "This is a cool ticket.", qrFilePath, barcodeFilePath);
-                Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
-                ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
-                gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
-                new File(qrFilePath).delete();
-                new File(barcodeFilePath).delete();
-            } catch (Exception e) {
-                System.err.println("Problem printing PDF: " + e);
-            }
+            // Save images
+            ImageIO.write(qrImage, "PNG", new File(qrFilePath));
+            ImageIO.write(barcodeImage, "PNG", new File(barcodeFilePath));
+
+            // Generate the ticket PDF with both the QR code and barcode
+            String ticketPath = "target/PrintedTickets/" + rndString + ".pdf";
+            Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
+            PdfGeneratorUtil.generateTicket(ticketPath, selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getLocationGuidance(), selectedEvent.getLocation().getAddress() + ", " + selectedEvent.getLocation().getCity(), selectedEvent.getStartDate().toString(), selectedEvent.getStartTime().toString(), selectedEvent.getEndTime().toString(), selectedTicket.getTicketName(), customer.getFirstName(), qrFilePath, barcodeFilePath, logoFilePath);
+
+            ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
+            gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
+            new File(qrFilePath).delete();
+            new File(barcodeFilePath).delete();
+        } catch (Exception e) {
+            System.err.println("Problem printing PDF: " + e);
+            showAlert(Alert.AlertType.ERROR, "Error Printing Ticket", "An error occurred while printing the ticket: " + e.getMessage());
         }
     }
 
