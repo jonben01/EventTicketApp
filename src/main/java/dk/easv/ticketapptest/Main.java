@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1152, 768);
-        stage.setTitle("Ticket Management!");
+        stage.setTitle("Ticket Management");
 
         stage.setScene(scene);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/usermanagementstyle.css")).toExternalForm());

@@ -2,12 +2,12 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,7 +58,6 @@ public class AdminUserManagementController implements Initializable {
     @FXML
     private Button btnSaveEditUser;
 
-    private TemporaryDataClass tdc;
     private UserManagementModel userManagementModel;
     private User selectedUser;
     private Map<TextField, String> originalValues = new HashMap<>();
@@ -82,7 +81,6 @@ public class AdminUserManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //tdc = new TemporaryDataClass();
         populateUserList();
 
         btnSaveEditUser.setVisible(false);
@@ -106,7 +104,7 @@ public class AdminUserManagementController implements Initializable {
 
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setUserInfo(newValue);
-            //TODO check if this works
+
             if (newValue == SessionManager.getInstance().getCurrentUser()) {
                 btnSwapRole.setDisable(true);
             } else if (btnSwapRole.isDisable()) {
@@ -114,9 +112,6 @@ public class AdminUserManagementController implements Initializable {
             }
         });
 
-
-        //TODO IMPLEMENT USE OF BEANS OR USERDATA FOR ACTUAL PROJECT
-        // SO THERE ISNT 6 LISTENERS DOING THE SAME THING
         userChangeListeners();
     }
 
@@ -199,6 +194,8 @@ public class AdminUserManagementController implements Initializable {
             txtPhone.setText(selectedUser.getPhone());
             lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
 
+            resetFieldStyles();
+
             //TODO change this. Not sure what to call it, if role name is wanted, make if statements
             btnSwapRole.setText("PLACEHOLDER :)");
 
@@ -214,11 +211,30 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    //TODO instead of setting style on the labels, make two different style classes
-    // because it is VERY annoying to change anything now.
+    public void resetFieldStyles() {
+        txtUsername.setStyle("");
+        txtPassword.setStyle("");
+        txtFirstName.setStyle("");
+        txtLastName.setStyle("");
+        txtEmail.setStyle("");
+        txtPhone.setStyle("");
+    }
 
     public void populateUserList() {
-        lstUsers.setItems(userModel.getUsers());
+        ObservableList<User> userList = FXCollections.observableArrayList();
+        try {
+            userList = userModel.getUsers();
+        } catch (EasvTicketException e) {
+            AlertClass.alertError("Error", "Error loading user list");
+        }
+        if (userList == null) {
+            AlertClass.alertError("Error", "Error loading user list");
+            return;
+        }
+        //sort list alphabetically by first name -- compares Users by firstname (defaults to alphabetical)
+        userList.sort(Comparator.comparing(User::getFirstName));
+
+        lstUsers.setItems(userList);
         lstUsers.setCellFactory(param -> new ListCell<User>() {
             @Override
             protected void updateItem(User item, boolean empty) {
@@ -269,28 +285,35 @@ public class AdminUserManagementController implements Initializable {
 
 
 
-    public void handleCreateUser(ActionEvent actionEvent) throws Exception {
+    public void handleCreateUser(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-user-creation-view.fxml"));
-        Parent root = loader.load();
+        User newUser = null;
+        try {
+            Parent root = loader.load();
+            AdminCreateUserController controller = loader.getController();
 
-        AdminCreateUserController controller = loader.getController();
+            Stage stage = new Stage();
+            stage.setTitle("Create User");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            newUser = controller.getCreatedUser();
+        } catch (Exception e) {
+            AlertClass.alertError("Loading crash", "An error occurred while loading popup window");
+        }
 
-        Stage stage = new Stage();
-        stage.setTitle("Create User");
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
-
-        User newUser = controller.getCreatedUser();
+        //this should probably be implemented in the createUserController instead, but at least it makes updating the list easy :)
         if (newUser != null) {
-            //TODO figure out if i am stupid for putting this here and not in the create user window????????????????????? - jonas 18/03
             try {
                 userManagementModel.createUserDB(newUser);
+                //catch UserNameAlreadyExists if that's the case, otherwise catch the generic exception
             } catch (UsernameAlreadyExistsException e) {
-                //TODO probable use the error message that was bubbled up from DAO.
-                AlertClass.alertError("Username Already Exists", "An error occurred while creating user\n the username already exists");
+                AlertClass.alertError("Username Already Exists", "An error occurred while creating user\nThe username already exists!");
                 return;
+            } catch (Exception e) {
+                AlertClass.alertError("Something went wrong", "An error occurred while creating user");
             }
+            lstUsers.getItems().add(newUser);
             lstUsers.getSelectionModel().select(newUser);
             lstUsers.scrollTo(newUser);
         }
@@ -314,39 +337,20 @@ public class AdminUserManagementController implements Initializable {
                     //TODO improve exception handling
                 } catch (Exception e) {
                     AlertClass.alertError("Delete Error", "An error occurred while deleting user");
-                    //since we arent creating a logger class, this will have to do
-                    e.printStackTrace();
                 }
 
             }
         }
     }
-/*
-
-    //TODO remove this
-    public void handleEditable(ActionEvent actionEvent) {
-        if (chkEditable.isSelected()) {
-            txtUsername.setEditable(true);
-            txtPassword.setEditable(true);
-            txtFirstName.setEditable(true);
-            txtLastName.setEditable(true);
-            txtEmail.setEditable(true);
-            txtPhone.setEditable(true);
-        } else {
-            txtUsername.setEditable(false);
-            txtPassword.setEditable(false);
-            txtFirstName.setEditable(false);
-            txtLastName.setEditable(false);
-            txtEmail.setEditable(false);
-            txtPhone.setEditable(false);
-            btnSaveEditUser.setVisible(false);
-        }
-    }
-
- */
 
     public void handleSaveEditUser(ActionEvent actionEvent) {
         if (selectedUser != null && hasChanged) {
+
+            if (!highlightFields()) {
+                AlertClass.alertWarning("Error", "Please ensure all fields are filled and dont contain spaces");
+                return;
+            }
+
             String newUsername = txtUsername.getText();
             String newPassword = txtPassword.getText().equals(PASSWORD_PLACEHOLDER) ? originalValues.get(txtPassword) : txtPassword.getText();
             String newFirstName = txtFirstName.getText();
@@ -385,15 +389,45 @@ public class AdminUserManagementController implements Initializable {
 
             AlertClass.alertInfo("User updated", "The user has successfully been updated");
         }
-
     }
+
+    private boolean highlightFields() {
+        boolean allValid = true;
+        String style = "-fx-border-color: red; -fx-border-width: 1px;";
+
+        if(txtUsername.getText().trim().isEmpty() || txtUsername.getText().contains(" ")) {
+            txtUsername.setStyle(style);
+            allValid = false;
+        }
+        if(txtPassword.getText().trim().isEmpty() || txtPassword.getText().contains(" ")) {
+            txtPassword.setStyle(style);
+            allValid = false;
+        }
+        if(txtFirstName.getText().trim().isEmpty()) {
+            txtFirstName.setStyle(style);
+            allValid = false;
+        }
+        if(txtLastName.getText().trim().isEmpty()) {
+            txtLastName.setStyle(style);
+            allValid = false;
+        }
+        if(txtEmail.getText().trim().isEmpty() || txtEmail.getText().contains(" ")) {
+            txtEmail.setStyle(style);
+            allValid = false;
+        }
+        if(txtPhone.getText().trim().isEmpty() || txtPhone.getText().contains(" ")) {
+            txtPhone.setStyle(style);
+            allValid = false;
+        }
+        return allValid;
+    }
+
+
     private void checkIfChanged() {
         btnSaveEditUser.setVisible(hasChanged);
     }
 
-
-    //TODO move the btnSwapRole text to setUserInfo instead, so it changes when u press
-    public void handleSwapRole(ActionEvent actionEvent) throws Exception {
+    public void handleSwapRole(ActionEvent actionEvent) {
         User user = lstUsers.getSelectionModel().getSelectedItem();
         System.out.println(user);
         if (user != null && Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
@@ -402,9 +436,12 @@ public class AdminUserManagementController implements Initializable {
             return;
         }
 
-        //TODO use alert class
         if (user != null && !Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
-            userModel.editRole(user);
+            try {
+                userModel.editRole(user);
+            } catch (EasvTicketException e) {
+                AlertClass.alertError("Role change error", "An error occurred while changing the role");
+            }
             lstUsers.refresh();
             if (user.getRole() == Role.ADMIN) {
                 //confirmation check with Alert
@@ -430,16 +467,24 @@ public class AdminUserManagementController implements Initializable {
     public void searchUser() {
 
         String searchQuery = txtUserSearch.getText();
+        ObservableList<User> users = null;
 
         if (txtUserSearch.getText().isEmpty()) {
-            lstUsers.setItems(userModel.getUsers());
-            return;
+            try {
+                users = userModel.getUsers();
+                lstUsers.setItems(users);
+                return;
+            } catch (EasvTicketException e) {
+                AlertClass.alertError("Search Error", "An error occurred while searching users");
+            }
         }
+        //TODO test if anything here dies if the user list is empty
+
         //create a new task
         Task<ObservableList<User>> searchTask = new Task<>() {
             @Override
             //tell the task what to do
-            protected ObservableList<User> call() throws Exception {
+            protected ObservableList<User> call() throws EasvTicketException {
                 return userManagementModel.searchUser(searchQuery);
             }
         };
@@ -459,6 +504,7 @@ public class AdminUserManagementController implements Initializable {
         //if the task fails, show the user theres a db issue.
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();
+            //TODO maybe dont show the user the error message????????
             AlertClass.alertError("Search Error","An error occurred while searching for users" + error.getMessage());
         });
 

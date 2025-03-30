@@ -2,7 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,39 +37,73 @@ public class AdminCreateUserController implements Initializable {
 
     public void handleCreateNewUser(ActionEvent actionEvent) {
 
-
-        //TODO make sure the setting of styles here, doesnt actually fuck with the eventual CSS
-        //brother this is the most cooked code i have ever made.
-
-
-        //TODO HANDLE EDGE CASES WHERE USERS TYPE STUFF THEY SHOULDNT
-        if (txtUsername.getText().isEmpty() ||
-                txtPassword.getText().isEmpty() ||
-                txtFirstName.getText().isEmpty() ||
-                txtLastName.getText().isEmpty() ||
-                txtEmail.getText().isEmpty() ||
-                txtPhone.getText().isEmpty() ) {
-            VBox.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
+        if(!highlightFields()) {
+            AlertClass.alertInfo("Missing information", "Please fill all the fields or correct illegal input, like spaces");
             return;
-        } else {
-            VBox.setStyle("");
         }
+        Role role = getRole();
+        if (role == null) {
+            AlertClass.alertInfo("Missing information", "Please select a role");
+            return;
+        }
+        newUser = new User(txtUsername.getText(),
+                            txtPassword.getText(),
+                            txtFirstName.getText(),
+                            txtLastName.getText(),
+                            txtEmail.getText(),
+                            txtPhone.getText(), role);
+
+        setCreatedUser(newUser);
+        Stage stage = (Stage) btnCreateNewUser.getScene().getWindow();
+        stage.close();
+    }
+
+    private Role getRole() {
         if (!chkAdmin.isSelected() && !chkCoordinator.isSelected()) {
             chkAdmin.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
             chkCoordinator.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
-            return;
         } else {
             chkAdmin.setStyle("");
             chkCoordinator.setStyle("");
         }
         if (chkCoordinator.isSelected()) {
-            newUser = new User(txtUsername.getText(), txtPassword.getText(), txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhone.getText(), Role.COORDINATOR);
-        } else if (chkAdmin.isSelected()) {
-            newUser = new User(txtUsername.getText(), txtPassword.getText(), txtFirstName.getText(), txtLastName.getText(), txtEmail.getText(), txtPhone.getText(), Role.ADMIN);
+            return Role.COORDINATOR;
         }
-        setCreatedUser(newUser);
-        Stage stage = (Stage) btnCreateNewUser.getScene().getWindow();
-        stage.close();
+        if (chkAdmin.isSelected()) {
+            return Role.ADMIN;
+        }
+        return null;
+    }
+
+    private boolean highlightFields() {
+        boolean allValid = true;
+        String style = "-fx-border-color: red; -fx-border-width: 1px;";
+
+        if(txtUsername.getText().trim().isEmpty() || txtUsername.getText().contains(" ")) {
+            txtUsername.setStyle(style);
+            allValid = false;
+        }
+        if(txtPassword.getText().trim().isEmpty() || txtPassword.getText().contains(" ")) {
+            txtPassword.setStyle(style);
+            allValid = false;
+        }
+        if(txtFirstName.getText().trim().isEmpty()) {
+            txtFirstName.setStyle(style);
+            allValid = false;
+        }
+        if(txtLastName.getText().trim().isEmpty()) {
+            txtLastName.setStyle(style);
+            allValid = false;
+        }
+        if(txtEmail.getText().trim().isEmpty() || txtEmail.getText().contains(" ")) {
+            txtEmail.setStyle(style);
+            allValid = false;
+        }
+        if(txtPhone.getText().trim().isEmpty() || txtPhone.getText().contains(" ")) {
+            txtPhone.setStyle(style);
+            allValid = false;
+        }
+        return allValid;
     }
 
 

@@ -5,7 +5,7 @@ import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -20,7 +20,6 @@ import java.util.Map;
 public class EventDAO implements IEventDataAccess {
     private DBConnector connector;
     List<User> tempData;
-    TemporaryDataClass tempDataClass;
     UserDAO userDAO;
     TicketDAO ticketDAO;
 
@@ -28,8 +27,13 @@ public class EventDAO implements IEventDataAccess {
         ticketDAO = new TicketDAO();
         connector = new DBConnector();
         tempData = new ArrayList<>();
-        tempDataClass = new TemporaryDataClass();
-        userDAO = new UserDAO();
+
+        try {
+            userDAO = new UserDAO();
+            //TODO this should be applied to all of the other objects, but also DO NOT THROW RUNTIME - cba changing this right now
+        } catch (EasvTicketException e) {
+            throw new RuntimeException();
+        }
 
    // tempData.add(tempDataClass.getUsers().get(0));
     }

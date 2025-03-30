@@ -7,21 +7,16 @@ import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 public class CreateEventViewController {
 
@@ -52,13 +47,6 @@ public class CreateEventViewController {
 
     private User sessionUser;
 
-
-
-
-
-
-    TemporaryDataClass data;
-
     //todo bad. fix.
     EventManagementModel model;
 
@@ -75,7 +63,6 @@ public class CreateEventViewController {
         sessionUser = SessionManager.getInstance().getCurrentUser();
 
         model = new EventManagementModel();
-        data = new TemporaryDataClass();
         String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
         btnCreateEvent.getStylesheets().add(cssFile);
         //btnAddTicket.getStylesheets().add(cssFile);

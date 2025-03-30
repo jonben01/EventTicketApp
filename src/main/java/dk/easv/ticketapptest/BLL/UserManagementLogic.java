@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.BLL;
 
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.util.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.util.UserSearcher;
 import dk.easv.ticketapptest.DAL.UserDAO;
@@ -26,7 +27,7 @@ public class UserManagementLogic {
 
     }
 
-    public User updateUserDB(User user) throws Exception {
+    public User updateUserDB(User user) throws EasvTicketException {
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
         return userDAO.updateUserDB(user);
     }
@@ -35,7 +36,7 @@ public class UserManagementLogic {
         userDAO.deleteUser(user);
     }
 
-    public ObservableList<User> searchUser(String searchQuery) {
+    public ObservableList<User> searchUser(String searchQuery) throws EasvTicketException {
         List<User> searchBase = userDAO.getUsers();
         return userSearcher.searchUser(searchBase, searchQuery);
     }

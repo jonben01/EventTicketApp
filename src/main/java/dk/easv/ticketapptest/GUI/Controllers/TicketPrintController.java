@@ -6,7 +6,6 @@ import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BLL.util.Gmailer;
 import dk.easv.ticketapptest.BLL.util.PdfGeneratorUtil;
 import dk.easv.ticketapptest.BLL.util.QRImageUtil;
-import dk.easv.ticketapptest.DAL.TicketDataStore;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -108,7 +107,6 @@ public class TicketPrintController {
         vboxRight.getStyleClass().add("vBoxBorder2");
         btnReturn.setCursor(javafx.scene.Cursor.HAND);
 
-        tblTicket.setItems(TicketDataStore.getInstance().getTickets());
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTicketName()));
         colDescription.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
         colPrice.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());

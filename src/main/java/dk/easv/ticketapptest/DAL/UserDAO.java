@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.DAL;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,12 +17,16 @@ public class UserDAO {
 
     private DBConnector dbConnector;
 
-    public UserDAO() throws IOException {
-        dbConnector = new DBConnector();
+    public UserDAO() throws EasvTicketException {
+        try {
+            dbConnector = new DBConnector();
+        } catch (IOException e) {
+            throw new EasvTicketException("Couldn't instantiate DBConnector", e);
+        }
     }
 
 
-    public User createUserDB (User user) throws Exception {
+    public User createUserDB (User user) throws UsernameAlreadyExistsException, EasvTicketException {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?)";
 
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
@@ -36,9 +41,13 @@ public class UserDAO {
 
             //TODO handle the bubbling up of this quicker, so it doesnt even make it to the 2627 and 2601
             // race conditions are handled by those, but you shouldnt have to make it it there in "non-race" conditions.
-            if (user != null && usernameExists(user.getUsername())) {
+            if (user == null) {
+                throw new IllegalArgumentException("User cannot be null");
+            }
+            if (usernameExists(user.getUsername())) {
                 throw new UsernameAlreadyExistsException("Username already exists");
             }
+
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
@@ -65,12 +74,15 @@ public class UserDAO {
             pstmt3.setInt(1, userID);
             pstmt3.setInt(2, roleID);
             pstmt3.executeUpdate();
-            connection.commit();
+            try {
+                connection.commit();
+            } catch (SQLException e) {
+                //rollback in case one of the queries somehow break
+                connection.rollback();
+            }
 
             return new User(user.getUsername(), user.getPassword(), user.getFirstName(),
                             user.getLastName(), user.getEmail(), user.getPhone(), user.getRole());
-
-            //TODO implement better exception handling, drop runtimeexception
 
         } catch (SQLException err) {
             //ERROR CODES FOR BREAKING UNIQUE CONSTRAINTS as a workaround, since SQLIntegrityConstraintViolationException
@@ -79,12 +91,12 @@ public class UserDAO {
             if (err.getErrorCode() == 2627 || err.getErrorCode() == 2601) {
                 throw new UsernameAlreadyExistsException("Username: " + user.getUsername() + "already exists", err);
             } else {
-                throw new Exception(err);
+                throw new EasvTicketException("Error creating new user", err);
             }
         }
     }
 
-    public String getPassword(String username) {
+    public String getPassword(String username) throws EasvTicketException {
         String passwordSQL = "SELECT PasswordHash FROM dbo.Users WHERE Username = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(passwordSQL)) {
             pstmt.setString(1, username);
@@ -92,16 +104,13 @@ public class UserDAO {
             if (rs.next()) {
                 return rs.getString("PasswordHash");
             }
-
-            //TODO IMPLEMENT BETTER EXCEPTION HANDLING, NO RUNTIMEEXCEPTIONS PLS
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new EasvTicketException("Failed to retrieve password", e);
         }
         return null;
     }
 
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws EasvTicketException {
 
         String userSQL = "SELECT U.*, R.RoleName FROM dbo.Users U " +
                         "INNER JOIN dbo.User_Roles AS UR ON U.UserID = UR.UserID " +
@@ -132,8 +141,7 @@ public class UserDAO {
 
             }
         } catch (SQLException e) {
-            System.out.println("OOPSIE WOOPSIE IN GET USER BY USERNAME");
-            e.printStackTrace();
+            throw new EasvTicketException("Failed to retrieve user by username", e);
         }
         //TODO fix exception handling here, and this return.
         return null;
@@ -141,7 +149,7 @@ public class UserDAO {
 
 
 
-    public User updateUserDB(User user) throws Exception {
+    public User updateUserDB(User user) throws EasvTicketException {
         String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
         String updateRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
@@ -179,10 +187,11 @@ public class UserDAO {
             return user;
 
         } catch (SQLException e) {
-            throw new Exception("Could not update user", e);
+            throw new EasvTicketException("Could not update user", e);
         }
     }
 
+    //TODO fix exceptions, dont pass an SQLException to higher layers
     private int getUserId(String username) throws SQLException {
         String sql = "SELECT UserID FROM dbo.Users WHERE Username = ?";
         try (Connection connection = dbConnector.getConnection();
@@ -196,31 +205,8 @@ public class UserDAO {
             }
         }
     }
-        // was planned to be used in events. Did not use. It is here if you think is pretty.
-    public User getUserByID(int userID) throws SQLServerException {
-        String sql = "SELECT * FROM dbo.Users WHERE UserID = ?";
-        try(Connection connection = dbConnector.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userID);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("UserID"));
-                user.setUsername(rs.getString("Username"));
-                user.setPassword(rs.getString("PasswordHash"));
-                user.setEmail(rs.getString("Email"));
-                user.setPhone(rs.getString("PhoneNumber"));
-                user.setFirstName(rs.getString("FirstName"));
-                user.setLastName(rs.getString("LastName"));
-                return user;
-            }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        throw new RuntimeException("User not found: " + userID);
-    }
-
-    public List<User> getAllCoordinators() throws SQLServerException {
+    public List<User> getAllCoordinators() throws EasvTicketException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.* FROM dbo.User_Roles ru RIGHT JOIN dbo.Users u ON u.UserID = ru.UserID WHERE RoleID = 2";
         try(Connection conn = dbConnector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -238,11 +224,11 @@ public class UserDAO {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EasvTicketException("Couldn't get all Coordinators",e);
         }
     }
 
-    public boolean usernameExists(String username) throws Exception {
+    public boolean usernameExists(String username) throws EasvTicketException {
         String userSQL = "SELECT Username FROM dbo.Users WHERE Username = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
 
@@ -252,14 +238,13 @@ public class UserDAO {
                 return true;
             }
 
-            //TODO better exception handling.
         } catch (SQLException e) {
-            throw new Exception("SQLException in usernameExists: " + e.getMessage());
+            throw new EasvTicketException("SQLException in usernameExists: ", e);
         }
         return false;
     }
 
-    public ObservableList<User> getUsers() {
+    public ObservableList<User> getUsers() throws EasvTicketException {
         String userSQL = "SELECT u.*, r.RoleName FROM dbo.Users u JOIN dbo.User_Roles ur ON u.UserID = ur.UserID JOIN dbo.Roles r ON r.RoleID = ur.RoleID; ";
 
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
@@ -282,9 +267,8 @@ public class UserDAO {
             }
             return users;
 
-            //TODO implement better exception handling, drop runtime
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EasvTicketException("Couldn't get users",e);
         }
     }
 
@@ -300,7 +284,7 @@ public class UserDAO {
         }
     }
 
-    public void editRole(User user) throws SQLException {
+    public void editRole(User user) throws EasvTicketException {
         String editRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
 
         int adminRoleID = 1;
@@ -317,6 +301,8 @@ public class UserDAO {
                 pstmt.setInt(2, user.getId());
                 pstmt.executeUpdate();
             }
+        } catch (SQLException e) {
+            throw new EasvTicketException("Couldn't update role");
         }
     }
 }

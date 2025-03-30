@@ -4,7 +4,6 @@ import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;

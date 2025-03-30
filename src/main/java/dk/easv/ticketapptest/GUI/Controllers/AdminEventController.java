@@ -3,7 +3,6 @@ package dk.easv.ticketapptest.GUI.Controllers;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -50,6 +49,9 @@ public class AdminEventController implements Initializable {
         loadingLabel.styleProperty().set("-fx-font-size: 20px;");
         tblEvents.setPlaceholder(loadingLabel);
 
+
+        //running this in a different thread allows the user to see the window before data has loaded
+        //providing a much nicer UX
         Task<AdminEventModel> initTask = new Task<>() {
 
             @Override
@@ -72,7 +74,6 @@ public class AdminEventController implements Initializable {
         thread.start();
 
         setupColumns();
-
     }
     public void loadTableData() {
         Task<ObservableList<Event2>> loadDataTask = new Task<>() {

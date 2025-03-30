@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI.Models;
 
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.UserManagementLogic;
 import javafx.collections.ObservableList;
 
@@ -26,7 +27,7 @@ public class UserManagementModel {
         userManagementLogic.deleteUser(user);
     }
 
-    public ObservableList<User> searchUser(String searchQuery) {
+    public ObservableList<User> searchUser(String searchQuery) throws EasvTicketException {
         return userManagementLogic.searchUser(searchQuery);
     }
 

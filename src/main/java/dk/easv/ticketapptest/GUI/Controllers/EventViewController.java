@@ -10,7 +10,6 @@ import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
-import dk.easv.ticketapptest.GUI.TemporaryDataClass;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -70,7 +69,7 @@ public class EventViewController {
     private EventManagementModel eventModel;
     @FXML
     private VBox vboxRight;
-    private TemporaryDataClass dataClass;
+
     private HashMap<User, Boolean> selectionState = new HashMap<>();
     @FXML
     private TableColumn<Ticket, String> clnTicket;
@@ -90,6 +89,7 @@ public class EventViewController {
     @FXML
     private Label lblAccess;
 
+    //TODO exceptions
     public void setSelectedEvent(Event2 event2) throws Exception {
         this.selectedEvent = event2;
         for(User coordinator : userModel.getAllCoordinators())
@@ -125,13 +125,13 @@ public class EventViewController {
         this.root = root;
     }
 
+    //TODO exceptions
         @FXML
         public void initialize() throws Exception {
         usersWithAccess = new ArrayList<>();
         userModel = new UserModel();
         eventModel = new EventManagementModel();
         ticketModel = new TicketModel();
-        dataClass = new TemporaryDataClass();
         tblTicket.getStylesheets().add("css/admineventstyle.css");
         tblTicket.getStyleClass().add("table-view");
 
@@ -225,6 +225,7 @@ public class EventViewController {
         return false;
     }
 
+    //TODO exceptions
     @FXML
     private void handleAddTicket(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
@@ -240,11 +241,13 @@ public class EventViewController {
         stage.show();
     }
 
+    //TODO exceptions
     public void updateTicketList() throws SQLException {
         tblTicket.getItems().clear();
         tblTicket.getItems().addAll(ticketModel.getTicketsForEvent(selectedEvent));
     }
 
+    //TODO exceptions
     public void updateInformation(int version) throws SQLException {
         if(version == 1) {
             eventModel.updateList();
@@ -286,7 +289,6 @@ public class EventViewController {
             stage.show();
         } catch (IOException e) {
             AlertClass.alertError("Error", "An error occurred while loading event panel");
-            e.printStackTrace();
         }
     }
 
@@ -305,7 +307,6 @@ public class EventViewController {
             }
         } catch (Exception e) {
             AlertClass.alertError("Error", "An error occurred while removing event");
-            e.printStackTrace();
         }
     }
 
@@ -341,7 +342,6 @@ public class EventViewController {
                 updateTicketList();
             } catch (IOException | SQLException e) {
                 AlertClass.alertError("Error", "An error while editing the ticket");
-                e.printStackTrace();
             }
         } else {
             AlertClass.alertWarning("Missing ticket", "Please select a ticket to edit");
@@ -363,7 +363,6 @@ public class EventViewController {
                     updateTicketList();
                 } catch (SQLException e) {
                     AlertClass.alertError("Error", "An error occurred while deleting the ticket");
-                    e.printStackTrace();
                 }
             }
         } else {

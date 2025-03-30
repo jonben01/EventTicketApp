@@ -7,9 +7,6 @@ import java.util.Optional;
 
 public class AlertClass {
 
-    //TODO implement flexible alerts.
-
-
     public static Optional<ButtonType> showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

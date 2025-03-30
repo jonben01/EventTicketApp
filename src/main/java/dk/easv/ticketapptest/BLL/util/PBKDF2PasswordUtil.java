@@ -1,5 +1,7 @@
 package dk.easv.ticketapptest.BLL.util;
 
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +18,7 @@ public class PBKDF2PasswordUtil {
     // it just does business logic. static makes it easier to call the methods globally, which is fine for this usage(i think??)
 
 
-    public static String hashPassword(String password) throws Exception {
+    public static String hashPassword(String password) throws EasvTicketException {
         byte[] salt = generateSalt();
         byte[] hash = pbkdf2Hash(password, salt, ITERATIONS, HASH_LENGTH);
 
@@ -37,7 +39,7 @@ public class PBKDF2PasswordUtil {
      * @param hashedPassword password stored in db, containing salt + iterations + password hash.
      * @return true or false depending on whether they're the same.
      */
-    public static boolean verifyPassword(String password, String hashedPassword) throws Exception {
+    public static boolean verifyPassword(String password, String hashedPassword) throws EasvTicketException {
         //split String on :
         String[] parts = hashedPassword.split(":");
         //get iterations from String array
@@ -65,16 +67,13 @@ public class PBKDF2PasswordUtil {
 
 
     //TODO comments
-    private static byte[] pbkdf2Hash(String password, byte[] salt, int iterations, int hashLength) throws Exception {
+    private static byte[] pbkdf2Hash(String password, byte[] salt, int iterations, int hashLength) throws EasvTicketException {
         try {
             PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, hashLength * 8);
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             return skf.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-
-            //TODO IMPLEMENT ACTUAL EXCEPTION HANDLING
-            System.out.println("Error: " + e.getMessage() + "at PBKDF2WithHmacSHA256");
-            throw new Exception();
+            throw new EasvTicketException("failed to generate PBKDF2WithHmacSHA256 hash", e);
         }
     }
 

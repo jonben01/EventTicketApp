@@ -1,5 +1,6 @@
 package dk.easv.ticketapptest.BLL.util;
 
+import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,8 +10,6 @@ import java.util.List;
 
 public class UserSearcher {
 
-
-
     public ObservableList<User> searchUser(List<User> searchBase, String searchQuery) {
         List<User> searchResults = new ArrayList<>();
 
@@ -19,7 +18,8 @@ public class UserSearcher {
                     compareToLastName(searchQuery, user) ||
                     compareToEmail(searchQuery, user) ||
                     compareToPhone(searchQuery, user) ||
-                    compareToUsername(searchQuery, user)) {
+                    compareToUsername(searchQuery, user) ||
+                    compareToRole(searchQuery, user)) {
 
                 searchResults.add(user);
 
@@ -27,7 +27,6 @@ public class UserSearcher {
         }
         return FXCollections.observableList(searchResults);
     }
-
 
     public boolean compareToFirstName(String searchQuery, User user) {
         return user.getFirstName().toLowerCase().contains(searchQuery.toLowerCase());
@@ -47,5 +46,13 @@ public class UserSearcher {
     public boolean compareToPhone(String searchQuery, User user) {
         return user.getPhone().toLowerCase().contains(searchQuery.toLowerCase());
     }
+
+    public boolean compareToRole(String searchQuery, User user) {
+        if (user.getRole() == null) {
+            return false;
+        }
+        return user.getRole().toString().toLowerCase().contains(searchQuery.toLowerCase());
+    }
+
 
 }
