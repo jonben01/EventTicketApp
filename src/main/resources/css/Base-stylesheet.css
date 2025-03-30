@@ -8,13 +8,14 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #333;
-    -fx-padding: 30px 0;
+    -fx-padding: 5px 0;
 }
 
 .sidebar .button {
     -fx-background-color: white;
     -fx-text-fill: #333;
-    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
     -fx-cursor: pointer;
 }
 
@@ -52,7 +53,8 @@
 #sidebarAdmin .button {
     -fx-background-color: white;
     -fx-text-fill: #333;
-    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
     -fx-cursor: pointer;
 }
 

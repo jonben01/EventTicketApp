@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPaneEvent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventDashboardController">
+<BorderPane fx:id="rootPaneEvent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventDashboardController">
    <left>
       <VBox fx:id="sidebarVBox" alignment="TOP_CENTER" minWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -18,8 +18,8 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEventManagement" prefHeight="45.0" prefWidth="200.0" text="🗒 Event Management" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTicketManagement" prefHeight="45.0" prefWidth="200.0" text="🎫 Ticket Management" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEventManagement" prefHeight="45.0" prefWidth="200.0" text="🗒 Events" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTicketManagement" prefHeight="45.0" prefWidth="200.0" text="🎫 Tickets" />
                   <Label />
                </children>
             </VBox>

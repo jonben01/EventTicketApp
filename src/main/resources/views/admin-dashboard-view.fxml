@@ -6,16 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPaneAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" stylesheets="@../css/Base-stylesheet.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminDashboardController">
+<BorderPane fx:id="rootPaneAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1152.0" stylesheets="@../css/Base-stylesheet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminDashboardController">
     <left>
         <VBox fx:id="sidebarAdmin" alignment="TOP_CENTER" minWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
             <children>
             <VBox alignment="TOP_CENTER" prefHeight="593.0" prefWidth="200.0" spacing="12.0" VBox.vgrow="ALWAYS">
                <children>
                       <Label text="Admin dashboard" />
-                      <Button fx:id="btnUserManagement" minHeight="45.0" mnemonicParsing="false" onAction="#handleUserManagement" prefHeight="45.0" prefWidth="206.0" text="User management" />
-                      <Button fx:id="btnEventHistory" minHeight="45.0" mnemonicParsing="false" onAction="#handleEventHistory" prefHeight="45.0" prefWidth="207.0" text="Event history" />
+                      <Button fx:id="btnUserManagement" minHeight="45.0" mnemonicParsing="false" onAction="#handleUserManagement" prefHeight="45.0" prefWidth="206.0" text="👥 Users">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Button>
+                      <Button fx:id="btnEventHistory" minHeight="45.0" mnemonicParsing="false" onAction="#handleEventHistory" prefHeight="45.0" prefWidth="207.0" text=" 🗒 Events" />
                </children>
                <padding>
                   <Insets top="12.0" />
