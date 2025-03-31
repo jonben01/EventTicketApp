@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class PdfGeneratorUtil {
 
-    public static void generateTicket(String filePath, String eventTitle, String eventDescription, String locationGuidance, String eventLocation, String eventDate, String eventStartTime, String eventEndTime, String ticketType, String customerName, String qrCodePath, String barCodePath, String logoPath) throws IOException {
+    public static void generateTicket(String filePath, String eventTitle, String eventDescription, String locationGuidance, String eventLocation, String eventDate, String eventStartTime, String eventEndTime, String ticketType, String customerName, String qrCodePath, String barCodePath, String logoPath, String customerLastName) throws IOException {
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -47,11 +47,7 @@ public class PdfGeneratorUtil {
 
             topSectionTable.addCell(new Cell().add(new Paragraph(eventTitle).setFont(bold).setFontSize(20).setFontColor(ColorConstants.BLACK)).setBorder(Border.NO_BORDER));
             topSectionTable.addCell(new Cell().add(new Paragraph(eventDescription).setFont(normal).setFontSize(12)).setBorder(Border.NO_BORDER));
-            guidanceSectionTable.addCell(new Cell().add(
-                    new Paragraph()
-                            .add(new Text("Guidance: ").setFont(bold))
-                            .add(new Text(locationGuidance).setFont(normal))
-            ).setFontSize(12).setBorder(Border.NO_BORDER));
+            guidanceSectionTable.addCell(new Cell().add(new Paragraph().add(new Text("Guidance: ").setFont(bold)).add(new Text(locationGuidance).setFont(normal))).setFontSize(12).setBorder(Border.NO_BORDER));
 
             document.add(topSectionTable);
             document.add(guidanceSectionTable);
@@ -60,39 +56,46 @@ public class PdfGeneratorUtil {
 
             // Add bottom title above event details
             Paragraph bottomTitle = new Paragraph(eventTitle).setFont(bold).setFontSize(16).setTextAlignment(TextAlignment.LEFT);
-            document.add(bottomTitle.setFixedPosition(36, 240, PageSize.A4.getWidth() - 72));
-
-
+            document.add(bottomTitle.setFixedPosition(36, 230, PageSize.A4.getWidth() - 72));
 
             // Draw dotted line above bottom title
-            drawDottedLineAndScissor(pdf, 270);
+            drawDottedLineAndScissor(pdf, 300);
 
             // Bottom Section
             Table bottomTable = new Table(UnitValue.createPercentArray(new float[]{1, 1})).useAllAvailableWidth();
-            bottomTable.setFixedPosition(36, 50, PageSize.A4.getWidth() - 72);
+            bottomTable.setFixedPosition(36, 100, PageSize.A4.getWidth() - 72);
 
             Table eventDetailsTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
-            eventDetailsTable.addCell(createCell("Location: " + eventLocation, normal));
-            eventDetailsTable.addCell(createCell("Date: " + eventDate, normal));
-            eventDetailsTable.addCell(createCell("Time: " + eventStartTime + " - " + eventEndTime, normal));
-            eventDetailsTable.addCell(createCell("Ticket Type: " + ticketType, normal));
-            eventDetailsTable.addCell(createCell("Customer: " + customerName, normal));
+            eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Location: ").setFont(bold)).add(new Text(eventLocation).setFont(normal))).setFontSize(12));
+            eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Date: ").setFont(bold)).add(new Text(eventDate).setFont(normal))).setFontSize(12));
+            eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Time: ").setFont(bold)).add(new Text(eventStartTime + " - " + eventEndTime).setFont(normal))).setFontSize(12));
+            eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Ticket Type: ").setFont(bold)).add(new Text(ticketType).setFont(normal))).setFontSize(12));
+            eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Customer: ").setFont(bold)).add(new Text(customerName + " " + customerLastName).setFont(normal))).setFontSize(12));
             bottomTable.addCell(new Cell().add(eventDetailsTable).setBorder(Border.NO_BORDER));
 
-
-            Table qrBarcodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+            Table qrCodeImage = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+            Table qrBarcodeImage = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             if (new File(qrCodePath).exists()) {
                 Image qrImage = new Image(ImageDataFactory.create(qrCodePath)).setWidth(150).setHeight(150);
-                qrBarcodeTable.addCell(new Cell().add(qrImage).setBorder(Border.NO_BORDER));
+                qrCodeImage.addCell(new Cell().add(qrImage).setBorder(Border.NO_BORDER));
             }
             if (new File(barCodePath).exists()) {
-                Image barImage = new Image(ImageDataFactory.create(barCodePath)).setWidth(300).setHeight(100);
-                qrBarcodeTable.addCell(new Cell().add(barImage).setBorder(Border.NO_BORDER));
+                Image barImage = new Image(ImageDataFactory.create(barCodePath)).setWidth(250).setHeight(100);
+                qrBarcodeImage.addCell(new Cell().add(barImage).setBorder(Border.NO_BORDER));
             }
+            //Move QR Code
             Table qrCodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
-            qrCodeTable.addCell(new Cell().add(qrBarcodeTable).setBorder(Border.NO_BORDER));
-            qrCodeTable.setFixedPosition(200,10,PageSize.A4.getWidth() - 72);
+            qrCodeTable.addCell(new Cell().add(qrCodeImage).setBorder(Border.NO_BORDER));
+            qrCodeTable.setFixedPosition(296,140,PageSize.A4.getWidth() - 72);
 
+            //Move Bar Code
+            Table qrBarcodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+            qrBarcodeTable.addCell(new Cell().add(qrBarcodeImage).setBorder(Border.NO_BORDER));
+            qrBarcodeTable.setFixedPosition(310,30,PageSize.A4.getWidth() - 72);
+
+
+
+            document.add(qrBarcodeTable);
             document.add(bottomTable);
             document.add(qrCodeTable);
             document.close();

@@ -172,8 +172,8 @@ public class TicketPrintController {
             String logoFilePath = "src/main/resources/images/logo.png"; // Replace with your logo path
 
             // Generate QR code and Barcode
-            BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 100, 100);
-            BufferedImage barcodeImage = QRImageUtil.generateBarcode(rndString, 200, 100);
+            BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 150, 150);
+            BufferedImage barcodeImage = QRImageUtil.generateBarcode(rndString, 250, 100);
 
             // Save images
             ImageIO.write(qrImage, "PNG", new File(qrFilePath));
@@ -182,7 +182,7 @@ public class TicketPrintController {
             // Generate the ticket PDF with both the QR code and barcode
             String ticketPath = "target/PrintedTickets/" + rndString + ".pdf";
             Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
-            PdfGeneratorUtil.generateTicket(ticketPath, selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getLocationGuidance(), selectedEvent.getLocation().getAddress() + ", " + selectedEvent.getLocation().getCity(), selectedEvent.getStartDate().toString(), selectedEvent.getStartTime().toString(), selectedEvent.getEndTime().toString(), selectedTicket.getTicketName(), customer.getFirstName(), qrFilePath, barcodeFilePath, logoFilePath);
+            PdfGeneratorUtil.generateTicket(ticketPath, selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getLocationGuidance(), selectedEvent.getLocation().getAddress() + ", " + selectedEvent.getLocation().getCity(), selectedEvent.getStartDate().toString(), selectedEvent.getStartTime().toString(), selectedEvent.getEndTime().toString(), selectedTicket.getTicketName(), customer.getFirstName(), qrFilePath, barcodeFilePath, logoFilePath, customer.getLastName());
 
             ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
             gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
