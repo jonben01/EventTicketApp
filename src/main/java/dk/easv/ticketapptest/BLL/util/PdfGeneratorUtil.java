@@ -12,10 +12,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -37,7 +34,9 @@ public class PdfGeneratorUtil {
 
             // Logo and Event Details
             Table topSectionTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+            Table guidanceSectionTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             topSectionTable.setMarginTop(10);
+            guidanceSectionTable.setMarginTop(15);
 
             File logoFile = new File(logoPath);
             if (logoFile.exists()) {
@@ -48,20 +47,25 @@ public class PdfGeneratorUtil {
 
             topSectionTable.addCell(new Cell().add(new Paragraph(eventTitle).setFont(bold).setFontSize(20).setFontColor(ColorConstants.BLACK)).setBorder(Border.NO_BORDER));
             topSectionTable.addCell(new Cell().add(new Paragraph(eventDescription).setFont(normal).setFontSize(12)).setBorder(Border.NO_BORDER));
-            topSectionTable.addCell(new Cell().add(new Paragraph("Guidance: " + locationGuidance).setFont(normal).setFontSize(12)).setBorder(Border.NO_BORDER));
+            guidanceSectionTable.addCell(new Cell().add(
+                    new Paragraph()
+                            .add(new Text("Guidance: ").setFont(bold))
+                            .add(new Text(locationGuidance).setFont(normal))
+            ).setFontSize(12).setBorder(Border.NO_BORDER));
 
             document.add(topSectionTable);
+            document.add(guidanceSectionTable);
 
 
 
             // Add bottom title above event details
             Paragraph bottomTitle = new Paragraph(eventTitle).setFont(bold).setFontSize(16).setTextAlignment(TextAlignment.LEFT);
-            document.add(bottomTitle.setFixedPosition(36, 260, PageSize.A4.getWidth() - 72));
+            document.add(bottomTitle.setFixedPosition(36, 240, PageSize.A4.getWidth() - 72));
 
 
 
             // Draw dotted line above bottom title
-            drawDottedLineAndScissor(pdf, 300);
+            drawDottedLineAndScissor(pdf, 270);
 
             // Bottom Section
             Table bottomTable = new Table(UnitValue.createPercentArray(new float[]{1, 1})).useAllAvailableWidth();
@@ -75,18 +79,22 @@ public class PdfGeneratorUtil {
             eventDetailsTable.addCell(createCell("Customer: " + customerName, normal));
             bottomTable.addCell(new Cell().add(eventDetailsTable).setBorder(Border.NO_BORDER));
 
+
             Table qrBarcodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             if (new File(qrCodePath).exists()) {
-                Image qrImage = new Image(ImageDataFactory.create(qrCodePath)).setWidth(100).setHeight(100);
+                Image qrImage = new Image(ImageDataFactory.create(qrCodePath)).setWidth(150).setHeight(150);
                 qrBarcodeTable.addCell(new Cell().add(qrImage).setBorder(Border.NO_BORDER));
             }
             if (new File(barCodePath).exists()) {
                 Image barImage = new Image(ImageDataFactory.create(barCodePath)).setWidth(300).setHeight(100);
                 qrBarcodeTable.addCell(new Cell().add(barImage).setBorder(Border.NO_BORDER));
             }
-            bottomTable.addCell(new Cell().add(qrBarcodeTable).setBorder(Border.NO_BORDER));
+            Table qrCodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+            qrCodeTable.addCell(new Cell().add(qrBarcodeTable).setBorder(Border.NO_BORDER));
+            qrCodeTable.setFixedPosition(200,10,PageSize.A4.getWidth() - 72);
 
             document.add(bottomTable);
+            document.add(qrCodeTable);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
