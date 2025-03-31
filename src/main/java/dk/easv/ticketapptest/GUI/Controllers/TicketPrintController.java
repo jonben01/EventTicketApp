@@ -188,6 +188,7 @@ public class TicketPrintController {
             gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
             new File(qrFilePath).delete();
             new File(barcodeFilePath).delete();
+            new File(ticketPath).delete();
         } catch (Exception e) {
             AlertClass.alertError("Error", "An error occurred while printing PDF");
             e.printStackTrace();
