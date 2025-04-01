@@ -63,6 +63,8 @@ public class AdminDashboardController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/admin-event-view.fxml"));
             Parent adminDashboard = fxmlLoader.load();
+            AdminEventController controller = fxmlLoader.getController();
+            controller.setRootPane(rootPaneAdmin);
             btnEventHistory.setStyle("-fx-background-color: #EFF6FF; -fx-text-fill: #1D4ED8;");
             btnUserManagement.setStyle("");
             rootPaneAdmin.setCenter(adminDashboard);

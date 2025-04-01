@@ -106,6 +106,8 @@ public class EventViewController {
         magicLinesOfCode();
         lstCoords.refresh();
         checkUserAccess();
+        updateInformation(1);
+        updateTicketList();
     }
 
     private void checkUserAccess() {
