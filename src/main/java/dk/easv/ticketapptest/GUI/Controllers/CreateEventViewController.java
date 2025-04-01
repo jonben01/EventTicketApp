@@ -97,7 +97,6 @@ public class CreateEventViewController {
         this.eventViewController = eventViewController;
     }
 
-
     public void CreateEvent(ActionEvent actionEvent) {
 
             if (!txtNameEvent.getText().isEmpty()
@@ -131,5 +130,4 @@ public class CreateEventViewController {
                 AlertClass.alertError("Missing information", "Please fill all the fields");
             }
         }
-
     }

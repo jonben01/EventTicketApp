@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
@@ -13,11 +14,11 @@
          <children>
             <VBox prefHeight="717.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="212.0" text="Event Dashboard" VBox.vgrow="ALWAYS">
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
-                  </Label>
+                  <ImageView fx:id="imgLogoEvent" fitHeight="60.0" fitWidth="190.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </ImageView>
                   <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEventManagement" prefHeight="45.0" prefWidth="200.0" text="🗒 Events" />
                   <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleTicketManagement" prefHeight="45.0" prefWidth="200.0" text="🎫 Tickets" />
                   <Label />

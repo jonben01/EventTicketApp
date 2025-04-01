@@ -6,23 +6,46 @@ import dk.easv.ticketapptest.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class AdminDashboardController {
+public class AdminDashboardController implements Initializable {
     @FXML public BorderPane rootPaneAdmin;
     @FXML public Button btnUserManagement;
     @FXML public Button btnEventHistory;
+    @FXML
+    public ImageView imgLogoAdmin;
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String logoImagePath = Objects.requireNonNull(getClass().getResource("/BASW_logo.png")).toExternalForm();
+        imgLogoAdmin.setImage(new Image(logoImagePath));
+        imgLogoAdmin.setPreserveRatio(true);
+        imgLogoAdmin.setFitWidth(180);
+        imgLogoAdmin.setFitHeight(60);
+        openUserManagement();
+
+    }
 
     public void handleUserManagement(ActionEvent actionEvent) {
+        openUserManagement();
+    }
+
+    public void openUserManagement() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/user-management-view.fxml"));
             Parent adminDashboard = fxmlLoader.load();
@@ -33,7 +56,6 @@ public class AdminDashboardController {
             e.printStackTrace();
             AlertClass.alertError("Failed to load", "An error occurred while loading the user management window");
         }
-
     }
 
 
@@ -64,4 +86,6 @@ public class AdminDashboardController {
             AlertClass.alertError("Failed to load", "An error occurred while logging out");
         }
     }
+
+
 }

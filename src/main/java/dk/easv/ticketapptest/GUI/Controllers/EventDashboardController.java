@@ -6,17 +6,24 @@ import dk.easv.ticketapptest.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class EventDashboardController {
+public class EventDashboardController implements Initializable {
+    @FXML
+    public ImageView imgLogoEvent;
     @FXML
     private VBox sidebarVBox;
     @FXML
@@ -24,10 +31,22 @@ public class EventDashboardController {
     @FXML
     public BorderPane rootPaneEvent;
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        String logoImagePath = Objects.requireNonNull(getClass().getResource("/BASW_logo.png")).toExternalForm();
+        imgLogoEvent.setImage(new Image(logoImagePath));
+        imgLogoEvent.setPreserveRatio(true);
+        imgLogoEvent.setFitWidth(180);
+        imgLogoEvent.setFitHeight(60);
+        sidebarVBox.getStyleClass().add("sidebar");
+    }
+    /* //idk hvorfor der var en initialize uden klassen bruger initializable
     @FXML
     public void initialize() {
         sidebarVBox.getStyleClass().add("sidebar");
     }
+     */
 
     @FXML
     public void handleEventManagement(ActionEvent actionEvent) {
@@ -68,6 +87,8 @@ public class EventDashboardController {
             AlertClass.alertError("Failed to load", "An error occurred while logging out");
         }
     }
+
+
 }
 
 
