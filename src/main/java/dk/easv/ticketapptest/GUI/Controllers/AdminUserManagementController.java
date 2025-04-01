@@ -90,6 +90,7 @@ public class AdminUserManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         populateUserList();
 
         btnSaveEditUser.setVisible(false);
@@ -263,14 +264,20 @@ public class AdminUserManagementController implements Initializable {
             e.printStackTrace();
             AlertClass.alertError("Error", "Error loading user list");
         }
+
         if (userList == null) {
             AlertClass.alertError("Error", "Error loading user list");
             return;
         }
+
         //sort list alphabetically by first name -- compares Users by firstname (defaults to alphabetical)
-        userList.sort(Comparator.comparing(User::getFirstName));
+        userList.sort(Comparator.comparing(user -> user.getFirstName().toLowerCase()));
 
         lstUsers.setItems(userList);
+        setupCellFactory();
+    }
+
+    public void setupCellFactory() {
         lstUsers.setCellFactory(param -> new ListCell<User>() {
             @Override
             protected void updateItem(User item, boolean empty) {
@@ -474,7 +481,7 @@ public class AdminUserManagementController implements Initializable {
             txtEmail.setStyle(style);
             allValid = false;
         }
-        if(txtPhone.getText().trim().isEmpty() || txtPhone.getText().contains(" ")) {
+        if(txtPhone.getText().trim().isEmpty()) {
             txtPhone.setStyle(style);
             allValid = false;
         }
