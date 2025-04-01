@@ -19,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -90,6 +91,8 @@ public class EventViewController {
     @FXML
     private Label lblAccess;
 
+    private String previousView;
+
     //TODO exceptions
     public void setSelectedEvent(Event2 event2) throws Exception {
         this.selectedEvent = event2;
@@ -128,6 +131,12 @@ public class EventViewController {
     {
         this.root = root;
     }
+
+    public void setPreviousView(String previousView)
+    {
+        this.previousView = previousView;
+    }
+
 
     //TODO exceptions
         @FXML
@@ -428,4 +437,31 @@ public class EventViewController {
         hasAccessList.addAll(noAccessList);
         return hasAccessList;
     }
+
+    @FXML
+    private void handleReturn(MouseEvent mouseEvent) {
+        try{
+            FXMLLoader loader;
+            Parent view;
+
+            if ("event-dashboard".equals(previousView)){
+                loader = new FXMLLoader(getClass().getResource("/views/event-dashboard-event-management.fxml"));
+            } else if ("admin-event-view".equals(previousView)) {
+                loader = new FXMLLoader(getClass().getResource("/views/admin-event-view.fxml"));
+            } else {
+                loader = new FXMLLoader(getClass().getResource("/views/event-dashboard-event-management.fxml"));
+            }
+            view = loader.load();
+            if("admin-event-view".equals(previousView)){
+                AdminEventController controller = loader.getController();
+                controller.setRootPane(root);
+            }
+            root.setCenter(view);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error","Could not return to previous view.");
+
+            }
+        }
 }
+

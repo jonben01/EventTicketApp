@@ -240,6 +240,7 @@ public class AdminEventController implements Initializable {
                 EventViewController controller = loader.getController();
                 controller.setSelectedEvent(selectedEvent);
                 controller.setPanel(rootPane);
+                controller.setPreviousView("admin-event-view");
 
                 // Set the loaded view in the center of the rootPane
                 rootPane.setCenter(eventView);
