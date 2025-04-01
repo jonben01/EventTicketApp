@@ -4,6 +4,7 @@ import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
@@ -60,7 +61,7 @@ public class CreateEventViewController {
     private Label txtInfo;
 
     @FXML
-    private void initialize() throws SQLException, IOException {
+    private void initialize() throws EasvTicketException, IOException {
         sessionUser = SessionManager.getInstance().getCurrentUser();
 
         model = new EventManagementModel();
@@ -97,7 +98,7 @@ public class CreateEventViewController {
     }
 
 
-    public void CreateEvent(ActionEvent actionEvent) throws SQLException {
+    public void CreateEvent(ActionEvent actionEvent) {
 
             if (!txtNameEvent.getText().isEmpty()
                     && !dateStartDate.getValue().toString().isEmpty()
@@ -109,19 +110,23 @@ public class CreateEventViewController {
                     && !txtCity.getText().isEmpty()
                     && !txtAddress.getText().isEmpty()
                     && !txtPostalCode.getText().isEmpty()) {
-                Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
-                if(selectedEvent != null) {
-                    Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>(), selectedEvent.getEventCoordinators(), "Scheduled");
-                    model.updateEvent(event);
-                    eventViewController.updateInformation(1);
+                try {
+                    Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
+                    if (selectedEvent != null) {
+                        Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>(), selectedEvent.getEventCoordinators(), "Scheduled");
+                        model.updateEvent(event);
+                        eventViewController.updateInformation(1);
+                    } else {
+                        Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), (List<Ticket>) new ArrayList<Ticket>() {
+                        }, new ArrayList<>(Arrays.asList(sessionUser)));
+                        parent.createEvent(event, true);
+                        model.createEvent(event);
+                    }
+                    ((Stage) txtNameEvent.getScene().getWindow()).close();
+                } catch (EasvTicketException e) {
+                    e.printStackTrace();
+                    AlertClass.alertError("Error","An error occurred while creating the event panel");
                 }
-                else {
-                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), (List<Ticket>) new ArrayList<Ticket>() {
-                    }, new ArrayList<>(Arrays.asList(sessionUser)));
-                    parent.createEvent(event, true);
-                    model.createEvent(event);
-                }
-                ((Stage) txtNameEvent.getScene().getWindow()).close();
             } else {
                 AlertClass.alertError("Missing information", "Please fill all the fields");
             }
