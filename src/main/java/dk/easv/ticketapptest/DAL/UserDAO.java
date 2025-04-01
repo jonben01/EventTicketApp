@@ -27,7 +27,7 @@ public class UserDAO {
 
 
     public User createUserDB (User user) throws UsernameAlreadyExistsException, EasvTicketException {
-        String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?)";
+        String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName, ImagePath) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
 
@@ -54,6 +54,7 @@ public class UserDAO {
             pstmt.setString(4, user.getPhone());
             pstmt.setString(5, user.getFirstName());
             pstmt.setString(6, user.getLastName());
+            pstmt.setString(7, user.getImgFilePath());
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
@@ -82,7 +83,7 @@ public class UserDAO {
             }
 
             return new User(user.getUsername(), user.getPassword(), user.getFirstName(),
-                            user.getLastName(), user.getEmail(), user.getPhone(), user.getRole());
+                            user.getLastName(), user.getEmail(), user.getPhone(), user.getRole(), user.getImgFilePath());
 
         } catch (SQLException err) {
             //ERROR CODES FOR BREAKING UNIQUE CONSTRAINTS as a workaround, since SQLIntegrityConstraintViolationException
@@ -263,6 +264,7 @@ public class UserDAO {
                 user.setLastName(rs.getString("LastName"));
                 String roleName = rs.getString("RoleName");
                 user.setRole(Role.valueOf(roleName));
+                user.setImgFilePath(rs.getString("ImagePath"));
                 users.add(user);
             }
             return users;

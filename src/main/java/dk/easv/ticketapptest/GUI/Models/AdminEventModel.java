@@ -21,7 +21,7 @@ public class AdminEventModel {
         eventsToBeViewed.addAll(eventManager.getAllEvents());
     }
 
-    public ObservableList<Event2> getObservableEvents() throws SQLException {
+    public ObservableList<Event2> getObservableEvents() {
         return eventsToBeViewed;
     }
 

@@ -9,13 +9,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
             <children>
                 <TextField fx:id="txtEventSearch" prefHeight="36.0" prefWidth="927.0" promptText="search" HBox.hgrow="ALWAYS">
                <HBox.margin>
-                  <Insets top="5.0" />
+                  <Insets top="6.0" />
                </HBox.margin></TextField>
             </children>
          <BorderPane.margin>

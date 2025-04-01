@@ -143,12 +143,25 @@
 #lstUsers .scroll-bar:vertical {
     -fx-background-color: white;
     -fx-pref-width: 5;
+    -fx-padding: -11 0 -11 0
 }
 
-#lstUsers .scroll-bar .increment-arrow {
-    -fx-translate-y: 5;
-}
-
+#lstUsers .scroll-bar .increment-arrow,
 #lstUsers .scroll-bar .decrement-arrow {
-    -fx-translate-y: -5;
+    -fx-padding: 0;
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}
+
+.round_image {
+    -fx-fit-width: 80px;
+    -fx-fit-height: 80px;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+    -fx-border-color: #ccc;
+    -fx-border-width: 2px;
 }

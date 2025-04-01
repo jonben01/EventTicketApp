@@ -60,6 +60,9 @@ public class Event2 {
         eventCoordinators = new ArrayList<>();
     }
 
+    public <E> Event2(String text, Location location, String text1, String text2, LocalDate value, LocalDate value1, LocalTime parse, LocalTime parse1, ArrayList<Ticket> tickets, ArrayList<E> es) {
+    }
+
     //use DateTimeFormatter on localDate types in actual project instead of this
     //also use a date picker, to avoid edge cases where someone types something stupid.
     //should validate either way and handle those cases.

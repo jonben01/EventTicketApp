@@ -19,13 +19,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -35,6 +42,8 @@ public class AdminUserManagementController implements Initializable {
     public Button btnSwapRole;
     @FXML
     public TextField txtUserSearch;
+    @FXML
+    public ImageView imgProfilePicture;
     @FXML
     private TextField txtPhone;
     @FXML
@@ -84,12 +93,12 @@ public class AdminUserManagementController implements Initializable {
         populateUserList();
 
         btnSaveEditUser.setVisible(false);
-
         if (lstUsers.getItems() != null) {
             lstUsers.getSelectionModel().select(0);
             User user = lstUsers.getSelectionModel().getSelectedItem();
             setUserInfo(user);
         }
+
 
         //Debounce the search function -- to stop the user from creating loads of new threads in the search method.
         searchDebounce = new PauseTransition(Duration.millis(200));
@@ -111,10 +120,22 @@ public class AdminUserManagementController implements Initializable {
                 btnSwapRole.setDisable(false);
             }
         });
-
+        
         userChangeListeners();
     }
 
+    private void makeImageViewCircular() {
+        double radius = 40;
+        imgProfilePicture.setFitHeight(radius * 2);
+        imgProfilePicture.setFitWidth(radius * 2);
+        imgProfilePicture.setPreserveRatio(false);
+        imgProfilePicture.setSmooth(true);
+
+        Circle circle = new Circle(radius, radius, radius);
+        imgProfilePicture.setClip(circle);
+
+
+    }
 
 
     //TODO REFACTOR userChangeListeners -- helper method that creates a listener for a textfield
@@ -194,6 +215,20 @@ public class AdminUserManagementController implements Initializable {
             txtPhone.setText(selectedUser.getPhone());
             lblName.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
 
+            String relativeImagePath = selectedUser.getImgFilePath();
+            String defaultImagePath = Objects.requireNonNull(getClass().getResource("/defaultImage.png")).toExternalForm();
+            try {
+                File imageFile = new File(System.getProperty("user.dir") + File.separator + relativeImagePath);
+                if (!imageFile.exists()) {
+                    throw new EasvTicketException("Image file not found");
+                }
+                imgProfilePicture.setImage(new Image(imageFile.toURI().toString()));
+
+            } catch (EasvTicketException e) {
+                imgProfilePicture.setImage(new Image(defaultImagePath));
+            }
+            makeImageViewCircular();
+
             resetFieldStyles();
 
             //TODO change this. Not sure what to call it, if role name is wanted, make if statements
@@ -261,16 +296,41 @@ public class AdminUserManagementController implements Initializable {
 
 
                 nameLabel.getStyleClass().add("name-label");
-
                 roleLabel.getStyleClass().add("role-label");
 
                 //create a vbox containing both labels.
                 VBox vbox = new VBox(nameLabel, roleLabel);
                 vbox.setSpacing(2);
+                double radius = 30;
+
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(radius * 2);
+                imageView.setFitWidth(radius * 2);
+                imageView.setPreserveRatio(false);
+                imageView.setSmooth(true);
+
+                Circle circle = new Circle(radius, radius, radius);
+                imageView.setClip(circle);
+
+                String relativeImagePath = item.getImgFilePath();
+                //if the filepath is not null create a file, otherwise set the imageFile to null
+                //need to get more comfortable using ternary operator, it is super handy
+                File imageFile = relativeImagePath != null ? new File(System.getProperty("user.dir"), relativeImagePath) : null;
+
+                if (imageFile != null && imageFile.exists()) {
+                    imageView.setImage(new Image(imageFile.toURI().toString()));
+                } else {
+                    String defaultImagePath = Objects.requireNonNull(getClass().getResource("/defaultImage.png")).toExternalForm();
+                    imageView.setImage(new Image(defaultImagePath));
+                }
+
+                HBox content = new HBox(imageView, vbox);
+                content.setSpacing(10);
+
 
                 setText(null);
                 //used to display a node inside the table cell.
-                setGraphic(vbox);
+                setGraphic(content);
 
                 if (getIndex() == 0) {
                     if (!getStyleClass().contains("first-visible")) {
@@ -311,7 +371,8 @@ public class AdminUserManagementController implements Initializable {
                 AlertClass.alertError("Username Already Exists", "An error occurred while creating user\nThe username already exists!");
                 return;
             } catch (Exception e) {
-                AlertClass.alertError("Something went wrong", "An error occurred while creating user");
+                //AlertClass.alertError("Something went wrong", "An error occurred while creating user");
+                e.printStackTrace();
             }
             lstUsers.getItems().add(newUser);
             lstUsers.getSelectionModel().select(newUser);
@@ -319,7 +380,7 @@ public class AdminUserManagementController implements Initializable {
         }
     }
 
-    public void handleDeleteUser(ActionEvent actionEvent) throws Exception {
+    public void handleDeleteUser(ActionEvent actionEvent) {
         User user = lstUsers.getSelectionModel().getSelectedItem();
         if (user != null) {
             Optional<ButtonType> result = AlertClass.alertConfirmation("Delete User", "Are you sure you want to delete this user: " + user.getUsername());
@@ -333,8 +394,6 @@ public class AdminUserManagementController implements Initializable {
                         User defaultUser = lstUsers.getSelectionModel().getSelectedItem();
                         setUserInfo(defaultUser);
                     }
-
-                    //TODO improve exception handling
                 } catch (Exception e) {
                     AlertClass.alertError("Delete Error", "An error occurred while deleting user");
                 }

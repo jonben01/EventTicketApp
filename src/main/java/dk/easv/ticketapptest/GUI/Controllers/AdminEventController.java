@@ -166,7 +166,7 @@ public class AdminEventController implements Initializable {
         String searchQuery = txtEventSearch.getText();
         if (txtEventSearch.getText().isEmpty()) {
             try {
-                tblEvents.setItems(adminEventModel.getAllEvents());
+                tblEvents.setItems(adminEventModel.getObservableEvents());
                 //TODO use custom exception
             } catch (Exception e) {
                 AlertClass.alertError("Search Error", "An error occurred while searching for events" + e.getMessage());

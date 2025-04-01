@@ -2,7 +2,9 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.GUI.AlertClass;
+import dk.easv.ticketapptest.GUI.Models.ImageUploader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,28 +12,54 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class AdminCreateUserController implements Initializable {
-    @FXML public javafx.scene.layout.VBox VBox;
-    @FXML private TextField txtUsername;
-    @FXML private TextField txtPassword;
-    @FXML private TextField txtFirstName;
-    @FXML private TextField txtLastName;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtPhone;
-    @FXML private Button btnCreateNewUser;
-    @FXML private CheckBox chkAdmin;
-    @FXML private CheckBox chkCoordinator;
+    @FXML
+    public javafx.scene.layout.VBox VBox;
+    @FXML
+    public ImageView imgCreateProfile;
+    @FXML
+    public Button btnPicture;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtPassword;
+    @FXML
+    private TextField txtFirstName;
+    @FXML
+    private TextField txtLastName;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtPhone;
+    @FXML
+    private Button btnCreateNewUser;
+    @FXML
+    private CheckBox chkAdmin;
+    @FXML
+    private CheckBox chkCoordinator;
 
     private User newUser;
 
+    private String imagePath = "src/main/resources/userImages/defaultImage.png";
+    private ImageUploader imageUploader;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        imageUploader = new ImageUploader();
 
     }
 
@@ -46,13 +74,22 @@ public class AdminCreateUserController implements Initializable {
             AlertClass.alertInfo("Missing information", "Please select a role");
             return;
         }
-        newUser = new User(txtUsername.getText(),
-                            txtPassword.getText(),
-                            txtFirstName.getText(),
-                            txtLastName.getText(),
-                            txtEmail.getText(),
-                            txtPhone.getText(), role);
+        String username = this.txtUsername.getText();
+        String password = this.txtPassword.getText();
+        String firstName = this.txtFirstName.getText();
+        String lastName = this.txtLastName.getText();
+        String email = this.txtEmail.getText();
+        String phone = this.txtPhone.getText();
 
+        //set the name on the file as the username_profilepic + increasing number
+        try {
+            imagePath = imageUploader.uploadFile(imagePath);
+        } catch (EasvTicketException e) {
+            AlertClass.alertError("Error", "Failed to upload file");
+            return;
+        }
+
+        newUser = new User(username, password, firstName, lastName, email, phone, role, imagePath);
         setCreatedUser(newUser);
         Stage stage = (Stage) btnCreateNewUser.getScene().getWindow();
         stage.close();
@@ -126,4 +163,19 @@ public class AdminCreateUserController implements Initializable {
         }
     }
 
+    public void handleUploadPicture(ActionEvent actionEvent) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Picture");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG or JPEG", "*.png", "*.jpg", "*.jpeg"));
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+
+            //set the path for the new user
+            imagePath = file.getAbsolutePath();
+            imgCreateProfile.setImage(new Image(file.toURI().toString()));
+        }
+
+    }
 }

@@ -11,6 +11,7 @@ public class User {
     private String username;
     private String password;
     private Role role;
+    private String imgFilePath;
 
     //this will be moved to separate classes later, and this class will be made abstract
     private String firstName;
@@ -36,7 +37,15 @@ public class User {
     }
 
 
-    public User(String username, String password, String firstName, String lastName, String email, String phone, Role role) {
+    public String getImgFilePath() {
+        return imgFilePath;
+    }
+
+    public void setImgFilePath(String imgFilePath) {
+        this.imgFilePath = imgFilePath;
+    }
+
+    public User(String username, String password, String firstName, String lastName, String email, String phone, Role role, String imgFilePath) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -44,6 +53,7 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.imgFilePath = imgFilePath;
     }
 
     public User(int eventID, String username, String password, String firstName, String lastName, String email, String phone, Role role) {

@@ -19,7 +19,8 @@ public class UserSearcher {
                     compareToEmail(searchQuery, user) ||
                     compareToPhone(searchQuery, user) ||
                     compareToUsername(searchQuery, user) ||
-                    compareToRole(searchQuery, user)) {
+                    compareToRole(searchQuery, user) ||
+                    compareToFullName(searchQuery, user)) {
 
                 searchResults.add(user);
 
@@ -45,6 +46,11 @@ public class UserSearcher {
     //TODO should potentially only return if its right from left to right, and not just contained.
     public boolean compareToPhone(String searchQuery, User user) {
         return user.getPhone().toLowerCase().contains(searchQuery.toLowerCase());
+    }
+
+    public boolean compareToFullName(String searchQuery, User user) {
+        String fullName = user.getFirstName() + " " + user.getLastName();
+        return fullName.toLowerCase().contains(searchQuery.toLowerCase());
     }
 
     public boolean compareToRole(String searchQuery, User user) {

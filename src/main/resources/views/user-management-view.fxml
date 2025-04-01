@@ -5,13 +5,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: rgba(249, 249, 249, 0.8);" styleClass="BorderPane" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" style="-fx-background-color: #F8F8F8;" prefWidth="952.0" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="952.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +40,7 @@
          <children>
             <VBox alignment="TOP_CENTER" minWidth="460.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="UsersPane" prefHeight="474.0" prefWidth="458.0" styleClass="UsersPane">
+                  <VBox fx:id="UsersPane" prefHeight="494.0" prefWidth="458.0" styleClass="UsersPane">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -65,7 +66,7 @@
                               <Insets left="12.0" />
                            </padding>
                         </HBox>
-                        <ListView fx:id="lstUsers" prefHeight="414.0" prefWidth="458.0" />
+                        <ListView fx:id="lstUsers" prefHeight="440.0" prefWidth="458.0" />
                      </children>
                   </VBox>
                </children>
@@ -78,7 +79,7 @@
                   <Insets left="12.0" right="12.0" />
                </padding>
                <children>
-                  <VBox fx:id="UserDetailsPane" prefHeight="474.0" prefWidth="452.0" styleClass="UserDetailsPane">
+                  <VBox fx:id="UserDetailsPane" prefHeight="494.0" prefWidth="452.0" styleClass="UserDetailsPane">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
@@ -95,30 +96,42 @@
                               </Button>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="24.0" />
+                              <Insets />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                        <VBox prefHeight="406.0" prefWidth="428.0" spacing="4.0">
                            <children>
-                              <Label fx:id="lblName" text="Username">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="lblRole" text="Role 1">
+                                    <ImageView fx:id="imgProfilePicture" fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" styleClass="round_image">
                                        <HBox.margin>
-                                          <Insets right="12.0" />
+                                          <Insets left="4.0" />
                                        </HBox.margin>
-                                    </Label>
+                                    </ImageView>
+                                    <VBox prefHeight="34.0" prefWidth="338.0">
+                                       <children>
+                                          <Label fx:id="lblName" text="Username">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="4.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <Label fx:id="lblRole" text="Role 1">
+                                             <VBox.margin>
+                                                <Insets left="2.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="6.0" top="6.0" />
+                                       </HBox.margin>
+                                    </VBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="12.0" />
-                                 </padding>
                               </HBox>
                               <Label text="Username" />
                               <TextField fx:id="txtUsername" prefHeight="35.0" promptText="e.g. JohCoo42">
@@ -150,7 +163,7 @@
                               <TextField fx:id="txtPhone" prefHeight="35.0" promptText="e.g. +45 12345678" />
                               <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="428.0">
                                  <VBox.margin>
-                                    <Insets bottom="6.0" />
+                                    <Insets bottom="10.0" />
                                  </VBox.margin>
                                  <children>
                                     <Button fx:id="btnSaveEditUser" mnemonicParsing="false" onAction="#handleSaveEditUser" prefHeight="30.0" prefWidth="100.0" text="Save Changes">
@@ -164,6 +177,9 @@
                                        </font>
                                     </Button>
                                  </children>
+                                 <padding>
+                                    <Insets top="6.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </VBox>
