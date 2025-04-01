@@ -99,10 +99,11 @@ public class EventViewController {
         }
         usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
         for(User coordinator : usersWithAccess){
-            if(SessionManager.getInstance().getCurrentUser().getId() == coordinator.getId() ){
+            if(SessionManager.getInstance().getCurrentUser ().getId() == coordinator.getId() ){
                 userHasAccess = true;
             }
         }
+        magicLinesOfCode();
         lstCoords.refresh();
         checkUserAccess();
     }
@@ -320,11 +321,18 @@ public class EventViewController {
                 tempEvent.addCoordinator(temp);
                 eventModel.removeFromEventUsers(tempEvent);
                 lstCoords.refresh();
+                magicLinesOfCode();
             }
         } catch (Exception e) {
             e.printStackTrace();
             AlertClass.alertError("Error", "An error occurred while removing event");
         }
+    }
+
+    private void magicLinesOfCode(){
+        List<User> sortedUsers = sortUsers(new ArrayList<>(lstCoords.getItems()));
+        lstCoords.getItems().clear();
+        lstCoords.getItems().addAll(sortedUsers);
     }
 
     @FXML
@@ -339,6 +347,7 @@ public class EventViewController {
                 tempEvent.addCoordinator(temp);
                 eventModel.addToEventUsers(tempEvent);
                 lstCoords.refresh();
+                magicLinesOfCode();
             } catch (EasvTicketException e) {
                 e.printStackTrace();
                 AlertClass.alertError("Error", "An error occurred while adding event");
@@ -392,5 +401,29 @@ public class EventViewController {
         } else {
             AlertClass.alertWarning("Missing ticket", "Please select a ticket to delete");
         }
+    }
+    private List<User> sortUsers(List<User> users) {
+        List<User> hasAccessList = new ArrayList<>();
+        List<User> noAccessList = new ArrayList<>();
+
+        for(User user : users) {
+            Boolean check = false;
+            for(User userWithAccess : usersWithAccess) {
+                if(userWithAccess.getId() == user.getId()) {
+                    check = true;
+                }
+            }
+            if(check)
+            {
+                hasAccessList.add(user);
+            }
+            else
+            {
+                noAccessList.add(user);
+            }
+        }
+
+        hasAccessList.addAll(noAccessList);
+        return hasAccessList;
     }
 }
