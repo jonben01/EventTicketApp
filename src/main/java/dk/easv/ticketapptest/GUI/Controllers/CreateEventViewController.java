@@ -98,18 +98,38 @@ public class CreateEventViewController {
     }
 
     public void CreateEvent(ActionEvent actionEvent) {
+        LocalTime startTime = null;
+        LocalTime endTime = null;
 
-            if (!txtNameEvent.getText().isEmpty()
-                    && !dateStartDate.getValue().toString().isEmpty()
-                    && !dateEndDate.getValue().toString().isEmpty()
-                    && !txtEndEvent.getText().isEmpty()
-                    && !txtDescriptionEvent.getText().isEmpty()
-                    && !txtStartEvent.getText().isEmpty()
-                    && !txtLocationGuidance.getText().isEmpty()
-                    && !txtCity.getText().isEmpty()
-                    && !txtAddress.getText().isEmpty()
-                    && !txtPostalCode.getText().isEmpty()) {
-                try {
+        String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d)$";
+
+        if (dateStartDate.getValue() == null || dateEndDate.getValue() == null ||
+                !txtNameEvent.getText().isEmpty() && !dateStartDate.getValue().toString().isEmpty() &&
+                        !dateEndDate.getValue().toString().isEmpty() &&
+                        !txtEndEvent.getText().isEmpty() &&
+                        !txtDescriptionEvent.getText().isEmpty() &&
+                        !txtStartEvent.getText().isEmpty() &&
+                        !txtLocationGuidance.getText().isEmpty() &&
+                        !txtCity.getText().isEmpty() &&
+                        !txtAddress.getText().isEmpty() &&
+                        !txtPostalCode.getText().isEmpty()) {
+
+            try {
+                if (!txtStartEvent.getText().isEmpty() && txtStartEvent.getText().matches(timePattern)) {
+                    startTime = LocalTime.parse(txtStartEvent.getText());
+                } else {
+                    throw new EasvTicketException("Invalid start time format. Use HH:mm.");
+                }
+
+                if (!txtEndEvent.getText().isEmpty() && txtEndEvent.getText().matches(timePattern)) {
+                    endTime = LocalTime.parse(txtEndEvent.getText());
+                } else {
+                    throw new EasvTicketException("Invalid end time format. Use HH:mm.");
+                }
+
+                if (startTime == null || endTime == null) {
+                    throw new EasvTicketException("Start time or end time is empty.");
+                }
                     Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
                     if (selectedEvent != null) {
                         Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>(), selectedEvent.getEventCoordinators(), "Scheduled");
@@ -124,8 +144,9 @@ public class CreateEventViewController {
                     ((Stage) txtNameEvent.getScene().getWindow()).close();
                 } catch (EasvTicketException e) {
                     e.printStackTrace();
-                    AlertClass.alertError("Error","An error occurred while creating the event panel");
+                    AlertClass.alertError("Invalid time format", "The time format is incorrect. Make sure you use the Hour:Minute format");
                 }
+
             } else {
                 AlertClass.alertError("Missing information", "Please fill all the fields");
             }
