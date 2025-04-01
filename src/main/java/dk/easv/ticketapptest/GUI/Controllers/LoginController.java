@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,10 +34,16 @@ public class LoginController implements Initializable {
     @FXML
     private TextField txtPassword;
 
+    @FXML
+    private Button btnTogglePassword;
+
     private UserModel userModel;
+    @FXML
+    private TextField txtPasswordVisible;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        txtPasswordVisible.setMaxWidth(-30);
         try {
             userModel = new UserModel();
         } catch (EasvTicketException e) {
@@ -47,6 +55,8 @@ public class LoginController implements Initializable {
         imgLogo.setPreserveRatio(true);
         imgLogo.setFitWidth(350);
         imgLogo.setFitHeight(180);
+
+        btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/OpenEye.png")))));
 
     }
 
@@ -79,8 +89,15 @@ public class LoginController implements Initializable {
 
     public void handleLogin(ActionEvent actionEvent) {
 
+        String password = "hello";
+        if(txtPassword.isVisible()) {
+            password = txtPassword.getText();
+        }
+        else if(txtPasswordVisible.isVisible()) {
+            password = txtPasswordVisible.getText();
+        }
+
         String username = txtUsername.getText();
-        String password = txtPassword.getText();
 
         if (username.isEmpty()) {
             txtUsername.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
@@ -117,6 +134,28 @@ public class LoginController implements Initializable {
             }
         } catch (EasvTicketException e) {
             AlertClass.alertError("Login Error", "An unexpected error occurred while logging in");
+        }
+    }
+
+    @FXML
+    private void handleTogglePassword(ActionEvent actionEvent) {
+        if (txtPassword.isVisible()) {
+            txtPassword.setVisible(false);
+            txtPasswordVisible.setVisible(true);
+            txtPassword.setMaxWidth(0);
+            txtPasswordVisible.setMaxWidth(750);
+            txtPasswordVisible.setText(txtPassword.getText());
+            btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ClosedEye.png")))));
+
+        }
+        else if(!txtPassword.isVisible()) {
+            txtPassword.setVisible(true);
+            txtPasswordVisible.setVisible(false);
+            txtPassword.setMaxWidth(750);
+            txtPasswordVisible.setMaxWidth(0);
+            txtPasswordVisible.setText(txtPassword.getText());
+            btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/OpenEye.png")))));
+
         }
     }
 }

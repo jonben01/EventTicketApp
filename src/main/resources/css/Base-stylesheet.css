@@ -68,3 +68,15 @@
     -fx-padding: 5px;
     -fx-margin-right: 10px;
 }
+
+.PasswordButton{
+    -fx-background-color: #f6f6f6;
+    -fx-border-width: 0;
+    -fx-border-color: #555;
+}
+.PasswordButton:hover {
+    -FX-font-size: 12;
+    -fx-background-color: #f6f6f6;
+    -fx-highlight-fill: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(180, 180, 180, 0.8), 2, 0, 0, 4);
+}
