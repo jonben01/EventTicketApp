@@ -9,10 +9,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +46,8 @@ public class AdminEventController implements Initializable {
     private TableColumn<Event2, Void> clnStatus;
     @FXML
     private TableColumn<Event2, Button> clnActions;
+    @FXML
+    private BorderPane rootPane;
 
     private AdminEventModel adminEventModel;
     private PauseTransition searchDebounce;
@@ -74,7 +84,11 @@ public class AdminEventController implements Initializable {
         thread.start();
 
         setupColumns();
+        setupDoubleClick();
     }
+
+    public void setRootPane(BorderPane rootPane) {this.rootPane = rootPane;}
+
     public void loadTableData() {
         Task<ObservableList<Event2>> loadDataTask = new Task<>() {
 
@@ -205,5 +219,37 @@ public class AdminEventController implements Initializable {
             AlertClass.alertError("Search Error", "An error occurred while searching for events" + error.getMessage());
         });
         return searchTask;
+    }
+
+    private void setupDoubleClick(){
+        tblEvents.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+                handleOpenEvent();
+            }
+        });
+    }
+
+
+    @FXML
+    private void handleOpenEvent() {
+        Event2 selectedEvent = tblEvents.getSelectionModel().getSelectedItem();
+        if (selectedEvent != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/event-view.fxml"));
+                Parent eventView = loader.load();
+                EventViewController controller = loader.getController();
+                controller.setSelectedEvent(selectedEvent);
+                controller.setPanel(rootPane);
+
+                // Set the loaded view in the center of the rootPane
+                rootPane.setCenter(eventView);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error", "Could not open event details");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

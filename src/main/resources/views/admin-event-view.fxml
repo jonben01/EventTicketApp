@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
             <children>
@@ -27,7 +27,7 @@
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox fx:id="HboxTop" prefHeight="50.0" prefWidth="904.0" />
-            <TableView fx:id="tblEvents" prefHeight="406.0" prefWidth="928.0">
+            <TableView fx:id="tblEvents" onMouseClicked="#handleOpenEvent" prefHeight="406.0" prefWidth="928.0">
               <columns>
                 <TableColumn fx:id="clnEventName" prefWidth="290.4000244140625" text="Event Name" />
                 <TableColumn fx:id="clnDateTime" prefWidth="200.0" text="Date &amp; Time" />
