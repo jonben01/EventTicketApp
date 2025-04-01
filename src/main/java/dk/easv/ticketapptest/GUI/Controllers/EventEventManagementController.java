@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
@@ -41,7 +42,7 @@ public class EventEventManagementController {
 
 
     @FXML
-    private void initialize() throws SQLException, IOException {
+    private void initialize() throws IOException, EasvTicketException {
         eventModel = new EventManagementModel();
             userCSS = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
             eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
@@ -122,8 +123,9 @@ public class EventEventManagementController {
                         currentY = 0;
                         updateList();
 
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                    } catch (EasvTicketException e) {
+                        e.printStackTrace();
+                        AlertClass.alertError("Error","An error occurred while creating the event panel");
                     }
                 }
         });
@@ -219,27 +221,37 @@ public class EventEventManagementController {
         currentX++;
     }
 
-    private void addExistingEvents(List<Event2> events) throws SQLException {
-        List<Event2> eventsForUser = eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId());
-        if(!events.isEmpty()){
-            for(Event2 event : events){
-                Boolean hasEvent = false;
-                for(Event2 eventForUser : eventsForUser){
-                    if(event.getEventID() == eventForUser.getEventID()){
-                        hasEvent = true;
+    private void addExistingEvents(List<Event2> events) {
+        try {
+            List<Event2> eventsForUser = eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId());
+            if (!events.isEmpty()) {
+                for (Event2 event : events) {
+                    Boolean hasEvent = false;
+                    for (Event2 eventForUser : eventsForUser) {
+                        if (event.getEventID() == eventForUser.getEventID()) {
+                            hasEvent = true;
+                            createEvent(event, hasEvent);
+                        }
+                    }
+                    if (!hasEvent) {
                         createEvent(event, hasEvent);
                     }
                 }
-                if(!hasEvent){
-                    createEvent(event, hasEvent);
-                }
             }
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error", "An error occurred while adding existing events");
         }
     }
 
-    private void updateList() throws SQLException {
-        gridPane.getChildren().clear();
-        addExistingEvents(eventModel.getObservableEvents());
+    private void updateList() {
+        try {
+            gridPane.getChildren().clear();
+            addExistingEvents(eventModel.getObservableEvents());
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error", "An error occurred while updating list");
+        }
     }
 
     private int getNextX() {

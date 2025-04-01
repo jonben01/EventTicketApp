@@ -19,12 +19,15 @@ public class ImageUploader {
             dir.mkdirs();
         }
 
+        //TODO implement unique names for pictures, to combat collision
+
         File file = new File(filePath);
         File destFile = new File(dir, file.getName());
 
         try {
             //TODO impement something that tells the user, if its going to replace an existing file, ideally shouldnt happen
             // files should have unique names i think
+
             Files.copy(file.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             return "userImages/" + file.getName();
         } catch (IOException e) {

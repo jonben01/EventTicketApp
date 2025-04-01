@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -23,6 +25,8 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     public BorderPane rootPane;
+    @FXML
+    public ImageView imgLogo;
     @FXML
     private TextField txtUsername;
     @FXML
@@ -38,6 +42,12 @@ public class LoginController implements Initializable {
             //I am uncertain how best to deal with this. Maybe a runtime exception is better here?
             AlertClass.alertError("Error", "An error occurred while starting the application");
         }
+        String logoImagePath = Objects.requireNonNull(getClass().getResource("/BASW_logo.png")).toExternalForm();
+        imgLogo.setImage(new Image(logoImagePath));
+        imgLogo.setPreserveRatio(true);
+        imgLogo.setFitWidth(350);
+        imgLogo.setFitHeight(180);
+
     }
 
     public void handleAdminDash() {
@@ -46,6 +56,7 @@ public class LoginController implements Initializable {
             Parent adminDashboard = fxmlLoader.load();
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.setScene(new Scene(adminDashboard));
+            stage.centerOnScreen();
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the admin dashboard");
         }
@@ -60,6 +71,7 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(eventDashboard);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Base-stylesheet.css")).toExternalForm());
             stage.setScene(scene);
+            stage.centerOnScreen();
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the event dashboard");
         }
@@ -107,6 +119,4 @@ public class LoginController implements Initializable {
             AlertClass.alertError("Login Error", "An unexpected error occurred while logging in");
         }
     }
-
-
 }

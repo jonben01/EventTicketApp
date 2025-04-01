@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.DAL;
 
 import dk.easv.ticketapptest.BE.Location;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 
 import java.io.IOException;
 import java.sql.*;
@@ -15,7 +16,7 @@ public class LocationDAO implements ILocationDataAccess {
     }
 
     @Override
-    public Location createLocation(Location location) throws SQLException {
+    public Location createLocation(Location location) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Locations(Address, City, PostalCode) VALUES(?,?,?);";
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,19 +32,19 @@ public class LocationDAO implements ILocationDataAccess {
             }
             return location;
         } catch (SQLException e) {
-            throw new SQLException("Could not create new location", e);
+            throw new EasvTicketException("Could not create new location", e);
         }
     }
 
     @Override
-    public void updateLocation(Location location) throws SQLException {
+    public void updateLocation(Location location) throws EasvTicketException {
 
         //TODO implement this, if even necessary.
 
     }
 
     @Override
-    public ArrayList<Location> getAllLocations () throws SQLException {
+    public ArrayList<Location> getAllLocations () throws EasvTicketException {
         ArrayList<Location> allLocations = new ArrayList<>();
         try (Connection conn = connector.getConnection();
              Statement stmt = conn.createStatement()) {
@@ -60,18 +61,18 @@ public class LocationDAO implements ILocationDataAccess {
             }
             return allLocations;
         } catch (SQLException e) {
-            throw new SQLException("Could not get all locations from database", e);
+            throw new EasvTicketException("Could not get all locations from database", e);
         }
     }
 
     @Override
-    public void deleteLocation(Location location) throws SQLException {
+    public void deleteLocation(Location location) throws EasvTicketException {
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM dbo.Locations WHERE Id = ?")) {
             ps.setInt(1, location.getLocationID());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Could not delete location: " + location.getAddress(), e);
+            throw new EasvTicketException("Could not delete location: " + location.getAddress(), e);
         }
     }
 }

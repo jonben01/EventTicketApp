@@ -38,7 +38,7 @@ public class EventDAO implements IEventDataAccess {
    // tempData.add(tempDataClass.getUsers().get(0));
     }
 
-    public List<Event2> getAllEvents() throws SQLException {
+    public List<Event2> getAllEvents() throws EasvTicketException {
         List<Event2> events = new ArrayList<>();
 
         try (Connection conn = connector.getConnection();
@@ -79,11 +79,11 @@ public class EventDAO implements IEventDataAccess {
             }
             return events;
         } catch (SQLException ex) {
-            throw new SQLException("Could not get events from database", ex);
+            throw new EasvTicketException("Could not get events from database", ex);
         }
     }
 
-    public List<User> getAllUsersForEvent(int id) throws SQLServerException {
+    public List<User> getAllUsersForEvent(int id) throws EasvTicketException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Users u ON u.UserID = d.UserID WHERE d.EventID = ?;";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -101,12 +101,12 @@ public class EventDAO implements IEventDataAccess {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EasvTicketException("Could not get users from database", e);
         }
     }
 
     @Override
-    public void updateEvent(Event2 event, Location location ) throws SQLException {
+    public void updateEvent(Event2 event, Location location ) throws EasvTicketException {
 
         String sql = "UPDATE dbo.Events SET Title = ?, StartTime = ?, EndTime = ?, LocationID = ?, LocationGuidance = ?, Description = ?, StartDate = ?, EndDate = ? WHERE EventID = ?";
         try (Connection conn = connector.getConnection();
@@ -121,11 +121,13 @@ public class EventDAO implements IEventDataAccess {
             stmt.setDate(8, Date.valueOf(event.getEndDate()));
             stmt.setInt(9, event.getEventID());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new EasvTicketException("Could not update event", e);
         }
 
     }
 
-    public Event2 createEvent(Event2 event, Location location) throws SQLException {
+    public Event2 createEvent(Event2 event, Location location) throws EasvTicketException {
 
         String sql = "INSERT INTO dbo.Events(Title, StartTime, EndTime, LocationID, LocationGuidance, Description, CreatedBy, StartDate, EndDate) " +
                 "VALUES (?,?,?,?,?,?,?,?,?);";
@@ -150,11 +152,11 @@ public class EventDAO implements IEventDataAccess {
             return event;
 
         } catch (SQLException e) {
-            throw new SQLException("Could not create new Event", e);
+            throw new EasvTicketException("Could not create new Event", e);
         }
     }
 
-    public void addToEventUsers(Event2 event) throws SQLServerException {
+    public void addToEventUsers(Event2 event) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Event_Users(EventID, UserID) VALUES (?,?)";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -163,21 +165,21 @@ public class EventDAO implements IEventDataAccess {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Could not add user to event.");
+            throw new EasvTicketException("Could not add user to event.");
         }
     }
 
-    public void deleteEvent(Event2 eventToBeDeleted) throws SQLException {
+    public void deleteEvent(Event2 eventToBeDeleted) throws EasvTicketException {
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM dbo.Events WHERE EventID = ?")) {
             ps.setInt(1, eventToBeDeleted.getEventID());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Could not delete event: " + eventToBeDeleted.getTitle(), e);
+            throw new EasvTicketException("Could not delete event: " + eventToBeDeleted.getTitle(), e);
         }
     }
 
-    public void removeFromEventUsers(Event2 event) {
+    public void removeFromEventUsers(Event2 event) throws EasvTicketException {
         String sql = "DELETE FROM dbo.Event_Users WHERE EventID = ? AND UserID = ?";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
 
@@ -186,11 +188,11 @@ public class EventDAO implements IEventDataAccess {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Could not remove user from event.");
+            throw new EasvTicketException("Could not remove user from event.", e);
         }
     }
 
-    public List<Event2> getAllEventsForUser(int userid) throws SQLException {
+    public List<Event2> getAllEventsForUser(int userid) throws EasvTicketException {
         List<Event2> events = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Events u ON u.EventID = d.EventID LEFT JOIN dbo.Locations l ON l.LocationID = u.LocationID WHERE d.UserID = ?;";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -227,7 +229,7 @@ public class EventDAO implements IEventDataAccess {
             }
             return events;
         } catch (SQLException ex) {
-            throw new SQLException("Could not get events for user from database", ex);
+            throw new EasvTicketException("Could not get events for user from database", ex);
         }
     }
 }

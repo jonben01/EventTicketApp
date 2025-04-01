@@ -133,8 +133,6 @@ public class AdminUserManagementController implements Initializable {
 
         Circle circle = new Circle(radius, radius, radius);
         imgProfilePicture.setClip(circle);
-
-
     }
 
 
@@ -220,10 +218,12 @@ public class AdminUserManagementController implements Initializable {
             try {
                 File imageFile = new File(System.getProperty("user.dir") + File.separator + relativeImagePath);
                 if (!imageFile.exists()) {
+                    //might not be optimal, but this throw is handled 4 lines below
                     throw new EasvTicketException("Image file not found");
                 }
                 imgProfilePicture.setImage(new Image(imageFile.toURI().toString()));
 
+                //throw handled here, sets default image
             } catch (EasvTicketException e) {
                 imgProfilePicture.setImage(new Image(defaultImagePath));
             }
@@ -260,6 +260,7 @@ public class AdminUserManagementController implements Initializable {
         try {
             userList = userModel.getUsers();
         } catch (EasvTicketException e) {
+            e.printStackTrace();
             AlertClass.alertError("Error", "Error loading user list");
         }
         if (userList == null) {
@@ -327,7 +328,6 @@ public class AdminUserManagementController implements Initializable {
                 HBox content = new HBox(imageView, vbox);
                 content.setSpacing(10);
 
-
                 setText(null);
                 //used to display a node inside the table cell.
                 setGraphic(content);
@@ -343,8 +343,6 @@ public class AdminUserManagementController implements Initializable {
         });
     }
 
-
-
     public void handleCreateUser(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-user-creation-view.fxml"));
         User newUser = null;
@@ -359,6 +357,7 @@ public class AdminUserManagementController implements Initializable {
             stage.showAndWait();
             newUser = controller.getCreatedUser();
         } catch (Exception e) {
+            e.printStackTrace();
             AlertClass.alertError("Loading crash", "An error occurred while loading popup window");
         }
 
@@ -368,11 +367,12 @@ public class AdminUserManagementController implements Initializable {
                 userManagementModel.createUserDB(newUser);
                 //catch UserNameAlreadyExists if that's the case, otherwise catch the generic exception
             } catch (UsernameAlreadyExistsException e) {
+                e.printStackTrace();
                 AlertClass.alertError("Username Already Exists", "An error occurred while creating user\nThe username already exists!");
                 return;
             } catch (Exception e) {
-                //AlertClass.alertError("Something went wrong", "An error occurred while creating user");
                 e.printStackTrace();
+                AlertClass.alertError("Something went wrong", "An error occurred while creating user");
             }
             lstUsers.getItems().add(newUser);
             lstUsers.getSelectionModel().select(newUser);
@@ -395,6 +395,7 @@ public class AdminUserManagementController implements Initializable {
                         setUserInfo(defaultUser);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     AlertClass.alertError("Delete Error", "An error occurred while deleting user");
                 }
 
@@ -435,9 +436,8 @@ public class AdminUserManagementController implements Initializable {
                 originalValues.put(txtPhone, newPhone);
                 hasChanged = false;
             } catch (Exception e) {
-                AlertClass.alertError("Save Error", "An error occurred while updating user");
-                //since we arent creating a logger class, this will have to do
                 e.printStackTrace();
+                AlertClass.alertError("Save Error", "An error occurred while updating user");
                 return;
             }
 
@@ -499,6 +499,7 @@ public class AdminUserManagementController implements Initializable {
             try {
                 userModel.editRole(user);
             } catch (EasvTicketException e) {
+                e.printStackTrace();
                 AlertClass.alertError("Role change error", "An error occurred while changing the role");
             }
             lstUsers.refresh();
@@ -534,6 +535,7 @@ public class AdminUserManagementController implements Initializable {
                 lstUsers.setItems(users);
                 return;
             } catch (EasvTicketException e) {
+                e.printStackTrace();
                 AlertClass.alertError("Search Error", "An error occurred while searching users");
             }
         }
@@ -563,8 +565,8 @@ public class AdminUserManagementController implements Initializable {
         //if the task fails, show the user theres a db issue.
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();
-            //TODO maybe dont show the user the error message????????
-            AlertClass.alertError("Search Error","An error occurred while searching for users" + error.getMessage());
+            error.printStackTrace();
+            AlertClass.alertError("Search Error","An error occurred while searching for users");
         });
 
         //put the task in a new thread and run it. -- technically should make something to prevent creating loads of threads

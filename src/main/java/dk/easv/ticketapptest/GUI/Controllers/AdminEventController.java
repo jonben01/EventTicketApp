@@ -88,8 +88,8 @@ public class AdminEventController implements Initializable {
         });
         loadDataTask.setOnFailed(event -> {
             Throwable error = loadDataTask.getException();
-            AlertClass.alertError("Load Error","An error occurred while loading events");
             error.printStackTrace();
+            AlertClass.alertError("Load Error","An error occurred while loading events");
         });
         Thread thread = new Thread(loadDataTask);
         thread.setDaemon(true);
@@ -164,11 +164,12 @@ public class AdminEventController implements Initializable {
 
     public void searchEvent() {
         String searchQuery = txtEventSearch.getText();
-        if (txtEventSearch.getText().isEmpty()) {
+        if (searchQuery.isEmpty() || searchQuery.trim().isEmpty()) {
             try {
                 tblEvents.setItems(adminEventModel.getObservableEvents());
                 //TODO use custom exception
             } catch (Exception e) {
+                e.printStackTrace();
                 AlertClass.alertError("Search Error", "An error occurred while searching for events" + e.getMessage());
             }
             return;
@@ -200,6 +201,7 @@ public class AdminEventController implements Initializable {
 
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();
+            error.printStackTrace();
             AlertClass.alertError("Search Error", "An error occurred while searching for events" + error.getMessage());
         });
         return searchTask;

@@ -2,6 +2,8 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +50,7 @@ public class CreateTicketViewController {
     }
 
     @FXML
-    private void handleCreateTicket(ActionEvent actionEvent) throws SQLException {
+    private void handleCreateTicket(ActionEvent actionEvent) {
         String name = txtTicketName.getText();
         String description = txtTicketDesc.getText();
         double price = Double.parseDouble(txtTicketPrice.getText());
@@ -57,15 +59,26 @@ public class CreateTicketViewController {
         if (selectedTicket == null) {
             // Create new ticket
             Ticket ticket = new Ticket(selectedEvent, price, chkGlobal.isSelected(), name, description);
-            ticketModel.createTicket(ticket);
+            try {
+                ticketModel.createTicket(ticket);
+            } catch (EasvTicketException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error","An error occurred while creating ticket");
+            }
+
 
         } else {
             // Update existing ticket
-            selectedTicket.setTicketName(name);
-            selectedTicket.setDescription(description);
-            selectedTicket.setPrice(price);
-            selectedTicket.setGLOBAL(chkGlobal.isSelected());
-            ticketModel.updateTicket(selectedTicket);
+            try {
+                selectedTicket.setTicketName(name);
+                selectedTicket.setDescription(description);
+                selectedTicket.setPrice(price);
+                selectedTicket.setGLOBAL(chkGlobal.isSelected());
+                ticketModel.updateTicket(selectedTicket);
+            } catch (EasvTicketException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error","An error occurred while updating ticket");
+            }
         }
         parent2.updateTicketList();
         Stage stage = (Stage) txtTicketName.getScene().getWindow();

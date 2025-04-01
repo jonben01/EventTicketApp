@@ -2,33 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 
-<BorderPane fx:id="rootPane" prefHeight="768.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.LoginController">
+<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.LoginController">
    <center>
-      <FlowPane alignment="CENTER" prefWidth="810.0">
+      <AnchorPane prefHeight="554.0" prefWidth="782.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="505.0" prefWidth="723.0">
+            <AnchorPane layoutX="85.0" layoutY="112.0" prefHeight="382.0" prefWidth="630.0" style="-fx-background-color: white; -fx-background-radius: 8;" AnchorPane.bottomAnchor="112.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="85.39999999999998" AnchorPane.topAnchor="112.0">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
                <children>
-                  <AnchorPane layoutX="45.0" layoutY="46.0" prefHeight="371.0" prefWidth="636.0" style="-fx-background-color: white; -fx-background-radius: 8;" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="46.0">
-                     <children>
-                        <TextField fx:id="txtUsername" layoutX="58.0" layoutY="105.0" prefHeight="45.0" prefWidth="509.0" promptText="Username" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="68.0" />
-                        <Button fx:id="btnLogin" layoutX="80.0" layoutY="249.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="59.0" prefWidth="441.0" style="-fx-font-size: 20;" stylesheets="@../css/usermanagementstyle.css" text="Log in" AnchorPane.leftAnchor="68.0" AnchorPane.rightAnchor="114.66666666666669" />
-                        <Label layoutX="43.0" layoutY="41.0" style="-fx-font-size: 30;" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Log in" AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="41.0" />
-                        <PasswordField fx:id="txtPassword" layoutX="45.0" layoutY="170.0" prefHeight="47.0" prefWidth="509.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" />
-                     </children>
-                     <padding>
-                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                     </padding>
-                  </AnchorPane>
+                  <PasswordField fx:id="txtPassword" layoutX="72.0" layoutY="214.0" prefHeight="46.0" prefWidth="486.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" />
+                  <Button fx:id="btnLogin" layoutX="128.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="59.0" prefWidth="373.0" style="-fx-font-size: 20;" stylesheets="@../css/usermanagementstyle.css" text="Log in" />
+                  <TextField fx:id="txtUsername" layoutX="72.0" layoutY="138.0" prefHeight="46.0" prefWidth="486.0" promptText="Username" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" />
+                  <ImageView fx:id="imgLogo" fitHeight="96.0" fitWidth="326.0" layoutX="152.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
          </children>
-      </FlowPane>
+      </AnchorPane>
    </center>
 </BorderPane>

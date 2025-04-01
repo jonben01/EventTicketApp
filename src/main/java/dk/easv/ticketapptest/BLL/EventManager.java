@@ -4,6 +4,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.util.AdminEventSearcher;
 import dk.easv.ticketapptest.DAL.EventDAO;
 import dk.easv.ticketapptest.DAL.LocationDAO;
@@ -25,11 +26,11 @@ public class EventManager {
     }
 
 
-    public List<Event2> getAllEvents() throws SQLException {
+    public List<Event2> getAllEvents() throws EasvTicketException {
         return eventDAO.getAllEvents();
     }
 
-    public Event2 createEvent(Event2 event) throws SQLException {
+    public Event2 createEvent(Event2 event) throws EasvTicketException {
         Location createdLocation = locationDAO.createLocation(event.getLocation());
         Event2 createdEvent = eventDAO.createEvent(event, createdLocation);
         createdEvent.setLocation(createdLocation);
@@ -37,32 +38,32 @@ public class EventManager {
 
     }
 
-    public void deleteEvent(Event2 eventToBeDeleted) throws SQLException {
+    public void deleteEvent(Event2 eventToBeDeleted) throws EasvTicketException {
         eventDAO.deleteEvent(eventToBeDeleted);
     }
 
-    public void updateEvent(Event2 event) throws SQLException {
+    public void updateEvent(Event2 event) throws EasvTicketException {
         Location createdLocation = locationDAO.createLocation(event.getLocation());
         eventDAO.updateEvent(event, createdLocation);
 
     }
 
 
-    public List<User> getAllUsersForEvent(int eventID) throws SQLServerException {
+    public List<User> getAllUsersForEvent(int eventID) throws EasvTicketException {
         return eventDAO.getAllUsersForEvent(eventID);
     }
 
-    public void addToEventUsers(Event2 selectedEvent) throws SQLServerException {
+    public void addToEventUsers(Event2 selectedEvent) throws EasvTicketException {
         eventDAO.addToEventUsers(selectedEvent);
     }
 
-    public void removeFromEventUsers(Event2 selectedEvent) {
+    public void removeFromEventUsers(Event2 selectedEvent) throws EasvTicketException {
         eventDAO.removeFromEventUsers(selectedEvent);
     }
 
-    public List<Event2> getAllEventsForUser(int userid) throws SQLException {return eventDAO.getAllEventsForUser(userid);}
+    public List<Event2> getAllEventsForUser(int userid) throws EasvTicketException {return eventDAO.getAllEventsForUser(userid);}
 
-    public ObservableList<Event2> searchEvent(String searchQuery) throws Exception {
+    public ObservableList<Event2> searchEvent(String searchQuery) throws EasvTicketException {
         List<Event2> searchBase = getAllEvents();
         return adminEventSearcher.searchEvents(searchBase, searchQuery);
     }

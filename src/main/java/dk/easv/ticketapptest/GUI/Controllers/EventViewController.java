@@ -5,6 +5,7 @@ import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
@@ -227,36 +228,50 @@ public class EventViewController {
 
     //TODO exceptions
     @FXML
-    private void handleAddTicket(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
-        Parent root = loader.load();
-        CreateTicketViewController controller = loader.getController();
-        controller.setParent(this);
-        controller.setSelectedEvent(selectedEvent);
-        Stage stage = new Stage();
-        stage.setTitle("Create Ticket");
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();
+    private void handleAddTicket(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/create-ticket-view.fxml"));
+            Parent root = loader.load();
+            CreateTicketViewController controller = loader.getController();
+            controller.setParent(this);
+            controller.setSelectedEvent(selectedEvent);
+            Stage stage = new Stage();
+            stage.setTitle("Create Ticket");
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error", "An error occurred while opening the ticket window.");
+        }
     }
 
-    //TODO exceptions
-    public void updateTicketList() throws SQLException {
+    public void updateTicketList() {
         tblTicket.getItems().clear();
-        tblTicket.getItems().addAll(ticketModel.getTicketsForEvent(selectedEvent));
+        try {
+            tblTicket.getItems().addAll(ticketModel.getTicketsForEvent(selectedEvent));
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error", "Error while updating ticket list");
+        }
     }
 
-    //TODO exceptions
-    public void updateInformation(int version) throws SQLException {
+    public void updateInformation(int version) {
         if(version == 1) {
-            eventModel.updateList();
-            List<Event2> events = new ArrayList<>(eventModel.getObservableEvents());
-            for (Event2 event : events) {
-                if (selectedEvent.getEventID() == event.getEventID()) {
-                    System.out.println("event found");
-                    selectedEvent = event;
+            try {
+                eventModel.updateList();
+                List<Event2> events = new ArrayList<>(eventModel.getObservableEvents());
+
+                for (Event2 event : events) {
+                    if (selectedEvent.getEventID() == event.getEventID()) {
+                        System.out.println("event found");
+                        selectedEvent = event;
+                    }
                 }
+            } catch (EasvTicketException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error", "Error while updating information");
             }
         }
 
@@ -288,6 +303,7 @@ public class EventViewController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             AlertClass.alertError("Error", "An error occurred while loading event panel");
         }
     }
@@ -306,21 +322,27 @@ public class EventViewController {
                 lstCoords.refresh();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             AlertClass.alertError("Error", "An error occurred while removing event");
         }
     }
 
     @FXML
-    private void handleAddEvent(ActionEvent actionEvent) throws SQLServerException {
+    private void handleAddEvent(ActionEvent actionEvent){
         User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
         System.out.println(temp.getFirstName() + " " + temp.getLastName());
         if (temp != null) {
-            usersWithAccess.add(temp);
-            Event2 tempEvent = new Event2();
-            tempEvent.setEventID(selectedEvent.getEventID());
-            tempEvent.addCoordinator(temp);
-            eventModel.addToEventUsers(tempEvent);
-            lstCoords.refresh();
+            try {
+                usersWithAccess.add(temp);
+                Event2 tempEvent = new Event2();
+                tempEvent.setEventID(selectedEvent.getEventID());
+                tempEvent.addCoordinator(temp);
+                eventModel.addToEventUsers(tempEvent);
+                lstCoords.refresh();
+            } catch (EasvTicketException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error", "An error occurred while adding event");
+            }
         }
     }
 
@@ -340,7 +362,8 @@ public class EventViewController {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
                 updateTicketList();
-            } catch (IOException | SQLException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
                 AlertClass.alertError("Error", "An error while editing the ticket");
             }
         } else {
@@ -361,7 +384,8 @@ public class EventViewController {
                 try {
                     ticketModel.deleteTicket(selectedTicket);
                     updateTicketList();
-                } catch (SQLException e) {
+                } catch (EasvTicketException e) {
+                    e.printStackTrace();
                     AlertClass.alertError("Error", "An error occurred while deleting the ticket");
                 }
             }

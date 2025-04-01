@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.BLL;
 import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.DAL.TicketDAO;
 
 import java.io.IOException;
@@ -16,23 +17,23 @@ public class TicketManager {
         ticketDAO = new TicketDAO();
     }
 
-    public Ticket createTicket(Ticket ticket) throws SQLException {
+    public Ticket createTicket(Ticket ticket) throws EasvTicketException {
         return ticketDAO.createTicket(ticket);
     }
 
-    public List<Ticket> getTicketsForEvent(Event2 event) throws SQLException {
+    public List<Ticket> getTicketsForEvent(Event2 event) throws EasvTicketException {
         return ticketDAO.getTicketsForEvent(event);
     }
 
-    public void updateTicket(Ticket selectedTicket) throws SQLException {
+    public void updateTicket(Ticket selectedTicket) throws EasvTicketException {
         ticketDAO.updateTicket(selectedTicket);
     }
 
-    public void deleteTicket(Ticket selectedTicket) throws SQLException {
+    public void deleteTicket(Ticket selectedTicket) throws EasvTicketException {
         ticketDAO.deleteTicket(selectedTicket);
     }
 
-    public void savePrintedTicket(String rndString, Ticket selectedTicket, Event2 selectedEvent, Customer customer) throws SQLException {
+    public void savePrintedTicket(String rndString, Ticket selectedTicket, Event2 selectedEvent, Customer customer) throws EasvTicketException {
         ticketDAO.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
     }
 }

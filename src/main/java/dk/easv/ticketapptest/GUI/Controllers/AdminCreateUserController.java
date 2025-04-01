@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,6 +25,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AdminCreateUserController implements Initializable {
@@ -60,7 +62,20 @@ public class AdminCreateUserController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imageUploader = new ImageUploader();
+        makeImageViewCircular();
+        String defaultImagePath = Objects.requireNonNull(getClass().getResource("/defaultImage.png")).toExternalForm();
+        imgCreateProfile.setImage(new Image(defaultImagePath));
+    }
 
+    private void makeImageViewCircular() {
+        double radius = 40;
+        imgCreateProfile.setFitHeight(radius * 2);
+        imgCreateProfile.setFitWidth(radius * 2);
+        imgCreateProfile.setPreserveRatio(false);
+        imgCreateProfile.setSmooth(true);
+
+        Circle circle = new Circle(radius, radius, radius);
+        imgCreateProfile.setClip(circle);
     }
 
     public void handleCreateNewUser(ActionEvent actionEvent) {
@@ -74,17 +89,18 @@ public class AdminCreateUserController implements Initializable {
             AlertClass.alertInfo("Missing information", "Please select a role");
             return;
         }
-        String username = this.txtUsername.getText();
-        String password = this.txtPassword.getText();
-        String firstName = this.txtFirstName.getText();
-        String lastName = this.txtLastName.getText();
-        String email = this.txtEmail.getText();
-        String phone = this.txtPhone.getText();
+        String username = this.txtUsername.getText().trim();
+        String password = this.txtPassword.getText().trim();
+        String firstName = this.txtFirstName.getText().trim();
+        String lastName = this.txtLastName.getText().trim();
+        String email = this.txtEmail.getText().trim();
+        String phone = this.txtPhone.getText().trim();
 
         //set the name on the file as the username_profilepic + increasing number
         try {
             imagePath = imageUploader.uploadFile(imagePath);
         } catch (EasvTicketException e) {
+            e.printStackTrace();
             AlertClass.alertError("Error", "Failed to upload file");
             return;
         }
@@ -175,6 +191,7 @@ public class AdminCreateUserController implements Initializable {
             //set the path for the new user
             imagePath = file.getAbsolutePath();
             imgCreateProfile.setImage(new Image(file.toURI().toString()));
+            makeImageViewCircular();
         }
 
     }

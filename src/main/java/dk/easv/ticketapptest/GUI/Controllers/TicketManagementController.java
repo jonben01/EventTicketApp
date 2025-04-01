@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.User;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class TicketManagementController {
     private EventManagementModel eventModel;
 
     @FXML
-    private void initialize() throws SQLException, IOException {
+    private void initialize() throws IOException, EasvTicketException {
         vboxList = new ArrayList<>();
         eventModel = new EventManagementModel();
         eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();

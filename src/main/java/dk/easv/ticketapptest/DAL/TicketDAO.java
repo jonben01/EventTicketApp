@@ -3,6 +3,7 @@ package dk.easv.ticketapptest.DAL;
 import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 
 import java.io.IOException;
 import java.sql.*;
@@ -17,7 +18,7 @@ public class TicketDAO implements ITicketDataAccess {
     }
 
     @Override
-    public Ticket createTicket(Ticket ticket) throws SQLException {
+    public Ticket createTicket(Ticket ticket) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Tickets(Title, Description, Price, Global) VALUES(?,?,?,?);";
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -44,12 +45,12 @@ public class TicketDAO implements ITicketDataAccess {
             }
             return ticket;
         } catch (SQLException e) {
-            throw new SQLException("Could not create new ticket", e);
+            throw new EasvTicketException("Could not create new ticket", e);
         }
     }
 
     @Override
-    public void deleteTicket(Ticket ticket) throws SQLException {
+    public void deleteTicket(Ticket ticket) throws EasvTicketException {
         String sql = "DELETE FROM dbo.Tickets WHERE TicketID = ?;";
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -57,12 +58,12 @@ public class TicketDAO implements ITicketDataAccess {
             ps.executeUpdate();
         }
         catch (SQLException e) {
-            throw new SQLException("Could not delete ticket", e);
+            throw new EasvTicketException("Could not delete ticket", e);
         }
     }
 
     @Override
-    public Ticket updateTicket(Ticket ticket) throws SQLException {
+    public Ticket updateTicket(Ticket ticket) throws EasvTicketException {
         String sql = "UPDATE dbo.Tickets SET Title = ?, Description = ?, Price = ?, Global = ? WHERE TicketID = ?;";
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
@@ -74,14 +75,14 @@ public class TicketDAO implements ITicketDataAccess {
             ps.executeUpdate();
             return ticket;
         } catch (SQLException e) {
-            throw new SQLException("Could not update ticket", e);
+            throw new EasvTicketException("Could not update ticket", e);
         }
 
 
     }
 
     @Override
-    public List<Ticket> getAllTickets() throws SQLException {
+    public List<Ticket> getAllTickets() throws EasvTicketException {
         List<Ticket> allTickets = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Tickets;";
         try (Connection conn = connector.getConnection();
@@ -97,13 +98,13 @@ public class TicketDAO implements ITicketDataAccess {
                  allTickets.add(ticket);
              }
             }catch (SQLException e) {
-            throw new SQLException("Could not get all tickets", e);
+            throw new EasvTicketException("Could not get all tickets", e);
         }
         return allTickets;
     }
 
     @Override
-    public List<Ticket> getTicketsForEvent(Event2 event) throws SQLException {
+    public List<Ticket> getTicketsForEvent(Event2 event) throws EasvTicketException {
         List<Ticket> eventtickets = new ArrayList<>();
         String sql = "SELECT t.* FROM dbo.Tickets t JOIN dbo.TicketEvent_Junction te ON t.TicketID = te.TicketID WHERE te.EventID = ?;";
         try (Connection conn = connector.getConnection();
@@ -136,12 +137,12 @@ public class TicketDAO implements ITicketDataAccess {
         }
         return eventtickets;
         } catch (SQLException e) {
-            throw new SQLException("Could not get tickets for event" , e);
+            throw new EasvTicketException("Could not get tickets for event" , e);
         }
     }
 
     @Override
-    public void AssignTicketToEvent(Ticket ticket, Event2 event) throws SQLException{
+    public void AssignTicketToEvent(Ticket ticket, Event2 event) throws EasvTicketException{
         String sql = "INSERT INTO dbo.TicketEvent_Junction(TicketID, EventID) " + "VALUES(?, ?);";
         try (Connection connection = connector.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -149,11 +150,11 @@ public class TicketDAO implements ITicketDataAccess {
             ps.setInt(2, event.getEventID());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Could not assign ticket to event", e);
+            throw new EasvTicketException("Could not assign ticket to event", e);
         }
     }
 
-    public void savePrintedTicket(String generatedID, Ticket ticket, Event2 event, Customer customer) throws SQLException {
+    public void savePrintedTicket(String generatedID, Ticket ticket, Event2 event, Customer customer) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Printed_Tickets(GeneratedTicket, TicketID, EventID, FirstName, LastName, Email, PhoneNumber) " + "VALUES(?, ?, ?, ?, ?, ?, ?);";
         try (Connection conn = connector.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -166,7 +167,7 @@ public class TicketDAO implements ITicketDataAccess {
             ps.setInt(7, customer.getPhoneNumber());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("Could not save printed ticket information", e);
+            throw new EasvTicketException("Could not save printed ticket information", e);
         }
     }
 }
