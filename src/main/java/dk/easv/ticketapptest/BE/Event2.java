@@ -21,10 +21,10 @@ public class Event2 {
     private String locationGuidance;
     private String status;
     private LocalDateTime startDateTime;
-    private int postalCode;
+
 
     public Event2(String title, Location location, String description, String locationGuidance, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
-                  List<Ticket> ticketTypes, List<User> eventCoordinators, int postalCode) {
+                  List<Ticket> ticketTypes, List<User> eventCoordinators) {
         this.title = title;
         this.location = location;
         this.description = description;
@@ -35,7 +35,6 @@ public class Event2 {
         this.endTime = endTime;
         this.ticketTypes = ticketTypes;
         this.eventCoordinators = eventCoordinators;
-        this.postalCode = postalCode;
 
     }
 
@@ -136,11 +135,6 @@ public class Event2 {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    //Todo impliment postalCode
-    public int getpostalCode() {return postalCode;}
-
-    public void setpostalCode(int postalCode){this.postalCode = postalCode;}
 
     public LocalTime getStartTime() {
         return startTime;

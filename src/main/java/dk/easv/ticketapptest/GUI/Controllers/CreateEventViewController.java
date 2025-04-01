@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class CreateEventViewController {
@@ -115,7 +116,7 @@ public class CreateEventViewController {
                     eventViewController.updateInformation(1);
                 }
                 else {
-                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>() {
+                    Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), (List<Ticket>) new ArrayList<Ticket>() {
                     }, new ArrayList<>(Arrays.asList(sessionUser)));
                     parent.createEvent(event, true);
                     model.createEvent(event);
