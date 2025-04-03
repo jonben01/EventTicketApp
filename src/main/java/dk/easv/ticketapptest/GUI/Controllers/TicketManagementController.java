@@ -1,27 +1,27 @@
 package dk.easv.ticketapptest.GUI.Controllers;
-
+//project imports
 import dk.easv.ticketapptest.BE.Event2;
-import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
+import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
+//java imports
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
-
 import java.io.IOException;
-import java.sql.SQLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class TicketManagementController {
+public class TicketManagementController implements Initializable {
     BorderPane mainPane;
     @FXML
     private GridPane gridPane;
@@ -34,51 +34,49 @@ public class TicketManagementController {
     @FXML
     private AnchorPane windowPane;
     private List<VBox> vboxList;
-
     private EventManagementModel eventModel;
 
-    @FXML
-    private void initialize() throws IOException, EasvTicketException {
-        vboxList = new ArrayList<>();
-        eventModel = new EventManagementModel();
-        eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
-        gridPane.setPadding(new Insets(70, 0, 0, 0));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            vboxList = new ArrayList<>();
+            eventModel = new EventManagementModel();
+            eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
+            gridPane.setPadding(new Insets(70, 0, 0, 0));
+            gridPane.setHgap(10);
+            gridPane.setVgap(10);
 
 
-        for (int i = 0; i < 3; i++) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setHgrow(Priority.NEVER);
-            columnConstraints.setMinWidth(w);
-            columnConstraints.setPrefWidth(w);
+            for (int i = 0; i < 3; i++) {
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setHgrow(Priority.NEVER);
+                columnConstraints.setMinWidth(w);
+                columnConstraints.setPrefWidth(w);
 
-            gridPane.getColumnConstraints().add(columnConstraints);
+                gridPane.getColumnConstraints().add(columnConstraints);
+            }
+
+            for (int i = 0; i < 10; i++) {
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setVgrow(Priority.NEVER);
+                rowConstraints.setMinHeight(h);
+                rowConstraints.setPrefHeight(h);
+
+                gridPane.getRowConstraints().add(rowConstraints);
+
+                gridPane.setAlignment(Pos.CENTER);
+            }
+            addExistingEvents(eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId()));
+            gridPane.getStylesheets().add(eventCSS);
+            gridPane.setStyle("-fx-background-color: #F8F8F8;");
+        } catch (EasvTicketException | IOException e) {
+            AlertClass.alertInfo("Something went wrong", "An error has occurred while initializing the ticket management window");
         }
-
-        for (int i = 0; i < 10; i++) {
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setVgrow(Priority.NEVER);
-            rowConstraints.setMinHeight(h);
-            rowConstraints.setPrefHeight(h);
-
-            gridPane.getRowConstraints().add(rowConstraints);
-
-            gridPane.setAlignment(Pos.CENTER);
-        }
-        addExistingEvents(eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId()));
-        gridPane.getStylesheets().add(eventCSS);
-        gridPane.setStyle("-fx-background-color: #F8F8F8;");
     }
 
     public void setPanel(BorderPane rootPaneEvent) {
         mainPane = rootPaneEvent;
-    }
-
-    private class EventDetails {
-      private Event2 event;
-
-
     }
 
     private VBox createEventPanel(Event2 event2) {
@@ -122,7 +120,7 @@ public class TicketManagementController {
                     controller.setEventDetails(event2);
                     mainPane.setCenter(eventInDepth);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    AlertClass.alertError("Something went wrong", "An error has occurred while creating event panels");
                 }
             }
         });

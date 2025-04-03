@@ -19,10 +19,14 @@ public class EventManager {
     LocationDAO locationDAO;
     private AdminEventSearcher adminEventSearcher;
 
-    public EventManager() throws IOException {
-        eventDAO = new EventDAO();
-        locationDAO = new LocationDAO();
-        adminEventSearcher = new AdminEventSearcher();
+    public EventManager() throws EasvTicketException{
+        try {
+            eventDAO = new EventDAO();
+            locationDAO = new LocationDAO();
+            adminEventSearcher = new AdminEventSearcher();
+        } catch (IOException e) {
+            throw new EasvTicketException(e.getMessage());
+        }
     }
 
 

@@ -1,15 +1,13 @@
 package dk.easv.ticketapptest.GUI.Models;
-
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+//project imports
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.EventManager;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
+//java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class EventManagementModel {
@@ -17,7 +15,7 @@ public class EventManagementModel {
     private ObservableList<Event2> eventList;
     private EventManager eventManager;
 
-    public EventManagementModel() throws IOException, EasvTicketException {
+    public EventManagementModel() throws EasvTicketException {
         eventManager = new EventManager();
         eventList = FXCollections.observableArrayList();
         eventList.addAll(eventManager.getAllEvents());

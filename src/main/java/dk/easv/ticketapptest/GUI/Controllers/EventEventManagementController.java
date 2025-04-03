@@ -42,41 +42,46 @@ public class EventEventManagementController {
 
 
     @FXML
-    private void initialize() throws IOException, EasvTicketException {
-        eventModel = new EventManagementModel();
+    private void initialize() {
+        try {
+            eventModel = new EventManagementModel();
             userCSS = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
             eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
             btnCreateEvent.getStylesheets().add(userCSS);
             gridPane.getStylesheets().add(eventCSS);
-        gridPane.setStyle("-fx-background-color: #F8F8F8;");
+            gridPane.setStyle("-fx-background-color: #F8F8F8;");
 
 
             gridPane.setPadding(new Insets(70, 0, 0, 0));
             gridPane.setHgap(10);
             gridPane.setVgap(10);
 
-        for (int i = 0; i < 3; i++) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setHgrow(Priority.NEVER);
-            columnConstraints.setMinWidth(300);
-            columnConstraints.setPrefWidth(300);
-            //columnConstraints.setMaxWidth(300);
-            gridPane.getColumnConstraints().add(columnConstraints);
-        }
+            for (int i = 0; i < 3; i++) {
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setHgrow(Priority.NEVER);
+                columnConstraints.setMinWidth(300);
+                columnConstraints.setPrefWidth(300);
+                //columnConstraints.setMaxWidth(300);
+                gridPane.getColumnConstraints().add(columnConstraints);
+            }
 
-        for (int i = 0; i < 10; i++) { // Set the number of rows you expect
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setVgrow(Priority.NEVER);
-            rowConstraints.setMinHeight(300);
-            rowConstraints.setPrefHeight(300);
-            //rowConstraints.setMaxHeight(300);
-            gridPane.getRowConstraints().add(rowConstraints);
+            for (int i = 0; i < 10; i++) { // Set the number of rows you expect
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setVgrow(Priority.NEVER);
+                rowConstraints.setMinHeight(300);
+                rowConstraints.setPrefHeight(300);
+                //rowConstraints.setMaxHeight(300);
+                gridPane.getRowConstraints().add(rowConstraints);
 
-            gridPane.setAlignment(Pos.CENTER);
-            gridPane.getStylesheets().add(eventCSS);
+                gridPane.setAlignment(Pos.CENTER);
+                gridPane.getStylesheets().add(eventCSS);
+            }
+            addExistingEvents(eventModel.getObservableEvents());
+            trackWindowSize();
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Something went wrong", "An error has occurred while initializing the event window");
         }
-       addExistingEvents(eventModel.getObservableEvents());
-        trackWindowSize();
     }
 
     public void setPanel(BorderPane mainPane)

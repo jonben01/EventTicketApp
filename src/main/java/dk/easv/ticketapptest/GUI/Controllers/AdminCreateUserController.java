@@ -65,6 +65,14 @@ public class AdminCreateUserController implements Initializable {
         makeImageViewCircular();
         String defaultImagePath = Objects.requireNonNull(getClass().getResource("/defaultImage.png")).toExternalForm();
         imgCreateProfile.setImage(new Image(defaultImagePath));
+
+        txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 30) {
+                txtUsername.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
+            } else {
+                txtUsername.setStyle("");
+            }
+        });
     }
 
     private void makeImageViewCircular() {
@@ -81,7 +89,6 @@ public class AdminCreateUserController implements Initializable {
     public void handleCreateNewUser(ActionEvent actionEvent) {
 
         if(!highlightFields()) {
-            AlertClass.alertInfo("Missing information", "Please fill all the fields or correct illegal input, like spaces");
             return;
         }
         Role role = getRole();
@@ -131,42 +138,76 @@ public class AdminCreateUserController implements Initializable {
     private boolean highlightFields() {
         boolean allValid = true;
         String style = "-fx-border-color: red; -fx-border-width: 1px;";
+        StringBuilder errorMessages = new StringBuilder();
 
-        if(txtUsername.getText().trim().isEmpty() || txtUsername.getText().contains(" ")) {
+        if(txtUsername.getText().trim().isEmpty() || txtUsername.getText().contains(" ") || txtUsername.getText().length() > 30) {
             txtUsername.setStyle(style);
             allValid = false;
+            if (txtUsername.getText().trim().isEmpty()) {
+                errorMessages.append("Username is required\n");
+            }
+            if (txtUsername.getText().contains(" ")) {
+                errorMessages.append("Username cannot contain spaces\n");
+            }
+            if (txtUsername.getText().length() > 30) {
+                errorMessages.append("Username cannot be longer than 30 characters\n");
+            }
         } else {
             txtUsername.setStyle("");
         }
         if(txtPassword.getText().trim().isEmpty() || txtPassword.getText().contains(" ")) {
             txtPassword.setStyle(style);
             allValid = false;
+            if (txtPassword.getText().trim().isEmpty()) {
+                errorMessages.append("Password is required\n");
+            }
+            if (txtPassword.getText().contains(" ")) {
+                errorMessages.append("Password cannot contain spaces\n");
+            }
         } else {
-            txtUsername.setStyle("");
+            txtPassword.setStyle("");
         }
         if(txtFirstName.getText().trim().isEmpty()) {
             txtFirstName.setStyle(style);
             allValid = false;
+            if (txtFirstName.getText().trim().isEmpty()) {
+                errorMessages.append("First name is required\n");
+            }
         } else {
-            txtUsername.setStyle("");
+            txtFirstName.setStyle("");
         }
         if(txtLastName.getText().trim().isEmpty()) {
             txtLastName.setStyle(style);
             allValid = false;
+            if (txtLastName.getText().trim().isEmpty()) {
+                errorMessages.append("Last name is required\n");
+            }
         } else {
-            txtUsername.setStyle("");
+            txtLastName.setStyle("");
         }
         if(txtEmail.getText().trim().isEmpty() || txtEmail.getText().contains(" ")) {
             txtEmail.setStyle(style);
             allValid = false;
+            if (txtEmail.getText().trim().isEmpty()) {
+                errorMessages.append("Email is required\n");
+            }
+            if (txtEmail.getText().contains(" ")) {
+                errorMessages.append("Email cannot contain spaces\n");
+            }
         } else {
-            txtUsername.setStyle("");
+            txtEmail.setStyle("");
         }
-        if(txtPhone.getText().trim().isEmpty() || txtPhone.getText().contains(" ")) {
+        if(txtPhone.getText().trim().isEmpty()) {
             txtPhone.setStyle(style);
             allValid = false;
+            if (txtPhone.getText().trim().isEmpty()) {
+                errorMessages.append("Phone is required\n");
+            }
         } else {
-            txtUsername.setStyle("");
+            txtPhone.setStyle("");
+        }
+        if (!allValid) {
+            AlertClass.alertError("invalid input", errorMessages.toString());
         }
         return allValid;
     }

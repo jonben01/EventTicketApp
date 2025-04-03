@@ -93,24 +93,27 @@ public class EventViewController {
 
     private String previousView;
 
-    //TODO exceptions
-    public void setSelectedEvent(Event2 event2) throws Exception {
-        this.selectedEvent = event2;
-        for(User coordinator : userModel.getAllCoordinators())
-        {
-            lstCoords.getItems().add(coordinator);
-        }
-        usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
-        for(User coordinator : usersWithAccess){
-            if(SessionManager.getInstance().getCurrentUser ().getId() == coordinator.getId() ){
-                userHasAccess = true;
+    public void setSelectedEvent(Event2 event2) {
+        try {
+            this.selectedEvent = event2;
+            for (User coordinator : userModel.getAllCoordinators()) {
+                lstCoords.getItems().add(coordinator);
             }
+            usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
+            for (User coordinator : usersWithAccess) {
+                if (SessionManager.getInstance().getCurrentUser().getId() == coordinator.getId()) {
+                    userHasAccess = true;
+                }
+            }
+            magicLinesOfCode();
+            lstCoords.refresh();
+            checkUserAccess();
+            updateInformation(1);
+            updateTicketList();
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Something went wrong", "An error has occurred while doing something idk man");
         }
-        magicLinesOfCode();
-        lstCoords.refresh();
-        checkUserAccess();
-        updateInformation(1);
-        updateTicketList();
     }
 
     private void checkUserAccess() {
@@ -140,13 +143,14 @@ public class EventViewController {
 
     //TODO exceptions
         @FXML
-        public void initialize() throws Exception {
-        usersWithAccess = new ArrayList<>();
-        userModel = new UserModel();
-        eventModel = new EventManagementModel();
-        ticketModel = new TicketModel();
-        tblTicket.getStylesheets().add("css/admineventstyle.css");
-        tblTicket.getStyleClass().add("table-view");
+        public void initialize() {
+        try {
+            usersWithAccess = new ArrayList<>();
+            userModel = new UserModel();
+            eventModel = new EventManagementModel();
+            ticketModel = new TicketModel();
+            tblTicket.getStylesheets().add("css/admineventstyle.css");
+            tblTicket.getStyleClass().add("table-view");
 
             //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
             lblTitle.getStyleClass().add("h1");
@@ -164,8 +168,8 @@ public class EventViewController {
             vboxRight.getStyleClass().add("vBoxBorder2");
 
             populateList();
-            clnTicket.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getTicketName()));
-            clnDescription.setCellValueFactory(cellData -> new SimpleStringProperty(( cellData.getValue()).getDescription()));
+            clnTicket.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue()).getTicketName()));
+            clnDescription.setCellValueFactory(cellData -> new SimpleStringProperty((cellData.getValue()).getDescription()));
             clnPrice.setCellValueFactory(cellData -> new SimpleObjectProperty<>((cellData.getValue()).getPrice()));
             clnPrice.setCellFactory(tc -> new TableCell<Ticket, Double>() {
                 @Override
@@ -178,8 +182,11 @@ public class EventViewController {
                     }
                 }
             });
-
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Something went wrong", "An error has occurred while initializing the event window");
         }
+    }
 
 
     private void populateList(){

@@ -61,13 +61,18 @@ public class CreateEventViewController {
     private Label txtInfo;
 
     @FXML
-    private void initialize() throws EasvTicketException, IOException {
-        sessionUser = SessionManager.getInstance().getCurrentUser();
+    private void initialize()  {
+        try {
+            sessionUser = SessionManager.getInstance().getCurrentUser();
 
-        model = new EventManagementModel();
-        String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
-        btnCreateEvent.getStylesheets().add(cssFile);
-        //btnAddTicket.getStylesheets().add(cssFile);
+            model = new EventManagementModel();
+            String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
+            btnCreateEvent.getStylesheets().add(cssFile);
+            //btnAddTicket.getStylesheets().add(cssFile);
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Something went wrong", "An error has occurred while initializing the event creation window");
+        }
     }
 
     public void selectEvent(Event2 event)

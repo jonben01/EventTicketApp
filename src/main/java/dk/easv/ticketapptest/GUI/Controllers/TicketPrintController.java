@@ -1,13 +1,15 @@
 package dk.easv.ticketapptest.GUI.Controllers;
-
+//project imports
 import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.util.Gmailer;
 import dk.easv.ticketapptest.BLL.util.PdfGeneratorUtil;
 import dk.easv.ticketapptest.BLL.util.QRImageUtil;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
+//java imports
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -17,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -86,9 +87,15 @@ public class TicketPrintController {
 
 
     @FXML
-    public void initialize() throws IOException, GeneralSecurityException {
-        ticketModel = new TicketModel();
-        gMailer = new Gmailer();
+    public void initialize(){
+        try {
+            ticketModel = new TicketModel();
+            gMailer = new Gmailer();
+        } catch (EasvTicketException | GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Something went wrong", "An error occurred while loading the window");
+        }
+
 
         tblTicket.getStylesheets().add("css/admineventstyle.css");
         tblTicket.getStyleClass().add("table-view");

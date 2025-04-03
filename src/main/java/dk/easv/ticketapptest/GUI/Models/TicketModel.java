@@ -1,15 +1,14 @@
 package dk.easv.ticketapptest.GUI.Models;
-
+//project imports
 import dk.easv.ticketapptest.BE.Customer;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.TicketManager;
+//java imports
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class TicketModel {
@@ -17,9 +16,14 @@ public class TicketModel {
     private ObservableList<Ticket> tickets;
 
 
-    public TicketModel() throws IOException {
-        ticketManager = new TicketManager();
-        tickets = FXCollections.observableArrayList();
+    public TicketModel() throws EasvTicketException {
+        try {
+            ticketManager = new TicketManager();
+            tickets = FXCollections.observableArrayList();
+        } catch (IOException e) {
+            throw new EasvTicketException("Error instantiating ticket model", e);
+        }
+
     }
 
     public void createTicket(Ticket ticket) throws EasvTicketException {

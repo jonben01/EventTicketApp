@@ -35,8 +35,13 @@ public class CreateTicketViewController {
     private CheckBox chkGlobal;
 
 
-    public CreateTicketViewController() throws IOException {
-        ticketModel = new TicketModel();
+    public CreateTicketViewController() {
+        try {
+            ticketModel = new TicketModel();
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error occurred", "Something went wrong");
+        }
     }
     // todo: find a better way to do this:
     public void setParent(TicketPrintController parent) {

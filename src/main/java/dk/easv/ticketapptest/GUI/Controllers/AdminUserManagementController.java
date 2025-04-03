@@ -1,5 +1,5 @@
 package dk.easv.ticketapptest.GUI.Controllers;
-
+//project imports
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
@@ -8,6 +8,7 @@ import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.UserManagementModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
+//java imports
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,22 +20,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
 import java.io.File;
 import java.net.URL;
 import java.util.*;
+
 
 public class AdminUserManagementController implements Initializable {
 
@@ -379,6 +377,8 @@ public class AdminUserManagementController implements Initializable {
                 AlertClass.alertError("Something went wrong", "An error occurred while creating user");
             }
             lstUsers.getItems().add(newUser);
+            //resort the list with the new user
+            FXCollections.sort(lstUsers.getItems(), Comparator.comparing(User::getFirstName, String.CASE_INSENSITIVE_ORDER));
             lstUsers.getSelectionModel().select(newUser);
             lstUsers.scrollTo(newUser);
         }
@@ -386,6 +386,11 @@ public class AdminUserManagementController implements Initializable {
 
     public void handleDeleteUser(ActionEvent actionEvent) {
         User user = lstUsers.getSelectionModel().getSelectedItem();
+        if (user == SessionManager.getInstance().getCurrentUser()){
+            AlertClass.alertWarning("Dont do that", "You cannot delete your own account.");
+            return;
+
+        }
         if (user != null) {
             Optional<ButtonType> result = AlertClass.alertConfirmation("Delete User", "Are you sure you want to delete this user: " + user.getUsername());
             if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -398,7 +403,7 @@ public class AdminUserManagementController implements Initializable {
                         User defaultUser = lstUsers.getSelectionModel().getSelectedItem();
                         setUserInfo(defaultUser);
                     }
-                } catch (Exception e) {
+                } catch (EasvTicketException e) {
                     e.printStackTrace();
                     AlertClass.alertError("Delete Error", "An error occurred while deleting user");
                 }

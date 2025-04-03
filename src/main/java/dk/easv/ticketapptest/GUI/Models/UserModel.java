@@ -1,11 +1,11 @@
 package dk.easv.ticketapptest.GUI.Models;
-
+//project imports
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.util.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.UserManager;
+//java imports
 import javafx.collections.ObservableList;
-
 import java.util.List;
 
 public class UserModel {
@@ -14,8 +14,6 @@ public class UserModel {
 
     public UserModel() throws EasvTicketException {
         userManager = new UserManager();
-
-
     }
 
     public String getPassword(String username) throws EasvTicketException {
@@ -29,10 +27,6 @@ public class UserModel {
 
     public User getUserByUsername(String username) throws EasvTicketException {
         return userManager.getUserByUsername(username);
-    }
-
-    public String hashPassword(String inputPassword) throws Exception {
-        return PBKDF2PasswordUtil.hashPassword(inputPassword);
     }
 
     public List<User> getAllCoordinators() throws EasvTicketException {
