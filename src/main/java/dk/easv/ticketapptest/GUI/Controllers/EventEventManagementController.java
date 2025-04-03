@@ -159,12 +159,19 @@ public class EventEventManagementController {
 
         Label ticketsLabel = new Label("Unique Tickets:");
         ticketsLabel.getStyleClass().add("h2");
+
         StringBuilder ticketInfo = new StringBuilder();
-        for (Ticket ticket : event2.getTicketTypes()) {
-            ticketInfo.append(ticket.getTicketName()).append("\n");
+
+        if (event2.getTicketTypes().isEmpty()) {
+            ticketInfo.append("No Ticket Types yet");
+        } else {
+            for (Ticket ticket : event2.getTicketTypes()) {
+                ticketInfo.append(ticket.getTicketName()).append("\n");
+            }
         }
         Label ticketInfoLabel = new Label(ticketInfo.toString().trim());
         ticketInfoLabel.getStyleClass().add("h3");
+
         Separator separator2 = new Separator();
 
         Label coordinatorLabel;

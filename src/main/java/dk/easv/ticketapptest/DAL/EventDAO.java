@@ -103,7 +103,10 @@ public class EventDAO implements IEventDataAccess {
                     ticket.setDescription(rs.getString("TicketDescription"));
                     ticket.setPrice(rs.getDouble("Price"));
                     ticket.setGLOBAL(rs.getBoolean("Global"));
-                    event.getTicketTypes().add(ticket);
+                    if(ticket.getTicketName() == null){}
+                    else{
+                        event.getTicketTypes().add(ticket);
+                    }
                 }
             }
 
