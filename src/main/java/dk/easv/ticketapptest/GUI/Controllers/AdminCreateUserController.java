@@ -114,12 +114,14 @@ public class AdminCreateUserController implements Initializable {
         String phone = this.txtPhone.getText().trim();
 
         //try to upload the selected image file path
-        try {
-            imagePath = imageUploader.uploadFile(imagePath);
-        } catch (EasvTicketException e) {
-            e.printStackTrace();
-            AlertClass.alertError("Error", "Failed to upload file");
-            return;
+        if (!Objects.equals(imagePath, "src/main/resources/defaultImage.png")) {
+            try {
+                imagePath = imageUploader.uploadFile(imagePath);
+            } catch (EasvTicketException e) {
+                e.printStackTrace();
+                AlertClass.alertError("Error", "Failed to upload file");
+                return;
+            }
         }
         //the new user
         newUser = new User(username, password, firstName, lastName, email, phone, role, imagePath);
