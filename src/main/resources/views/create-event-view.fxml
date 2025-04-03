@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,99 +11,101 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane prefHeight="701.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
-   <content>
-      <AnchorPane fx:id="rootNewEvent" prefHeight="697.0" prefWidth="971.0">
+<AnchorPane prefHeight="714.0" prefWidth="435.0" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateEventViewController">
+   <children>
+      <Label fx:id="txtTitle" layoutX="32.0" prefHeight="36.0" prefWidth="262.0" text="Create New Event">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <VBox layoutX="32.0" layoutY="46.0" prefHeight="650.0" prefWidth="372.0">
          <children>
-            <VBox layoutX="7.0" layoutY="12.0" prefHeight="614.0" prefWidth="955.0" spacing="15.0">
+            <VBox prefHeight="319.0" prefWidth="372.0">
                <children>
-                  <Label fx:id="txtTitle" prefHeight="36.0" prefWidth="262.0" text="Create New Event">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="txtInfo" prefHeight="20.0" prefWidth="329.0" text="Fill in the details below to create your event">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="19.0" prefWidth="824.0" text="Event Title">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txtNameEvent" prefHeight="42.0" prefWidth="824.0" promptText="Enter Event TItle">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextField>
-                  <Label prefHeight="20.0" prefWidth="824.0" text="Description">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextArea fx:id="txtDescriptionEvent" prefHeight="128.0" prefWidth="824.0" promptText="Describe your event">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextArea>
-                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
+                  <VBox prefHeight="172.0" prefWidth="372.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Location Guidance">
+                        <Label prefHeight="20.0" prefWidth="70.0" text="Event Title">
                            <font>
                               <Font size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="2.0" />
+                           </VBox.margin>
                         </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="55.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <TextArea fx:id="txtLocationGuidance" prefHeight="53.0" prefWidth="952.0" promptText="Enter Location Guidance">
+                        <TextField fx:id="txtNameEvent" prefHeight="35.0" prefWidth="354.0" promptText="e.g. Easter celebration">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets bottom="12.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label prefHeight="20.0" prefWidth="110.0" text="Event Description">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="6.0" left="2.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextArea fx:id="txtDescriptionEvent" prefHeight="78.0" prefWidth="372.0" promptText="What is happening?" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </TextArea>
                      </children>
-                  </HBox>
-                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
+                     <VBox.margin>
+                        <Insets bottom="12.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <HBox prefHeight="14.0" prefWidth="372.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="City">
+                        <Label prefHeight="20.0" prefWidth="155.0" text="Start Time">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Postal Code">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <TextField fx:id="txtCity" prefHeight="42.0" prefWidth="412.0" promptText="Enter City">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="txtPostalCode" prefHeight="42.0" prefWidth="412.0" promptText="Enter Postal Code">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Address">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
                         </Label>
                         <Label prefHeight="20.0" prefWidth="146.0" text="Start Date">
                            <font>
                               <Font size="14.0" />
                            </font>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="6.0" left="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="35.0" prefWidth="100.0">
+                     <children>
+                        <TextField fx:id="txtStartEvent" prefHeight="35.0" prefWidth="154.0" promptText="HH:MM">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <DatePicker fx:id="dateStartDate" editable="false" prefHeight="35.0" prefWidth="209.0" promptText="Choose Start Date" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="12.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="0.0" prefWidth="372.0">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="156.0" text="End Time">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
                         </Label>
                         <Label prefHeight="20.0" prefWidth="146.0" text="End Date">
                            <font>
@@ -111,58 +113,113 @@
                            </font>
                         </Label>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="6.0" left="2.0" />
+                     </VBox.margin>
                   </HBox>
-                  <HBox prefHeight="35.0" prefWidth="809.0" spacing="130.0">
+                  <HBox prefHeight="36.0" prefWidth="372.0">
                      <children>
-                        <TextField fx:id="txtAddress" prefHeight="35.0" prefWidth="412.0" promptText="Enter Address">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                        <DatePicker fx:id="dateStartDate" prefHeight="37.0" prefWidth="141.0" promptText="Choose Start Date" />
-                        <DatePicker fx:id="dateEndDate" prefHeight="37.0" prefWidth="152.0" promptText="Choose End Date" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="Start Time">
+                        <TextField fx:id="txtEndEvent" prefHeight="35.0" prefWidth="158.0" promptText="HH:MM">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
-                        <Label prefHeight="20.0" prefWidth="412.0" text="End Time">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="46.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <TextField fx:id="txtStartEvent" prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
                         </TextField>
-                        <TextField fx:id="txtEndEvent" prefHeight="42.0" prefWidth="412.0" promptText="--:-- --">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="19.0" prefWidth="955.0" spacing="130.0">
-                     <children>
-                        <Button fx:id="btnCreateEvent" mnemonicParsing="false" onAction="#CreateEvent" prefHeight="36.0" prefWidth="160.0" text="Create Event">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
+                        <DatePicker fx:id="dateEndDate" editable="false" minWidth="208.0" prefHeight="37.0" prefWidth="208.0" promptText="Choose End Date" />
                      </children>
                   </HBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
             </VBox>
+            <VBox prefHeight="268.0" prefWidth="400.0">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="53.0" text="Address">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="6.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="txtAddress" prefHeight="35.0" prefWidth="380.0" promptText="e.g. Spangsbjerg kirkevej 103">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="12.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <HBox prefHeight="18.0" prefWidth="372.0">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="209.0" text="City">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label prefHeight="20.0" prefWidth="103.0" text="Postal Code">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="6.0" left="2.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="35.0" prefWidth="372.0">
+                     <children>
+                        <TextField fx:id="txtCity" prefHeight="35.0" prefWidth="222.0" promptText="e.g. Esbjerg">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="12.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <TextField fx:id="txtPostalCode" prefHeight="35.0" prefWidth="165.0" promptText="e.g. 6700">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="12.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label prefHeight="20.0" prefWidth="117.0" text="Location Guidance">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="6.0" left="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextArea fx:id="txtLocationGuidance" prefHeight="100.0" prefWidth="262.0" promptText="How will attendees get there?" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </VBox>
+            <Button fx:id="btnCreateEvent" mnemonicParsing="false" onAction="#CreateEvent" prefHeight="37.0" prefWidth="378.0" text="Create Event">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
-      </AnchorPane>
-   </content>
-</ScrollPane>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -26,6 +26,81 @@
     -fx-background-radius: 8px;
 }
 
+.text-area {
+    -fx-effect: innershadow(gaussian, rgba(220, 220, 220, 0.8), 5, 0, 0, 0);
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(220, 220, 220, 0.8);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+}
+
+.text-area .scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 4
+}
+
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(220, 220, 220, 0.8);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4 6 4 6;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-effect: innershadow(gaussian, rgba(220, 220, 220, 0.8), 5, 0, 0, 0);
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-padding: 4 6 4 6;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(220, 220, 220, 0.8);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-pref-width: 32px;
+    -fx-alignment: center;
+    -fx-translate-x: -4;
+}
+.date-picker .arrow-button .arrow {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+    -fx-translate-x: -2;
+}
+.text-field:focused,
+.text-area:focused,
+.date-picker:focused {
+    -fx-border-color: #3a8dde;
+    -fx-border-width: 1px;
+}
+.date-picker .arrow-button:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #e6f0ff;
+    -fx-border-color: #3a8dde;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+}
+
+
 .button {
     -fx-background-radius: 8px;
     -fx-background-color: #2058da;

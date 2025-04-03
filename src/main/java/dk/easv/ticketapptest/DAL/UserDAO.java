@@ -136,7 +136,6 @@ public class UserDAO {
 
                 String roleName = rs.getString("RoleName");
                 userFromUsername.setRole(Role.valueOf(roleName));
-                System.out.println("User: " + userFromUsername);
 
                 return userFromUsername;
 

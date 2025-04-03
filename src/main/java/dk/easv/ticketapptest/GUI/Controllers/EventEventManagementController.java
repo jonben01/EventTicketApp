@@ -204,6 +204,7 @@ public class EventEventManagementController {
             scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
             stage.setScene(scene);
             stage.show();
+            stage.setResizable(false);
         } catch (IOException e) {
             AlertClass.alertError("Error", "An error occurred while creating the event");
             e.printStackTrace();
