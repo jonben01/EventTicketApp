@@ -57,10 +57,10 @@ public class EventEventManagementController {
             gridPane.getStylesheets().add(eventCSS);
             gridPane.setStyle("-fx-background-color: #F8F8F8;");
 
-
             gridPane.setPadding(new Insets(35, -35, 0, 0));
             gridPane.setHgap(5);
             gridPane.setVgap(5);
+
 
             for (int i = 0; i < 3; i++) {
                 ColumnConstraints columnConstraints = new ColumnConstraints();

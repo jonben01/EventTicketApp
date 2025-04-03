@@ -43,7 +43,7 @@ public class TicketManagementController implements Initializable {
             vboxList = new ArrayList<>();
             eventModel = new EventManagementModel();
             eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
-            gridPane.setPadding(new Insets(70, 0, 0, 0));
+            gridPane.setPadding(new Insets(30, 30, 30, 30));
             gridPane.setHgap(10);
             gridPane.setVgap(10);
 
