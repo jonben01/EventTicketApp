@@ -56,11 +56,11 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" prefHeight="580.0" prefWidth="917.0" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefWidth="947.0" vgap="80.0">
+                  <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="564.0" prefWidth="947.0" vgap="20.0">
                      <padding>
-                        <Insets left="-50.0" />
+                        <Insets left="-50.0" right="-50.0" />
                      </padding></GridPane>
                </content>
                <VBox.margin>

@@ -58,24 +58,24 @@ public class EventEventManagementController {
             gridPane.setStyle("-fx-background-color: #F8F8F8;");
 
 
-            gridPane.setPadding(new Insets(70, 0, 0, 0));
-            gridPane.setHgap(10);
-            gridPane.setVgap(10);
+            gridPane.setPadding(new Insets(35, -35, 0, 0));
+            gridPane.setHgap(5);
+            gridPane.setVgap(5);
 
             for (int i = 0; i < 3; i++) {
                 ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.NEVER);
-                columnConstraints.setMinWidth(300);
-                columnConstraints.setPrefWidth(300);
+                columnConstraints.setHgrow(Priority.ALWAYS);
+                columnConstraints.setMinWidth(10);
+                columnConstraints.setPrefWidth(10);
                 //columnConstraints.setMaxWidth(300);
                 gridPane.getColumnConstraints().add(columnConstraints);
             }
 
             for (int i = 0; i < 10; i++) { // Set the number of rows you expect
                 RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.NEVER);
-                rowConstraints.setMinHeight(300);
-                rowConstraints.setPrefHeight(300);
+                rowConstraints.setVgrow(Priority.ALWAYS);
+                rowConstraints.setMinHeight(270);
+                rowConstraints.setPrefHeight(270);
                 //rowConstraints.setMaxHeight(300);
                 gridPane.getRowConstraints().add(rowConstraints);
 
@@ -101,12 +101,12 @@ public class EventEventManagementController {
         vBoxList.add(vbox);
         vbox.getStyleClass().add("vBoxBorder");
             // Width constraints
-            vbox.setPrefWidth(300);
-            vbox.setMaxWidth(300);
+            vbox.setPrefWidth(270);
+            vbox.setMaxWidth(270);
 
             // Height constraints
-            vbox.setPrefHeight(300);
-            vbox.setMaxHeight(300);
+            vbox.setPrefHeight(270);
+            vbox.setMaxHeight(270);
 
         Label titleLabel = new Label(event2.getTitle());
         titleLabel.getStyleClass().add("h1");
@@ -325,9 +325,9 @@ public class EventEventManagementController {
             }
         for(VBox vBox : vBoxList)
         {
-            vBox.setPrefWidth(columnWidth * 0.9);
-            vBox.setMinWidth(columnWidth * 0.9);
-            vBox.setMaxWidth(columnWidth * 0.9);
+            vBox.setPrefWidth(columnWidth * 0.9 - 30);
+            vBox.setMinWidth(columnWidth * 0.9 - 30);
+            vBox.setMaxWidth(columnWidth * 0.9 - 30);
             System.out.println(vBox.getPrefWidth() + " - " + columnWidth);
         }
         });
