@@ -41,48 +41,81 @@ public class EventDAO implements IEventDataAccess {
 
     public List<Event2> getAllEvents() throws EasvTicketException {
         List<Event2> events = new ArrayList<>();
+        String sql = "SELECT e.EventID, e.Title, e.StartTime, e.EndTime, e.LocationID, e.LocationGuidance, e.Description, e.Status, e.StartDate, e.EndDate, e.CreatedBy, " +
+                "l.Address, l.City, l.PostalCode, " +
+                "u.UserID, u.FirstName, u.LastName, u.Email, u.PasswordHash, " +
+                "t.TicketID, t.Title AS TicketTitle, t.Description AS TicketDescription, t.Price, t.Global " +
+                "FROM Events e " +
+                "JOIN Locations l ON e.LocationID = l.LocationID " +
+                "LEFT JOIN Event_Users eu ON e.EventID = eu.EventID " +
+                "LEFT JOIN Users u ON eu.UserID = u.UserID " +
+                "LEFT JOIN TicketEvent_Junction te ON e.EventID = te.EventID " +
+                "LEFT JOIN Tickets t ON te.TicketID = t.TicketID;";
 
         try (Connection conn = connector.getConnection();
-             Statement stmt = conn.createStatement()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-
-            String sql = "SELECT e.EventID, e.Title, e.StartTime, e.EndTime, e.LocationID, e.LocationGuidance, e.Description, e.Status, e.StartDate, e.EndDate, e.CreatedBy, l.Address, l.City, l.PostalCode " +
-            "FROM Events e JOIN Locations l ON e.LocationID = l.LocationID;";
-            ResultSet rs = stmt.executeQuery(sql);
+            Map<Integer, Event2> eventMap = new HashMap<>(); // Maps event ID to Event2 object
 
             while (rs.next()) {
-                List<User> users = new ArrayList<>();
-                List<Ticket> tickets = new ArrayList<>();
-                int locationID = rs.getInt("LocationID");
-                String address = rs.getString("Address");
-                String city = rs.getString("City");
-                int postalCode = rs.getInt("PostalCode");
-                Location location = new Location(locationID, address, city, postalCode);
+                int eventId = rs.getInt("EventID");
 
-                int id = rs.getInt("EventID");
-                String title = rs.getString("Title");
-                LocalTime startTime = rs.getTime("StartTime").toLocalTime();
-                LocalTime endTime = rs.getTime("EndTime").toLocalTime();
-                String locationGuidance = rs.getString("LocationGuidance");
-                String description = rs.getString("Description");
-                String status = rs.getString("Status");
-                LocalDate startDate = rs.getDate("StartDate").toLocalDate();
-                LocalDate endDate = rs.getDate("EndDate").toLocalDate();
-                int userID = rs.getInt("CreatedBy");
+                // If the event doesn't exist in the map, create it
+                Event2 event = eventMap.get(eventId);
+                if (event == null) {
+                    int locationID = rs.getInt("LocationID");
+                    String address = rs.getString("Address");
+                    String city = rs.getString("City");
+                    int postalCode = rs.getInt("PostalCode");
+                    Location location = new Location(locationID, address, city, postalCode);
 
-                users.addAll(getAllUsersForEvent(id));
-                Event2 tempEvent = new Event2();
-                tempEvent.setEventID(id);
-                tickets.addAll(ticketDAO.getTicketsForEvent(tempEvent));
+                    String title = rs.getString("Title");
+                    LocalTime startTime = rs.getTime("StartTime").toLocalTime();
+                    LocalTime endTime = rs.getTime("EndTime").toLocalTime();
+                    String locationGuidance = rs.getString("LocationGuidance");
+                    String description = rs.getString("Description");
+                    String status = rs.getString("Status");
+                    LocalDate startDate = rs.getDate("StartDate").toLocalDate();
+                    LocalDate endDate = rs.getDate("EndDate").toLocalDate();
 
-                Event2 event = new Event2(id, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, tickets, users, status);
-                events.add(event);
+                    event = new Event2(eventId, title, location, description, locationGuidance, startDate, endDate, startTime, endTime, new ArrayList<>(), new ArrayList<>(), status);
+                    eventMap.put(eventId, event);
+                }
+
+                // Add user if available
+                int userId = rs.getInt("UserID");
+                if (userId > 0) {
+                    User user = new User();
+                    user.setId(userId);
+                    user.setFirstName(rs.getString("FirstName"));
+                    user.setLastName(rs.getString("LastName"));
+                    user.setEmail(rs.getString("Email"));
+                    user.setPassword(rs.getString("PasswordHash"));
+                    event.getEventCoordinators().add(user);
+                }
+
+                int ticketId = rs.getInt("TicketID");
+                if (event.getTicketTypes().stream().noneMatch(t -> t.getTicketID() == ticketId)) {
+                    Ticket ticket = new Ticket();
+                    ticket.setTicketID(ticketId);
+                    ticket.setTicketName(rs.getString("TicketTitle"));
+                    ticket.setDescription(rs.getString("TicketDescription"));
+                    ticket.setPrice(rs.getDouble("Price"));
+                    ticket.setGLOBAL(rs.getBoolean("Global"));
+                    event.getTicketTypes().add(ticket);
+                }
             }
+
+            events.addAll(eventMap.values());
             return events;
+
         } catch (SQLException ex) {
             throw new EasvTicketException("Could not get events from database", ex);
         }
     }
+
+
 
     public List<User> getAllUsersForEvent(int id) throws EasvTicketException {
         List<User> users = new ArrayList<>();

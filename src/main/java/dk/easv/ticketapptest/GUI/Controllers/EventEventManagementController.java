@@ -6,6 +6,8 @@ import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.SessionManager;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,7 @@ public class EventEventManagementController {
     private Button btnCreateEvent;
     @FXML
     private GridPane gridPane;
+    private Boolean taskRunning = false;
 
     int currentX = 0;
     int currentY = 0;
@@ -43,6 +46,9 @@ public class EventEventManagementController {
 
     @FXML
     private void initialize() {
+        Label loadingLabel = new Label("Loading Events...");
+        loadingLabel.styleProperty().set("-fx-font-size: 30px");
+        gridPane.add(loadingLabel, 1, 0);
         try {
             eventModel = new EventManagementModel();
             userCSS = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
@@ -151,7 +157,7 @@ public class EventEventManagementController {
         timeLabel.getStyleClass().add("h2");
         Separator separator1 = new Separator();
 
-        Label ticketsLabel = new Label("Tickets Sold");
+        Label ticketsLabel = new Label("Unique Tickets:");
         ticketsLabel.getStyleClass().add("h2");
         StringBuilder ticketInfo = new StringBuilder();
         for (Ticket ticket : event2.getTicketTypes()) {
@@ -228,27 +234,59 @@ public class EventEventManagementController {
     }
 
     private void addExistingEvents(List<Event2> events) {
-        try {
-            List<Event2> eventsForUser = eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId());
-            if (!events.isEmpty()) {
-                for (Event2 event : events) {
-                    Boolean hasEvent = false;
-                    for (Event2 eventForUser : eventsForUser) {
-                        if (event.getEventID() == eventForUser.getEventID()) {
-                            hasEvent = true;
-                            createEvent(event, hasEvent);
+        if(taskRunning)
+        {
+            return;
+        }
+        else
+        {
+            taskRunning = true;
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    List<Event2> eventsForUser = eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId());
+                    Platform.runLater(() -> {
+                        if(!events.isEmpty())
+                        {
+                            for(Event2 event : events)
+                            {
+                                Boolean hasEvent = false;
+                                for(Event2 eventForUser : eventsForUser)
+                                {
+                                    if(event.getEventID() == eventForUser.getEventID())
+                                    {
+                                        hasEvent = true;
+                                        createEvent(event, hasEvent);
+                                    }
+                                }
+                                if(!hasEvent)
+                                {
+                                    createEvent(event, hasEvent);
+                                }
+                            }
                         }
-                    }
-                    if (!hasEvent) {
-                        createEvent(event, hasEvent);
-                    }
+                        taskRunning = false;
+                    });
+                    return null;
                 }
-            }
-        } catch (EasvTicketException e) {
-            e.printStackTrace();
-            AlertClass.alertError("Error", "An error occurred while adding existing events");
+                @Override
+                protected void failed(){
+                    super.failed();
+                    taskRunning = false;
+                    AlertClass.alertError("Error", "An error occurred while loading events.");
+                }
+
+                @Override
+                protected void succeeded(){
+                    super.succeeded();
+                    taskRunning = false;
+                }
+            };
+            new Thread(task).start();
         }
     }
+
 
     private void updateList() {
         try {

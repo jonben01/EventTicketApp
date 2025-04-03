@@ -62,6 +62,7 @@ public class CreateEventViewController {
 
     @FXML
     private void initialize()  {
+
         try {
             sessionUser = SessionManager.getInstance().getCurrentUser();
 
@@ -90,8 +91,6 @@ public class CreateEventViewController {
         txtPostalCode.setText(String.valueOf(selectedEvent.getLocation().getPostalCode()));
         btnCreateEvent.setText("Update Event");
         txtTitle.setText("Update Event!");
-        txtInfo.setText("Fill in the details to update the selected event!");
-
     }
 
     public void setParent(EventEventManagementController parent) {

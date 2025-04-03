@@ -3,6 +3,7 @@ package dk.easv.ticketapptest;
 //project imports
 import dk.easv.ticketapptest.GUI.AlertClass;
 //library imports
+import dk.easv.ticketapptest.GUI.Controllers.LoginController;
 import fr.brouillard.oss.cssfx.CSSFX;
 //java imports -- i mean technically javafx should not be here but this is a javafx project
 import javafx.application.Application;
@@ -20,6 +21,7 @@ public class Main extends Application {
             Scene scene = new Scene(fxmlLoader.load(), 700, 500);
             stage.setTitle("Ticket Management");
             stage.setResizable(false);
+            LoginController loginController = fxmlLoader.getController();
 
             stage.setScene(scene);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/usermanagementstyle.css")).toExternalForm());

@@ -11,8 +11,10 @@ import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.EventManagementModel;
 import dk.easv.ticketapptest.GUI.Models.TicketModel;
 import dk.easv.ticketapptest.GUI.Models.UserModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,6 +88,7 @@ public class EventViewController {
     private UserModel userModel;
     private List<User> usersWithAccess;
     private boolean userHasAccess = false;
+    private boolean taskRunning = false;
     @FXML
     private Button btnRemoveCoord;
     @FXML
@@ -94,27 +97,56 @@ public class EventViewController {
     private String previousView;
 
     public void setSelectedEvent(Event2 event2) {
-        try {
-            this.selectedEvent = event2;
-            for (User coordinator : userModel.getAllCoordinators()) {
-                lstCoords.getItems().add(coordinator);
-            }
-            usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
-            for (User coordinator : usersWithAccess) {
-                if (SessionManager.getInstance().getCurrentUser().getId() == coordinator.getId()) {
-                    userHasAccess = true;
+        this.selectedEvent = event2;
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                List<User> coordinators = userModel.getAllCoordinators();
+                List<User> usersWithAccess = eventModel.getAllUsersForEvent(selectedEvent.getEventID());
+
+
+                boolean userHasAccess = false;
+                for (User coordinator : usersWithAccess) {
+                    if (SessionManager.getInstance().getCurrentUser().getId() == coordinator.getId()) {
+                        userHasAccess = true;
+                    }
                 }
+
+
+                boolean finalUserHasAccess = userHasAccess;
+                Platform.runLater(() -> {
+                    for (User coordinator : coordinators) {
+                        lstCoords.getItems().add(coordinator);
+                    }
+
+
+                    EventViewController.this.usersWithAccess = usersWithAccess;
+
+
+                    EventViewController.this.userHasAccess = finalUserHasAccess;
+
+
+                    magicLinesOfCode();
+                    lstCoords.refresh();
+                    checkUserAccess();
+                    updateInformation(1);
+                    updateTicketList();
+                });
+
+                return null;
             }
-            magicLinesOfCode();
-            lstCoords.refresh();
-            checkUserAccess();
-            updateInformation(1);
-            updateTicketList();
-        } catch (EasvTicketException e) {
-            e.printStackTrace();
-            AlertClass.alertError("Something went wrong", "An error has occurred while doing something idk man");
-        }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                AlertClass.alertError("Error", "An error occurred while loading the event data.");
+            }
+        };
+
+        new Thread(task).start();
     }
+
 
     private void checkUserAccess() {
         if(!userHasAccess){
@@ -142,12 +174,15 @@ public class EventViewController {
 
         @FXML
         public void initialize() {
+            Label loadingLabel = new Label("Loading Coordinators");
+            loadingLabel.styleProperty().set("-fx-font-size: 20px;");
+            lstCoords.setPlaceholder(loadingLabel);
         try {
             usersWithAccess = new ArrayList<>();
             userModel = new UserModel();
             eventModel = new EventManagementModel();
             ticketModel = new TicketModel();
-            tblTicket.getStylesheets().add("css/admineventstyle.css");
+            tblTicket.getStylesheets().add("css/eventmanagementstyle.css");
             tblTicket.getStyleClass().add("table-view");
 
             //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
@@ -264,14 +299,48 @@ public class EventViewController {
     }
 
     public void updateTicketList() {
-        tblTicket.getItems().clear();
-        try {
-            tblTicket.getItems().addAll(ticketModel.getTicketsForEvent(selectedEvent));
-        } catch (EasvTicketException e) {
-            e.printStackTrace();
-            AlertClass.alertError("Error", "Error while updating ticket list");
+        if(taskRunning) {
+            return;
         }
+
+        taskRunning = true;
+
+        tblTicket.getItems().clear();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+
+                List<Ticket> tickets = ticketModel.getTicketsForEvent(selectedEvent);
+
+
+                Platform.runLater(() -> {
+                    tblTicket.getItems().clear();
+                    tblTicket.getItems().addAll(tickets);
+                });
+
+                return null;
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                taskRunning = false;
+                AlertClass.alertError("Error", "Error while updating the ticket list.");
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                taskRunning = false;
+            }
+        };
+
+
+        new Thread(task).start();
     }
+
+
 
     public void updateInformation(int version) {
         if(version == 1) {

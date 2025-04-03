@@ -25,6 +25,10 @@ public class Ticket {
         this.description = description;
     }
 
+    public Ticket()
+    {
+    }
+
     public void assignEventToTicket(Event2 event){ this.event = event;}
 
     public Event2 getEvent(){ return this.event; }

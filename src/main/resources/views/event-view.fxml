@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -71,7 +71,7 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TextArea fx:id="txtDesc" prefHeight="149.0" prefWidth="444.0">
+                        <TextArea fx:id="txtDesc" prefHeight="149.0" prefWidth="444.0" wrapText="true">
                            <VBox.margin>
                               <Insets top="2.0" />
                            </VBox.margin></TextArea>

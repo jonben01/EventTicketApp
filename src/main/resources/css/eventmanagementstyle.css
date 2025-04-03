@@ -130,3 +130,116 @@
     -fx-border-radius: 8px;
     -fx-text-fill: red;
 }
+
+
+.table-view {
+    -fx-background-color: #FFFFFF;
+
+    /* could not get the text in a selected row to not turn white without this....  */
+    -fx-selection-bar: #EFF6FF;
+    -fx-selection-bar-non-focused: #EFF6FF;
+    -fx-selection-bar-text: black;
+    -fx-background-insets: 0 !important;
+    -fx-padding: 0 !important;
+    -fx-border-insets: 0 !important;
+    -fx-border-width: 0 !important;
+    -fx-focus-color: transparent !important;
+    -fx-faint-focus-color: transparent !important;
+}
+
+
+.table-view .table-cell {
+    -fx-alignment: center;
+    -fx-border-color: E5E7EB;
+    -fx-border-width: 1 0 1 0;
+    -fx-border-insets: -1 0 -1 0;
+    -fx-padding: 0;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell:hover {
+    -fx-background-color: #EFF6FF;
+}
+
+.table-view .table-cell:selected {
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: black;
+}
+
+.table-view .table-cell:selected .text {
+    -fx-fill: black;
+}
+
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: rgba(220, 220, 220, 0.8);
+    -fx-border-width: 1 0 1 0;
+    -fx-border-insets: -1 0 -1 0;
+}
+
+
+.table-row-cell:empty {
+    -fx-border-width: 0 0 0 0;
+    -fx-border-insets: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-cell:empty {
+    -fx-border-width: 0 0 0 0;
+    -fx-border-insets: 0 0 0 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-max-width: 0;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #EFF6FF;
+}
+.table-row-cell:selected {
+    -fx-background-color: #EFF6FF;
+}
+
+.table-view .column-header {
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: rgba(220, 220, 220, 0.8);
+    -fx-border-width: 0 0 1 0;
+    -fx-font-weight: normal;
+}
+.table-view .column-header .label {
+    -fx-text-fill: black;
+}
+
+/* jesus christ lmao, insane how much you need to change to get rid of the base style */
+.table-view .table-cell:empty,
+.table-view .table-cell:empty:hover,
+.table-view .table-cell:empty:focused,
+.table-view .table-cell:empty:selected,
+.table-view .table-cell:empty:selected:focused,
+.table-view .table-cell:empty:selected:hover,
+.table-view .table-row-cell:empty,
+.table-view .table-row-cell:empty:hover,
+.table-view .table-row-cell:empty:selected,
+.table-view .table-row-cell:empty:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0 !important;
+    -fx-padding: 0 !important;
+    -fx-border-insets: 0 !important;
+    -fx-effect: none !important;
+    -fx-faint-focus-color: transparent !important;
+    -fx-focus-color: transparent !important;
+}
+
+.table-view:focused {
+    -fx-border-width: 0px;
+    -fx-padding: 0px;
+    -fx-background-insets: 0;
+    -fx-effect: none;
+}

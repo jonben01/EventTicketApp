@@ -28,7 +28,7 @@ public class TicketManagementController implements Initializable {
     int currentX = 0;
     int currentY = 0;
     private String eventCSS;
-    private int h = 150;
+    private int h = 75;
     private int w = 300;
 
     @FXML
@@ -178,9 +178,9 @@ public class TicketManagementController implements Initializable {
             int columns = gridPane.getColumnConstraints().size();
             double rowHeight = height / columns;
             for (RowConstraints row : gridPane.getRowConstraints()) {
-                row.setMinHeight(rowHeight * 0.9);
-                row.setPrefHeight(rowHeight * 0.9);
-                row.setMaxHeight(rowHeight * 0.9);
+                row.setMinHeight(rowHeight * 0.7);
+                row.setPrefHeight(rowHeight * 0.7);
+                row.setMaxHeight(rowHeight * 0.7);
             }
         });
     }
