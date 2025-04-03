@@ -424,6 +424,7 @@ public class AdminUserManagementController implements Initializable {
             String newLastName = txtLastName.getText();
             String newEmail = txtEmail.getText();
             String newPhone = txtPhone.getText();
+            int userId = selectedUser.getId();
 
             selectedUser.setUsername(newUsername);
             selectedUser.setPassword(newPassword);
@@ -433,7 +434,7 @@ public class AdminUserManagementController implements Initializable {
             selectedUser.setPhone(newPhone);
 
             try {
-                userManagementModel.updateUserDB(selectedUser);
+                userManagementModel.updateUserDB(selectedUser, userId);
                 // Update original values after successful update
                 originalValues.put(txtUsername, newUsername);
                 originalValues.put(txtPassword, newPassword);

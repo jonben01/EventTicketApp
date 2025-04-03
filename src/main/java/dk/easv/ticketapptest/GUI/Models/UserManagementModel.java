@@ -19,8 +19,8 @@ public class UserManagementModel {
         return userManagementLogic.createUserDB(user);
     }
 
-    public User updateUserDB(User selectedUser) throws Exception {
-        return userManagementLogic.updateUserDB(selectedUser);
+    public User updateUserDB(User selectedUser, int userId) throws Exception {
+        return userManagementLogic.updateUserDB(selectedUser, userId);
     }
 
     public void deleteUser(User user) throws Exception {

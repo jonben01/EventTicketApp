@@ -150,7 +150,7 @@ public class UserDAO {
 
 
 
-    public User updateUserDB(User user) throws EasvTicketException {
+    public User updateUserDB(User user, int userId) throws EasvTicketException {
         String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
         String updateRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
@@ -168,7 +168,7 @@ public class UserDAO {
             pstmt.setString(4, user.getPhone());
             pstmt.setString(5, user.getFirstName());
             pstmt.setString(6, user.getLastName());
-            pstmt.setInt(7, getUserId(user.getUsername()));
+            pstmt.setInt(7, userId);
 
             pstmt.executeUpdate();
 
@@ -180,7 +180,7 @@ public class UserDAO {
             }
 
             pstmt3.setInt(1, roleID);
-            pstmt3.setInt(2, getUserId(user.getUsername()));
+            pstmt3.setInt(2, userId);
             pstmt3.executeUpdate();
 
             connection.commit();
@@ -193,16 +193,16 @@ public class UserDAO {
     }
 
     //TODO fix exceptions, dont pass an SQLException to higher layers
-    private int getUserId(String username) throws SQLException {
+    private int getUserId(int userId) throws SQLException {
         String sql = "SELECT UserID FROM dbo.Users WHERE Username = ?";
         try (Connection connection = dbConnector.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, username);
+            pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt("UserID");
             } else {
-                throw new SQLException("User not found: " + username);
+                throw new SQLException("User not found: " + userId);
             }
         }
     }
