@@ -543,6 +543,7 @@ public class AdminUserManagementController implements Initializable {
         if (txtUserSearch.getText().isEmpty()) {
             try {
                 users = userModel.getUsers();
+                users.sort(Comparator.comparing(user -> user.getFirstName().toLowerCase()));
                 lstUsers.setItems(users);
                 return;
             } catch (EasvTicketException e) {
@@ -565,7 +566,7 @@ public class AdminUserManagementController implements Initializable {
         searchTask.setOnSucceeded(event -> {
             ObservableList<User> filteredList = searchTask.getValue();
             if (filteredList != null) {
-                SortedList<User> sortedList = new SortedList<>(filteredList);
+                SortedList<User> sortedList = new SortedList<>(filteredList, Comparator.comparing(user -> user.getFirstName().toLowerCase()));
                 lstUsers.setItems(sortedList);
             } else {
                 lstUsers.setItems(FXCollections.observableArrayList());
