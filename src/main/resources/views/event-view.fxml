@@ -12,13 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="36.0" prefWidth="875.0">
                <children>
-                  <Button fx:id="btnReturn" alignment="TOP_LEFT" mnemonicParsing="false" onMousePressed="#handleReturn" prefHeight="36.0" prefWidth="49.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="⏎">
+                  <Button fx:id="btnReturn" alignment="TOP_LEFT" mnemonicParsing="false" onMousePressed="#handleReturn" prefHeight="37.0" prefWidth="44.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↵">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -94,7 +94,7 @@
                                  <HBox.margin>
                                     <Insets right="12.0" />
                                  </HBox.margin></Button>
-                              <Button fx:id="btnDeleteTicket" mnemonicParsing="false" onAction="#handleDeleteTicket" prefHeight="26.0" prefWidth="60.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="-" />
+                              <Button fx:id="btnDeleteTicket" mnemonicParsing="false" onAction="#handleDeleteTicket" prefHeight="26.0" prefWidth="60.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="🗑" />
                            </children>
                         </HBox>
                         <TableView fx:id="tblTicket" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

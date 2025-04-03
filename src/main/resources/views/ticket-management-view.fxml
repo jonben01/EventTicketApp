@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="windowPane" prefHeight="720.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketManagementController">
+<AnchorPane fx:id="windowPane" prefHeight="720.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketManagementController">
     <children>
         <VBox prefHeight="720.0" prefWidth="950.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -17,7 +17,7 @@
                     <children>
                         <VBox prefHeight="100.0" prefWidth="739.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <Label prefHeight="52.0" prefWidth="309.0" text="Ticket Management" textAlignment="CENTER">
+                                <Label prefHeight="52.0" prefWidth="309.0" text="Tickets" textAlignment="CENTER">
                                     <VBox.margin>
                                         <Insets />
                                     </VBox.margin>
@@ -28,17 +28,6 @@
                                         <Font name="Berlin Sans FB" size="31.0" />
                                     </font>
                                 </Label>
-                                <Label prefHeight="21.0" prefWidth="307.0" text="Print tickets for events" textFill="#747474">
-                                    <padding>
-                                        <Insets top="10.0" />
-                                    </padding>
-                                    <font>
-                                        <Font name="Berlin Sans FB" size="15.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets top="-10.0" />
-                                    </VBox.margin>
-                                </Label>
                             </children>
                             <HBox.margin>
                                 <Insets left="10.0" />
@@ -48,13 +37,13 @@
                 </HBox>
                 <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                     <content>
-                        <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefWidth="947.0" vgap="80.0">
+                        <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefHeight="699.0" prefWidth="948.0" vgap="80.0">
                             <padding>
                                 <Insets left="-50.0" />
                             </padding></GridPane>
                     </content>
                     <VBox.margin>
-                        <Insets top="30.0" />
+                        <Insets />
                     </VBox.margin>
                 </ScrollPane>
             </children>

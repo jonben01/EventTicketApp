@@ -58,7 +58,7 @@ public class EventEventManagementController {
             gridPane.setStyle("-fx-background-color: #F8F8F8;");
 
 
-            gridPane.setPadding(new Insets(70, 0, 0, 0));
+            gridPane.setPadding(new Insets(30, 30, 30, 30));
             gridPane.setHgap(10);
             gridPane.setVgap(10);
 

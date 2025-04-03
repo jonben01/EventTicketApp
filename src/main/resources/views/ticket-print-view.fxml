@@ -16,7 +16,7 @@
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturn" prefHeight="36.0" prefWidth="102.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↩ Return">
+            <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturn" prefHeight="37.0" prefWidth="33.0" style="-fx-background-color: #F8F8F8;" styleClass="returnButton" stylesheets="@../css/eventmanagementstyle.css" text="↵">
                <VBox.margin>
                   <Insets left="15.0" top="15.0" />
                </VBox.margin>
