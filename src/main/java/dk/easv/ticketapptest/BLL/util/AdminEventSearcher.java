@@ -12,6 +12,10 @@ public class AdminEventSearcher {
     public ObservableList<Event2> searchEvents(List<Event2> searchBase, String searchQuery) {
         List<Event2> searchResults = new ArrayList<Event2>();
 
+        if (searchQuery == null || searchQuery.isEmpty()) {
+            return FXCollections.observableList(searchBase);
+        }
+
         for (Event2 event : searchBase) {
             if (compareToTitle(searchQuery, event) ||
                     compareToLocation(searchQuery, event) ||

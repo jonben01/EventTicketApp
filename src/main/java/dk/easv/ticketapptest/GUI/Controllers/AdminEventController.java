@@ -258,6 +258,7 @@ public class AdminEventController implements Initializable {
             }
         };
 
+        //TODO should probably make something to counteract out of order completions
         searchTask.setOnSucceeded(e -> {
             ObservableList<Event2> filteredList = searchTask.getValue();
             if (filteredList != null) {
