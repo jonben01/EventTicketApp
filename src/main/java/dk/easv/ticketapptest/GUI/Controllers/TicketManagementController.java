@@ -70,7 +70,7 @@ public class TicketManagementController implements Initializable {
             addExistingEvents(eventModel.getAllEventsForUser(SessionManager.getInstance().getCurrentUser().getId()));
             gridPane.getStylesheets().add(eventCSS);
             gridPane.setStyle("-fx-background-color: #F8F8F8;");
-        } catch (EasvTicketException | IOException e) {
+        } catch (EasvTicketException e) {
             AlertClass.alertInfo("Something went wrong", "An error has occurred while initializing the ticket management window");
         }
     }
