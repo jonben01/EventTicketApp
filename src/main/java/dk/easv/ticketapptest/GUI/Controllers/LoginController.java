@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +19,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,7 +61,7 @@ public class LoginController implements Initializable {
         imgLogo.setFitHeight(180);
 
         btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/OpenEye.png")))));
-
+        enterKeyListeners();
     }
 
     public void handleAdminDash() {
@@ -67,9 +71,28 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.setScene(new Scene(adminDashboard));
             stage.centerOnScreen();
+            stage.setResizable(true);
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the admin dashboard");
         }
+    }
+
+    private void enterKeyListeners() {
+        txtUsername.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
+        txtPassword.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
+        txtPasswordVisible.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
     }
 
     public void handleEventDash() {
@@ -82,13 +105,17 @@ public class LoginController implements Initializable {
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Base-stylesheet.css")).toExternalForm());
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(true);
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the event dashboard");
         }
     }
 
     public void handleLogin(ActionEvent actionEvent) {
+        login();
+    }
 
+    private void login() {
         String password = "hello";
         if(txtPassword.isVisible()) {
             password = txtPassword.getText();
@@ -99,14 +126,24 @@ public class LoginController implements Initializable {
 
         String username = txtUsername.getText();
 
-        if (username.isEmpty()) {
-            txtUsername.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
+        String style = "-fx-border-color: red; -fx-border-width: 1px;";
+        //set red border if textFields empty
+        if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty()) {
+                txtUsername.setStyle(style);
+            } else {
+                txtUsername.setStyle("");
+            }
+            if (txtPassword.getText().isEmpty() && txtPasswordVisible.getText().isEmpty()) {
+                txtPassword.setStyle(style);
+                txtPasswordVisible.setStyle(style);
+            } else {
+                txtPasswordVisible.setStyle("");
+                txtPassword.setStyle("");
+            }
             return;
         }
-        if (password.isEmpty()) {
-            txtPassword.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
-            return;
-        }
+
         try {
             User user = userModel.getUserByUsername(username);
             if (user == null) {
@@ -146,6 +183,7 @@ public class LoginController implements Initializable {
             txtPasswordVisible.setMaxWidth(750);
             txtPasswordVisible.setText(txtPassword.getText());
             btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ClosedEye.png")))));
+            btnTogglePassword.setStyle("-fx-background-color: transparent;");
 
         }
         else if(!txtPassword.isVisible()) {
@@ -155,7 +193,7 @@ public class LoginController implements Initializable {
             txtPasswordVisible.setMaxWidth(0);
             txtPasswordVisible.setText(txtPassword.getText());
             btnTogglePassword.setGraphic(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/OpenEye.png")))));
-
+            btnTogglePassword.setStyle("-fx-background-color: transparent;");
         }
     }
 }

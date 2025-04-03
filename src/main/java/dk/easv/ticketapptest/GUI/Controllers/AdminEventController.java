@@ -1,6 +1,7 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
+import dk.easv.ticketapptest.BE.EventStatus;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
 import javafx.animation.PauseTransition;
@@ -28,6 +29,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminEventController implements Initializable {
@@ -129,7 +131,25 @@ public class AdminEventController implements Initializable {
             }
         });
         clnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-        clnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        clnStatus.setCellValueFactory(new PropertyValueFactory<>("eventStatus"));
+
+        tblEvents.setRowFactory(row -> new TableRow<Event2>() {
+            @Override
+            protected void updateItem(Event2 item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setStyle("");
+                } else {
+                    switch (item.getEventStatus()) {
+
+                        case ONGOING -> getStyleClass().add("ongoing_row");
+                        case COMPLETED -> getStyleClass().add("completed_row");
+                        case UPCOMING -> getStyleClass().add("");
+                        default -> setStyle("");
+                    }
+                }
+            }
+        });
 
         //creates delete buttons on tableview.
         clnActions.setCellValueFactory(param -> {
@@ -137,24 +157,17 @@ public class AdminEventController implements Initializable {
             Button deleteButton = new Button("Delete");
 
             deleteButton.setOnAction(e -> {
-                //handle deletion in a different thread using Task
-                Task<Void> deleteTask = new Task<>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        //delete the event then exit
-                        adminEventModel.deleteEvent(event);
-                        return null;
+
+                if (event.getEventStatus() == EventStatus.ONGOING || event.getEventStatus() == EventStatus.UPCOMING) {
+                    Optional<ButtonType> conf = AlertClass.alertConfirmation
+                            ("Delete Event", "Are you sure you want to delete: " + event.getTitle() + "?");
+                    if (conf.isPresent() && conf.get() != ButtonType.OK) {
+                        return;
                     }
-                };
-                //if it fails, inform the user
-                deleteTask.setOnFailed(ev -> {
-                    deleteTask.getException().printStackTrace();
-                    AlertClass.alertError("Deletion error", "An error occurred while deleting event");
-                });
-                //if it succeeds manually refresh the list using blank search
-                deleteTask.setOnSucceeded(ev -> {
-                    searchEvent();
-                });
+                }
+
+                //handle deletion in a different thread using Task
+                Task<Void> deleteTask = getDeleteTask(event);
                 //run the task in a new thread
                 new Thread(deleteTask).start();
             });
@@ -162,6 +175,27 @@ public class AdminEventController implements Initializable {
             return new SimpleObjectProperty<>(deleteButton);
         });
 
+    }
+
+    private Task<Void> getDeleteTask(Event2 event) {
+        Task<Void> deleteTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                //delete the event then exit
+                adminEventModel.deleteEvent(event);
+                return null;
+            }
+        };
+        //if it fails, inform the user
+        deleteTask.setOnFailed(ev -> {
+            deleteTask.getException().printStackTrace();
+            AlertClass.alertError("Deletion error", "An error occurred while deleting event");
+        });
+        //if it succeeds manually refresh the list using blank search
+        deleteTask.setOnSucceeded(ev -> {
+            searchEvent();
+        });
+        return deleteTask;
     }
 
     public void setupSearchDebounce() {

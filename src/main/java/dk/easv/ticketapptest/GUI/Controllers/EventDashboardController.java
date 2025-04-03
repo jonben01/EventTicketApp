@@ -83,6 +83,7 @@ public class EventDashboardController implements Initializable {
             Stage stage = (Stage) rootPaneEvent.getScene().getWindow();
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(false);
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while logging out");
         }

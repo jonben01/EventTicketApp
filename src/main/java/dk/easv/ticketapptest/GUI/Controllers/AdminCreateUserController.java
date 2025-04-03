@@ -135,26 +135,38 @@ public class AdminCreateUserController implements Initializable {
         if(txtUsername.getText().trim().isEmpty() || txtUsername.getText().contains(" ")) {
             txtUsername.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         if(txtPassword.getText().trim().isEmpty() || txtPassword.getText().contains(" ")) {
             txtPassword.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         if(txtFirstName.getText().trim().isEmpty()) {
             txtFirstName.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         if(txtLastName.getText().trim().isEmpty()) {
             txtLastName.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         if(txtEmail.getText().trim().isEmpty() || txtEmail.getText().contains(" ")) {
             txtEmail.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         if(txtPhone.getText().trim().isEmpty() || txtPhone.getText().contains(" ")) {
             txtPhone.setStyle(style);
             allValid = false;
+        } else {
+            txtUsername.setStyle("");
         }
         return allValid;
     }

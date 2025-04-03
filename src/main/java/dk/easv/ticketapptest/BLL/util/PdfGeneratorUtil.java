@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class PdfGeneratorUtil {
 
-    public static void generateTicket(String filePath, String eventTitle, String eventDescription, String locationGuidance, String eventLocation, String eventDate, String eventStartTime, String eventEndTime, String ticketType, String customerName, String qrCodePath, String barCodePath, String logoPath, String customerLastName) throws IOException {
+    public static void generateTicket(String filePath, String eventTitle, String eventDescription, String locationGuidance, String eventLocation, String eventDate, String eventStartTime, String eventEndTime, String ticketType, String customerName, String qrCodePath, String barCodePath, String logoPath, String customerLastName) {
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();

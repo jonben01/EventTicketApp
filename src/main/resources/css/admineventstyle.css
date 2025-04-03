@@ -34,7 +34,7 @@
     -fx-border-width: 1 0 1 0;
     -fx-border-insets: -1 0 -1 0;
     -fx-padding: 0;
-    -fx-font-size: 14;
+    -fx-font-size: 13;
     -fx-font-weight: bold;
 }
 
@@ -131,5 +131,16 @@
     -fx-border-color: rgba(220, 220, 220, 0.8);
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+}
+
+.completed_row {
+    -fx-background-color: #eeeeee;
+    -fx-text-fill: gray;
+    -fx-opacity: 0.6;
+}
+.ongoing_row {
+    -fx-background-color: #e0f4e8;
+    -fx-text-fill: #2e7d32;
+    -fx-border-color: #c8e6c9;
 }
 

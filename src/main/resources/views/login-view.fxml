@@ -7,31 +7,44 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" prefHeight="805.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.LoginController">
+<BorderPane fx:id="rootPane" prefHeight="506.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.LoginController">
    <center>
-      <AnchorPane prefHeight="816.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="502.0" prefWidth="634.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane prefHeight="382.0" prefWidth="630.0" style="-fx-background-color: white; -fx-background-radius: 8;" AnchorPane.bottomAnchor="112.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="112.0">
-               <padding>
-                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-               </padding>
+            <StackPane layoutX="84.80000305175781" layoutY="112.0" maxHeight="600.0" maxWidth="800.0" prefWidth="688.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="300.0" prefWidth="486.0" spacing="20.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="40.0">
-                     <ImageView fx:id="imgLogo" fitHeight="96.0" fitWidth="326.0" pickOnBounds="true" preserveRatio="true" />
-                     <TextField fx:id="txtUsername" maxHeight="900.0" maxWidth="800.0" prefHeight="46.0" promptText="Username" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" />
-                     <AnchorPane maxHeight="50.0" maxWidth="800.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
-                        <children>
-                           <PasswordField fx:id="txtPassword" maxHeight="44.0" maxWidth="750.0" prefHeight="46.0" prefWidth="411.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" visible="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" />
-                           <TextField fx:id="txtPasswordVisible" maxHeight="48.0" maxWidth="750.0" prefHeight="44.0" prefWidth="411.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" />
-                           <Button fx:id="btnTogglePassword" ellipsisString="" layoutX="414.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleTogglePassword" prefHeight="43.0" prefWidth="50.0" styleClass="PasswordButton" stylesheets="@../css/Base-stylesheet.css" textOverrun="CLIP" AnchorPane.rightAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" prefHeight="59.0" prefWidth="373.0" style="-fx-font-size: 20;" stylesheets="@../css/usermanagementstyle.css" text="Log in" />
-                  </VBox>
+                  <AnchorPane maxHeight="600.0" maxWidth="800.0" prefHeight="382.0" prefWidth="630.0" style="-fx-background-color: white; -fx-background-radius: 8;">
+                     <padding>
+                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                     </padding>
+                     <children>
+                        <VBox alignment="CENTER" layoutX="120.0" layoutY="39.0" prefHeight="322.0" prefWidth="414.0" spacing="30.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="20.0">
+                           <ImageView fx:id="imgLogo" fitHeight="96.0" fitWidth="326.0" pickOnBounds="true" preserveRatio="true" />
+                           <TextField fx:id="txtUsername" prefHeight="46.0" promptText="Username" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" />
+                           <StackPane prefHeight="44.0" prefWidth="462.0" VBox.vgrow="NEVER">
+                              <children>
+                                 <PasswordField fx:id="txtPassword" prefHeight="46.0" prefWidth="411.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" visible="true">
+                                    <StackPane.margin>
+                                       <Insets />
+                                    </StackPane.margin>
+                                 </PasswordField>
+                                 <TextField fx:id="txtPasswordVisible" maxHeight="48.0" maxWidth="750.0" prefHeight="44.0" prefWidth="411.0" promptText="Password" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" visible="false">
+                                    <StackPane.margin>
+                                       <Insets />
+                                    </StackPane.margin>
+                                 </TextField>
+                                 <Button fx:id="btnTogglePassword" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleTogglePassword" prefHeight="43.0" prefWidth="50.0" styleClass="PasswordButton" stylesheets="@../css/Base-stylesheet.css" textOverrun="CLIP" StackPane.alignment="CENTER_RIGHT" />
+                              </children>
+                           </StackPane>
+                           <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleLogin" prefHeight="43.0" prefWidth="495.0" style="-fx-font-size: 20;" stylesheets="@../css/usermanagementstyle.css" text="Log in" />
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
+            </StackPane>
          </children>
       </AnchorPane>
    </center>

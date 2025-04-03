@@ -32,7 +32,7 @@
             </HBox>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="418.0" prefWidth="875.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox fx:id="vboxLeft" prefHeight="409.0" prefWidth="147.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="vboxLeft" prefHeight="444.0" prefWidth="210.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
                      <children>
                         <Label fx:id="lblTitle" styleClass="h1" stylesheets="@../css/eventmanagementstyle.css" text="Title">
                            <font>
@@ -103,7 +103,7 @@
                         </TableView>
                      </children>
                      <HBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </HBox.margin>
                   </VBox>
                   <VBox fx:id="vboxRight" prefHeight="347.0" prefWidth="108.0" styleClass="vBoxBorder2" stylesheets="@../css/eventmanagementstyle.css" HBox.hgrow="ALWAYS">
@@ -138,4 +138,7 @@
          </children>
       </VBox>
    </children>
+   <padding>
+      <Insets left="8.0" right="8.0" />
+   </padding>
 </AnchorPane>

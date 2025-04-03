@@ -83,6 +83,7 @@ public class AdminDashboardController implements Initializable {
             Stage stage = (Stage) rootPaneAdmin.getScene().getWindow();
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
             AlertClass.alertError("Failed to load", "An error occurred while logging out");

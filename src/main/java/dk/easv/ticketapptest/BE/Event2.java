@@ -1,5 +1,7 @@
 package dk.easv.ticketapptest.BE;
 
+import com.google.api.client.util.DateTime;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.LocalTime;
@@ -65,6 +67,25 @@ public class Event2 {
     //use DateTimeFormatter on localDate types in actual project instead of this
     //also use a date picker, to avoid edge cases where someone types something stupid.
     //should validate either way and handle those cases.
+
+    public EventStatus getEventStatus() {
+        LocalDateTime eventEnd = null;
+        if (endDate != null && endTime != null) {
+            eventEnd = LocalDateTime.of(endDate, endTime);
+        }
+        //required field, shouldn't need to handle null. Might be best to do anyway but it should be fine
+        LocalDateTime eventStart = LocalDateTime.of(startDate, startTime);
+
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(eventStart)) {
+            return EventStatus.UPCOMING;
+        } else if (eventEnd != null && !now.isAfter(eventEnd)) {
+            return EventStatus.ONGOING;
+        } else {
+            return EventStatus.COMPLETED;
+        }
+    }
+
 
     public LocalDateTime getStartDateTime() {
         return startDateTime = LocalDateTime.of(startDate, startTime);
