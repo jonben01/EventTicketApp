@@ -75,6 +75,9 @@ public class AdminCreateUserController implements Initializable {
         });
     }
 
+    /**
+     * method to make the user profile image view circular
+     */
     private void makeImageViewCircular() {
         double radius = 40;
         imgCreateProfile.setFitHeight(radius * 2);
@@ -82,16 +85,23 @@ public class AdminCreateUserController implements Initializable {
         imgCreateProfile.setPreserveRatio(false);
         imgCreateProfile.setSmooth(true);
 
+        //shape
         Circle circle = new Circle(radius, radius, radius);
         imgCreateProfile.setClip(circle);
     }
 
+    /**
+     * creates a new user object if input is valid
+     * @param actionEvent button press
+     */
     public void handleCreateNewUser(ActionEvent actionEvent) {
 
+        //input validation
         if(!highlightFields()) {
             return;
         }
         Role role = getRole();
+        //forces user to pick a role
         if (role == null) {
             AlertClass.alertInfo("Missing information", "Please select a role");
             return;
@@ -103,7 +113,7 @@ public class AdminCreateUserController implements Initializable {
         String email = this.txtEmail.getText().trim();
         String phone = this.txtPhone.getText().trim();
 
-        //set the name on the file as the username_profilepic + increasing number
+        //try to upload the selected image file path
         try {
             imagePath = imageUploader.uploadFile(imagePath);
         } catch (EasvTicketException e) {
@@ -111,14 +121,20 @@ public class AdminCreateUserController implements Initializable {
             AlertClass.alertError("Error", "Failed to upload file");
             return;
         }
-
+        //the new user
         newUser = new User(username, password, firstName, lastName, email, phone, role, imagePath);
+        //set the new user to be created??? maybe this should just do that on its own?
         setCreatedUser(newUser);
         Stage stage = (Stage) btnCreateNewUser.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     *  Method to visually show the user a missing role, or to pass a selected role to the new user
+     * @return a role for the new user object
+     */
     private Role getRole() {
+        //visual input validation
         if (!chkAdmin.isSelected() && !chkCoordinator.isSelected()) {
             chkAdmin.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
             chkCoordinator.setStyle("-fx-border-color: red; -fx-border-width: 1px;");
@@ -135,7 +151,12 @@ public class AdminCreateUserController implements Initializable {
         return null;
     }
 
+    /**
+     * checks if user input is valid, shows a custom alert if it isn't
+     * @return boolean check
+     */
     private boolean highlightFields() {
+        //pretty bloated but i am not smart enough to make a flexible method instead apparently :) - jonas 03/04
         boolean allValid = true;
         String style = "-fx-border-color: red; -fx-border-width: 1px;";
         StringBuilder errorMessages = new StringBuilder();
@@ -220,18 +241,28 @@ public class AdminCreateUserController implements Initializable {
         return newUser;
     }
 
+    /**
+     * @param actionEvent checkbox for role
+     */
     public void handleSetAdmin(ActionEvent actionEvent) {
         if (chkCoordinator.isSelected()) {
             chkCoordinator.setSelected(false);
         }
     }
 
+    /**
+     * @param actionEvent checkbox for role
+     */
     public void handleSetCoordinator(ActionEvent actionEvent) {
         if (chkAdmin.isSelected()) {
             chkAdmin.setSelected(false);
         }
     }
 
+    /**
+     * misleading name, this just runs a filechooser to select an image, and then makes it circular
+     * @param actionEvent filechooser button press
+     */
     public void handleUploadPicture(ActionEvent actionEvent) {
 
         FileChooser fileChooser = new FileChooser();

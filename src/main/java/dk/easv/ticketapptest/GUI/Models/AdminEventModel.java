@@ -15,7 +15,7 @@ public class AdminEventModel {
 
     private ObservableList<Event2> eventsToBeViewed;
 
-    public AdminEventModel() throws IOException, EasvTicketException {
+    public AdminEventModel() throws EasvTicketException {
         eventManager = new EventManager();
         eventsToBeViewed = FXCollections.observableArrayList();
         eventsToBeViewed.addAll(eventManager.getAllEvents());

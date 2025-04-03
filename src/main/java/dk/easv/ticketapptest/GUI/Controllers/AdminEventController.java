@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.EventStatus;
+import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
 import javafx.animation.PauseTransition;
@@ -91,6 +92,10 @@ public class AdminEventController implements Initializable {
 
     public void setRootPane(BorderPane rootPane) {this.rootPane = rootPane;}
 
+    /**
+     * gets all events to show be shown on the table
+     * runs in new thread
+     */
     public void loadTableData() {
         Task<ObservableList<Event2>> loadDataTask = new Task<>() {
 
@@ -112,6 +117,9 @@ public class AdminEventController implements Initializable {
         thread.start();
     }
 
+    /**
+     * cell factory and cell value factory method, fills the columns with the correct information
+     */
     public void setupColumns() {
         tblEvents.setFixedCellSize(40);
 
@@ -140,8 +148,8 @@ public class AdminEventController implements Initializable {
                 if (empty || item == null) {
                     setStyle("");
                 } else {
+                    //switch to determine what style class to use.
                     switch (item.getEventStatus()) {
-
                         case ONGOING -> getStyleClass().add("ongoing_row");
                         case COMPLETED -> getStyleClass().add("completed_row");
                         case UPCOMING -> getStyleClass().add("");
@@ -177,6 +185,11 @@ public class AdminEventController implements Initializable {
 
     }
 
+    /**
+     * Used to delete in a different thread to free up UI
+     * @param event to be deleted
+     * @return a task to be run in another thread
+     */
     private Task<Void> getDeleteTask(Event2 event) {
         Task<Void> deleteTask = new Task<>() {
             @Override
@@ -198,6 +211,9 @@ public class AdminEventController implements Initializable {
         return deleteTask;
     }
 
+    /**
+     * sets up a search debounce to prevent the user from creating a new thread every key press.
+     */
     public void setupSearchDebounce() {
         searchDebounce = new PauseTransition(Duration.millis(200));
         searchDebounce.setOnFinished(event -> {
@@ -209,17 +225,14 @@ public class AdminEventController implements Initializable {
         });
     }
 
-
+    /**
+     * runs a search task in a separate thread to free up gui
+     * also resets table items if the user deletes their input
+     */
     public void searchEvent() {
         String searchQuery = txtEventSearch.getText();
         if (searchQuery.isEmpty() || searchQuery.trim().isEmpty()) {
-            try {
-                tblEvents.setItems(adminEventModel.getObservableEvents());
-                //TODO use custom exception
-            } catch (Exception e) {
-                e.printStackTrace();
-                AlertClass.alertError("Search Error", "An error occurred while searching for events" + e.getMessage());
-            }
+            tblEvents.setItems(adminEventModel.getObservableEvents());
             return;
         }
 
@@ -230,6 +243,11 @@ public class AdminEventController implements Initializable {
         thread.start();
     }
 
+    /**
+     * calls the search method with the users search query
+     * @param searchQuery user input in text field
+     * @return task to be run
+     */
     private Task<ObservableList<Event2>> getObservableListTask(String searchQuery) {
         Task<ObservableList<Event2>> searchTask = new Task<>() {
             @Override

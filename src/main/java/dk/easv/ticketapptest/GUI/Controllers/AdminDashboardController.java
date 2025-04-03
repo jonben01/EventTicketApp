@@ -41,10 +41,17 @@ public class AdminDashboardController implements Initializable {
 
     }
 
+    /**
+     * logic refactored to new method, this is the event handler for the user management tab button
+     */
+    @FXML
     public void handleUserManagement(ActionEvent actionEvent) {
         openUserManagement();
     }
 
+    /**
+     * separate method to open the user management view, this allows the window to be opened by default in initialize
+     */
     public void openUserManagement() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/user-management-view.fxml"));
@@ -58,7 +65,11 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-
+    /**
+     * opens event view
+     * @param actionEvent press on button
+     */
+    @FXML
     public void handleEventHistory(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/admin-event-view.fxml"));
@@ -74,6 +85,10 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
+    /**
+     * logs the current user out, and switches to login view
+     * @param actionEvent
+     */
     @FXML
     private void onLogOut(ActionEvent actionEvent) {
         try {
