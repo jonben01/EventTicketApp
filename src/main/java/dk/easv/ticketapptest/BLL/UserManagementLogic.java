@@ -2,6 +2,7 @@ package dk.easv.ticketapptest.BLL;
 
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
+import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
 import dk.easv.ticketapptest.BLL.util.PBKDF2PasswordUtil;
 import dk.easv.ticketapptest.BLL.util.UserSearcher;
 import dk.easv.ticketapptest.DAL.UserDAO;
@@ -20,7 +21,7 @@ public class UserManagementLogic {
 
     }
 
-    public User createUserDB (User user) throws Exception {
+    public User createUserDB (User user) throws EasvTicketException, UsernameAlreadyExistsException {
 
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
         return userDAO.createUserDB(user);
@@ -32,7 +33,7 @@ public class UserManagementLogic {
         return userDAO.updateUserDB(user, userId);
     }
 
-    public void deleteUser(User user) throws Exception {
+    public void deleteUser(User user) throws EasvTicketException {
         userDAO.deleteUser(user);
     }
 

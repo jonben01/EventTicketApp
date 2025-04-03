@@ -273,7 +273,7 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(User user) throws Exception {
+    public void deleteUser(User user) throws EasvTicketException {
         String deleteSQL = "DELETE FROM dbo.Users WHERE UserID = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
 
@@ -281,7 +281,7 @@ public class UserDAO {
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new Exception("SQLException in deleteUser: " + e.getMessage());
+            throw new EasvTicketException("SQLException in deleteUser: " + e.getMessage());
         }
     }
 

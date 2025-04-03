@@ -440,7 +440,7 @@ public class AdminUserManagementController implements Initializable {
                 originalValues.put(txtEmail, newEmail);
                 originalValues.put(txtPhone, newPhone);
                 hasChanged = false;
-            } catch (Exception e) {
+            } catch (EasvTicketException e) {
                 e.printStackTrace();
                 AlertClass.alertError("Save Error", "An error occurred while updating user");
                 return;
