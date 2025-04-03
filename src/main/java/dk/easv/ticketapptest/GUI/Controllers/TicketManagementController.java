@@ -43,14 +43,14 @@ public class TicketManagementController implements Initializable {
             vboxList = new ArrayList<>();
             eventModel = new EventManagementModel();
             eventCSS = getClass().getResource("/css/eventmanagementstyle.css").toExternalForm();
-            gridPane.setPadding(new Insets(30, 30, 30, 30));
-            gridPane.setHgap(10);
-            gridPane.setVgap(10);
+            gridPane.setPadding(new Insets(30, -30, 30, 0));
+            gridPane.setHgap(0);
+            gridPane.setVgap(25);
 
 
             for (int i = 0; i < 3; i++) {
                 ColumnConstraints columnConstraints = new ColumnConstraints();
-                columnConstraints.setHgrow(Priority.NEVER);
+                columnConstraints.setHgrow(Priority.ALWAYS);
                 columnConstraints.setMinWidth(w);
                 columnConstraints.setPrefWidth(w);
 
@@ -59,7 +59,7 @@ public class TicketManagementController implements Initializable {
 
             for (int i = 0; i < 10; i++) {
                 RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(Priority.NEVER);
+                rowConstraints.setVgrow(Priority.ALWAYS);
                 rowConstraints.setMinHeight(h);
                 rowConstraints.setPrefHeight(h);
 
@@ -158,7 +158,7 @@ public class TicketManagementController implements Initializable {
         windowPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double width = newValue.doubleValue();
             int columns = gridPane.getColumnConstraints().size();
-            double columnWidth = width / columns;
+            double columnWidth = width / (columns+0.4);
             for (ColumnConstraints column : gridPane.getColumnConstraints()) {
                 column.setMinWidth(columnWidth);
                 column.setPrefWidth(columnWidth);

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="windowPane" prefHeight="720.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketManagementController">
+<AnchorPane fx:id="windowPane" prefHeight="720.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.TicketManagementController">
     <children>
         <VBox prefHeight="720.0" prefWidth="950.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -35,7 +35,7 @@
                         </VBox>
                     </children>
                 </HBox>
-                <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                     <content>
                         <GridPane fx:id="gridPane" hgap="20.0" maxHeight="1.7976931348623157E308" prefHeight="699.0" prefWidth="948.0" vgap="80.0">
                             <padding>
