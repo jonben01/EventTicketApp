@@ -94,11 +94,25 @@ public class AdminDashboardController implements Initializable {
         try {
             SessionManager.getInstance().logout();
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/views/login-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            Scene scene = new Scene(fxmlLoader.load(), 700, 500);
             Stage stage = (Stage) rootPaneAdmin.getScene().getWindow();
             stage.setScene(scene);
-            stage.centerOnScreen();
+            stage.setFullScreen(false);
+            stage.setMaximized(false);
+            stage.show();
+            //OS decorations apparently count for stage dimension :)
+            double decoWidth = stage.getWidth() - scene.getWidth();
+            double decoHeight = stage.getHeight() - scene.getHeight();
+            double minHeight = 500;
+            double minWidth = 700;
+            stage.setMinWidth(minWidth + decoWidth);
+            stage.setMinHeight(minHeight + decoHeight);
+            stage.setWidth(minWidth + decoWidth);
+            stage.setHeight(minHeight + decoHeight);
+            stage.sizeToScene();
             stage.setResizable(false);
+            stage.centerOnScreen();
+
         } catch (IOException e) {
             e.printStackTrace();
             AlertClass.alertError("Failed to load", "An error occurred while logging out");

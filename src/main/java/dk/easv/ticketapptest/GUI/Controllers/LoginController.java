@@ -69,9 +69,19 @@ public class LoginController implements Initializable {
         try {
             Parent adminDashboard = fxmlLoader.load();
             Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setScene(new Scene(adminDashboard));
+            Scene scene = new Scene(adminDashboard, 1152,768);
+            stage.setScene(scene);
             stage.centerOnScreen();
             stage.setResizable(true);
+            stage.show();
+            //OS decorations apparently count for stage dimension :)
+            double decoWidth = stage.getWidth() - scene.getWidth();
+            double decoHeight = stage.getHeight() - scene.getHeight();
+            double minHeight = 768;
+            double minWidth = 1152;
+
+            stage.setMinWidth(minWidth + decoWidth);
+            stage.setMinHeight(minHeight + decoHeight);
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the admin dashboard");
         }
@@ -101,11 +111,20 @@ public class LoginController implements Initializable {
         try {
             Parent eventDashboard = fxmlLoader.load();
             Stage stage = (Stage) rootPane.getScene().getWindow();
-            Scene scene = new Scene(eventDashboard);
+            Scene scene = new Scene(eventDashboard, 1152, 768);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Base-stylesheet.css")).toExternalForm());
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setResizable(true);
+            stage.show();
+            //OS decorations apparently count for stage dimension :)
+            double decoWidth = stage.getWidth() - scene.getWidth();
+            double decoHeight = stage.getHeight() - scene.getHeight();
+            double minHeight = 768;
+            double minWidth = 1152;
+
+            stage.setMinWidth(minWidth + decoWidth);
+            stage.setMinHeight(minHeight + decoHeight);
         } catch (IOException e) {
             AlertClass.alertError("Failed to load", "An error occurred while loading the event dashboard");
         }
