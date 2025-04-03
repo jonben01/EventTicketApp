@@ -144,3 +144,6 @@
     -fx-border-color: #c8e6c9;
 }
 
+.entry_label {
+    -fx-font-size: 18;
+}

@@ -40,6 +40,8 @@ public class AdminEventController implements Initializable {
     @FXML
     public TextField txtEventSearch;
     @FXML
+    public Label lblEntries;
+    @FXML
     private TableColumn<Event2, String> clnEventName;
     @FXML
     private TableColumn<Event2, LocalDateTime> clnDateTime;
@@ -106,6 +108,7 @@ public class AdminEventController implements Initializable {
         };
         loadDataTask.setOnSucceeded(event -> {
             tblEvents.setItems(loadDataTask.getValue());
+            lblEntries.setText("Showing: " + tblEvents.getItems().size() + " Events");
         });
         loadDataTask.setOnFailed(event -> {
             Throwable error = loadDataTask.getException();
@@ -145,6 +148,9 @@ public class AdminEventController implements Initializable {
             @Override
             protected void updateItem(Event2 item, boolean empty) {
                 super.updateItem(item, empty);
+
+                getStyleClass().removeAll("ongoing_row", "completed_row");
+
                 if (empty || item == null) {
                     setStyle("");
                 } else {
@@ -231,10 +237,6 @@ public class AdminEventController implements Initializable {
      */
     public void searchEvent() {
         String searchQuery = txtEventSearch.getText();
-        if (searchQuery.isEmpty() || searchQuery.trim().isEmpty()) {
-            tblEvents.setItems(adminEventModel.getObservableEvents());
-            return;
-        }
 
         Task<ObservableList<Event2>> searchTask = getObservableListTask(searchQuery);
 
@@ -260,8 +262,11 @@ public class AdminEventController implements Initializable {
             ObservableList<Event2> filteredList = searchTask.getValue();
             if (filteredList != null) {
                 tblEvents.setItems(filteredList);
+                lblEntries.setText("Showing: " + tblEvents.getItems().size() + " Events");
+
             } else {
                 tblEvents.setItems(FXCollections.observableArrayList());
+                lblEntries.setText("Showing: " + tblEvents.getItems().size() + " Events");
             }
         });
 

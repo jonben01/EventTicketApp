@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
+<AnchorPane prefHeight="591.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.EventViewController">
    <children>
       <VBox layoutX="-2.0" prefHeight="491.0" prefWidth="875.0" style="-fx-background-color: #F8F8F8;" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -63,7 +63,7 @@
                               </Label>
                               <AnchorPane maxHeight="30.0" prefHeight="25.0" prefWidth="379.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="btnEditEvent" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" onAction="#onEditEvent" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Edit Event" AnchorPane.rightAnchor="0.0" />
+                                    <Button fx:id="btnEditEvent" layoutX="321.0" layoutY="-2.0" mnemonicParsing="false" onAction="#onEditEvent" prefHeight="26.0" prefWidth="50.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="✍" AnchorPane.rightAnchor="0.0" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />
@@ -71,7 +71,10 @@
                               </AnchorPane>
                            </children>
                         </HBox>
-                        <TextArea fx:id="txtDesc" prefHeight="149.0" prefWidth="444.0" />
+                        <TextArea fx:id="txtDesc" prefHeight="149.0" prefWidth="444.0">
+                           <VBox.margin>
+                              <Insets top="2.0" />
+                           </VBox.margin></TextArea>
                         <HBox maxHeight="25.0" prefHeight="39.0" prefWidth="429.0">
                            <children>
                               <Label fx:id="lblTicket" prefHeight="25.0" prefWidth="144.0" styleClass="h4" stylesheets="@../css/eventmanagementstyle.css" text="Ticket Types:">
@@ -81,11 +84,17 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="444.0">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="444.0">
                            <children>
-                              <Button fx:id="btnAddTicket" mnemonicParsing="false" onAction="#handleAddTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Ticket Type" />
-                              <Button fx:id="btnEditTicket" mnemonicParsing="false" onAction="#handleEditTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Edit Ticket Type" />
-                              <Button fx:id="btnDeleteTicket" mnemonicParsing="false" onAction="#handleDeleteTicket" prefHeight="25.0" prefWidth="149.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Delete Ticket Type" />
+                              <Button fx:id="btnAddTicket" mnemonicParsing="false" onAction="#handleAddTicket" prefHeight="26.0" prefWidth="60.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+">
+                                 <HBox.margin>
+                                    <Insets right="12.0" />
+                                 </HBox.margin></Button>
+                              <Button fx:id="btnEditTicket" mnemonicParsing="false" onAction="#handleEditTicket" prefHeight="26.0" prefWidth="60.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="✍">
+                                 <HBox.margin>
+                                    <Insets right="12.0" />
+                                 </HBox.margin></Button>
+                              <Button fx:id="btnDeleteTicket" mnemonicParsing="false" onAction="#handleDeleteTicket" prefHeight="26.0" prefWidth="60.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="-" />
                            </children>
                         </HBox>
                         <TableView fx:id="tblTicket" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -116,18 +125,24 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="lstCoords" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="531.0" prefWidth="413.0" VBox.vgrow="ALWAYS" />
+                        <ListView fx:id="lstCoords" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="350.0" prefWidth="343.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></ListView>
                         <VBox alignment="BOTTOM_RIGHT" maxHeight="30.0" prefHeight="31.0" prefWidth="413.0">
                            <children>
-                              <HBox prefHeight="127.0" prefWidth="361.0">
+                              <HBox alignment="CENTER" prefHeight="18.0" prefWidth="343.0">
                                  <children>
-                                    <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="25.0" prefWidth="175.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+ Add Coordinator" />
-                                    <Button fx:id="btnRemoveCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleRemoveEvent" prefHeight="17.0" prefWidth="180.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="- Remove Coordinator">
+                                    <Button fx:id="btnAddCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddEvent" prefHeight="26.0" prefWidth="67.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="+" />
+                                    <Button fx:id="btnRemoveCoord" alignment="CENTER" mnemonicParsing="false" onAction="#handleRemoveEvent" prefHeight="26.0" prefWidth="69.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="-">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>

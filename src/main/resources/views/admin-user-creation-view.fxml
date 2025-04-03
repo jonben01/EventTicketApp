@@ -32,12 +32,10 @@
             <TextField fx:id="txtPhone" prefHeight="26.0" prefWidth="279.0" promptText="insert phone number" />
          </children>
       </VBox>
-      <Button fx:id="btnCreateNewUser" layoutX="232.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleCreateNewUser" prefHeight="26.0" prefWidth="98.0" text="Create user" />
+      <Button fx:id="btnCreateNewUser" layoutX="234.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleCreateNewUser" prefHeight="26.0" prefWidth="98.0" text="Create user" />
       <CheckBox fx:id="chkAdmin" layoutX="25.0" layoutY="463.0" mnemonicParsing="false" onAction="#handleSetAdmin" text="Admin" />
       <CheckBox fx:id="chkCoordinator" layoutX="97.0" layoutY="463.0" mnemonicParsing="false" onAction="#handleSetCoordinator" text="Event Coordinator" />
-      <Label layoutX="26.0" layoutY="440.0" text="Select one:" />
       <ImageView fx:id="imgCreateProfile" fitHeight="80.0" fitWidth="80.0" layoutX="26.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="113.0" layoutY="360.0" text="Profile Picture" />
-      <Button fx:id="btnPicture" layoutX="109.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleUploadPicture" text="Upload picture" />
+      <Button fx:id="btnPicture" layoutX="110.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleUploadPicture" text="Upload picture" />
    </children>
 </AnchorPane>

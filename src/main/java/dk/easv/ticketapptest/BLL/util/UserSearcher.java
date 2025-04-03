@@ -13,6 +13,10 @@ public class UserSearcher {
     public ObservableList<User> searchUser(List<User> searchBase, String searchQuery) {
         List<User> searchResults = new ArrayList<>();
 
+        if (searchQuery == null || searchQuery.isEmpty()) {
+            return FXCollections.observableList(searchBase);
+        }
+
         for (User user : searchBase) {
             if (compareToFirstName(searchQuery, user) ||
                     compareToLastName(searchQuery, user) ||

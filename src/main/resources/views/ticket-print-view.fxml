@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -137,11 +138,15 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="btnPrintTicket" alignment="CENTER" mnemonicParsing="false" onAction="#onHandlePrintTicket" prefHeight="26.0" prefWidth="97.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket">
+                        <HBox>
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
-                        </Button>
+                           <children>
+                              <Region prefHeight="26.0" prefWidth="291.0" />
+                              <Button fx:id="btnPrintTicket" alignment="CENTER" mnemonicParsing="false" onAction="#onHandlePrintTicket" prefHeight="26.0" prefWidth="97.0" styleClass="button2" stylesheets="@../css/eventmanagementstyle.css" text="Print Ticket" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

@@ -11,30 +11,32 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="423.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateTicketViewController">
+<AnchorPane prefHeight="416.0" prefWidth="457.0" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.CreateTicketViewController">
    <children>
-      <Label layoutX="10.0" layoutY="10.0" prefHeight="28.0" prefWidth="131.0" text="Ticket Types">
+      <Label layoutX="20.0" layoutY="8.0" prefHeight="28.0" prefWidth="131.0" text="Ticket Types">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <HBox layoutX="10.0" layoutY="335.0" prefHeight="82.0" prefWidth="966.0" spacing="130.0" />
-      <VBox layoutX="10.0" layoutY="49.0" prefHeight="376.0" prefWidth="926.0" spacing="15.0">
+      <VBox layoutX="20.0" layoutY="49.0" prefHeight="364.0" prefWidth="418.0" spacing="12.0">
          <children>
             <Label prefHeight="20.0" prefWidth="444.0" text="Ticket Name">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtTicketName" prefHeight="42.0" prefWidth="952.0" promptText="e.g., Early Bird, VIP, General Admission" />
+            <TextField fx:id="txtTicketName" prefHeight="42.0" prefWidth="952.0" promptText="e.g., Early Bird, VIP, General Admission">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
             <Label prefHeight="20.0" prefWidth="444.0" text="Ticket Description">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="txtTicketDesc" prefHeight="96.0" prefWidth="954.0" promptText="Describe what's included with this ticket type">
+            <TextArea fx:id="txtTicketDesc" prefHeight="96.0" prefWidth="954.0" promptText="What makes this ticket special?" wrapText="true">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </TextArea>
             <Label prefHeight="20.0" prefWidth="412.0" text="Price">
@@ -44,21 +46,21 @@
             </Label>
             <TextField fx:id="txtTicketPrice" prefHeight="42.0" prefWidth="412.0" promptText="0.00">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </TextField>
-            <HBox prefHeight="47.0" prefWidth="926.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="47.0" prefWidth="926.0">
                <children>
+                  <CheckBox fx:id="chkGlobal" mnemonicParsing="false" prefHeight="35.0" prefWidth="76.0" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Global" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin>
+                  </CheckBox>
                   <Button fx:id="btnCreateTicket" mnemonicParsing="false" onAction="#handleCreateTicket" prefHeight="36.0" prefWidth="160.0" text="Create Ticket">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <CheckBox fx:id="chkGlobal" mnemonicParsing="false" prefHeight="35.0" prefWidth="76.0" styleClass="h2" stylesheets="@../css/eventmanagementstyle.css" text="Global" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </CheckBox>
                </children>
             </HBox>
          </children>

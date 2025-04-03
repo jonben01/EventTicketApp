@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/admineventstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminEventController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="952.0" BorderPane.alignment="CENTER">
             <children>
@@ -41,7 +41,7 @@
             </TableView>
             <HBox fx:id="HboxBot" alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="904.0">
                <children>
-                  <Label text="Showing X of X entries">
+                  <Label fx:id="lblEntries" styleClass="entry_label">
                      <HBox.margin>
                         <Insets left="12.0" />
                      </HBox.margin>
