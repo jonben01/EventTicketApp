@@ -12,21 +12,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" style="-fx-background-color: #F8F8F8;" prefWidth="952.0" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="952.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="928.0" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField fx:id="txtUserSearch" prefHeight="36.0" prefWidth="807.0" promptText="search" HBox.hgrow="ALWAYS">
+                  <TextField fx:id="txtUserSearch" prefHeight="36.0" prefWidth="754.0" promptText="search" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="12.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnCreateUser" mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="34.0" prefWidth="109.0" text="Create User">
+                  <Button fx:id="btnCreateUser" mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="30.0" prefWidth="110.0" text="Create User">
                      <font>
                         <Font size="14.0" />
-                     </font></Button>
+                     </font>
+                     <HBox.margin>
+                        <Insets right="12.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
          </children>
@@ -40,7 +43,7 @@
          <children>
             <VBox alignment="TOP_CENTER" minWidth="460.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <VBox fx:id="UsersPane" prefHeight="494.0" prefWidth="458.0" styleClass="UsersPane">
+                  <VBox fx:id="UsersPane" prefHeight="494.0" prefWidth="458.0" styleClass="UsersPane" VBox.vgrow="ALWAYS">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -66,8 +69,14 @@
                               <Insets left="12.0" />
                            </padding>
                         </HBox>
-                        <ListView fx:id="lstUsers" prefHeight="440.0" prefWidth="458.0" />
+                        <ListView fx:id="lstUsers" prefHeight="440.0" prefWidth="458.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="6.0" />
+                           </VBox.margin></ListView>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="48.0" />
+                     </VBox.margin>
                   </VBox>
                </children>
                <padding>
@@ -79,7 +88,7 @@
                   <Insets left="12.0" right="12.0" />
                </padding>
                <children>
-                  <VBox fx:id="UserDetailsPane" prefHeight="494.0" prefWidth="452.0" styleClass="UserDetailsPane">
+                  <VBox fx:id="UserDetailsPane" prefHeight="494.0" prefWidth="452.0" styleClass="UserDetailsPane" VBox.vgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="458.0" style="-fx-background-color: white;">
                            <children>
@@ -102,16 +111,16 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <VBox prefHeight="406.0" prefWidth="428.0" spacing="4.0">
+                        <VBox maxHeight="550.0" prefHeight="406.0" prefWidth="428.0" spacing="4.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
+                              <HBox prefHeight="72.0" prefWidth="428.0" VBox.vgrow="NEVER">
                                  <children>
                                     <ImageView fx:id="imgProfilePicture" fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" styleClass="round_image">
                                        <HBox.margin>
                                           <Insets left="4.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <VBox prefHeight="34.0" prefWidth="338.0">
+                                    <VBox prefHeight="68.0" prefWidth="338.0">
                                        <children>
                                           <Label fx:id="lblName" text="Username">
                                              <font>
@@ -161,7 +170,7 @@
                               <TextField fx:id="txtEmail" prefHeight="35.0" promptText="e.g. mail@easv365.dk" />
                               <Label text="Phone" />
                               <TextField fx:id="txtPhone" prefHeight="35.0" promptText="e.g. +45 12345678" />
-                              <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="428.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="428.0" VBox.vgrow="NEVER">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
@@ -170,7 +179,7 @@
                                        <HBox.margin>
                                           <Insets right="90.0" />
                                        </HBox.margin></Button>
-                                    <Region prefHeight="30.0" prefWidth="126.0" />
+                                    <Region prefHeight="30.0" prefWidth="126.0" HBox.hgrow="ALWAYS" />
                                     <Button fx:id="btnDeleteUser" mnemonicParsing="false" onAction="#handleDeleteUser" prefHeight="30.0" prefWidth="117.0" text="Delete user">
                                        <font>
                                           <Font size="14.0" />
@@ -188,7 +197,7 @@
                         <Insets />
                      </opaqueInsets>
                      <VBox.margin>
-                        <Insets />
+                        <Insets bottom="48.0" />
                      </VBox.margin>
                      <padding>
                         <Insets left="12.0" right="12.0" top="6.0" />

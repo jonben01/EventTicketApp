@@ -20,11 +20,18 @@
 
 .table-view {
     -fx-background-color: #FFFFFF;
-    -fx-effect: dropshadow(three-pass-box, rgba(180, 180, 180, 0.8), 2, 0, 0, 4);
+
  /* could not get the text in a selected row to not turn white without this....  */
     -fx-selection-bar: #EFF6FF;
     -fx-selection-bar-non-focused: #EFF6FF;
     -fx-selection-bar-text: black;
+    -fx-background-insets: 0 !important;
+    -fx-padding: 0 !important;
+    -fx-border-insets: 0 !important;
+    -fx-border-width: 0 !important;
+    -fx-effect: dropshadow(three-pass-box, rgba(180, 180, 180, 0.8), 2, 0, 0, 4);
+    -fx-focus-color: transparent !important;
+    -fx-faint-focus-color: transparent !important;
 }
 
 
@@ -94,13 +101,34 @@
 }
 .table-view .column-header .label {
     -fx-text-fill: black;
+}
 
+/* jesus christ lmao, insane how much you need to change to get rid of the base style */
+.table-view .table-cell:empty,
+.table-view .table-cell:empty:hover,
+.table-view .table-cell:empty:focused,
+.table-view .table-cell:empty:selected,
+.table-view .table-cell:empty:selected:focused,
+.table-view .table-cell:empty:selected:hover,
+.table-view .table-row-cell:empty,
+.table-view .table-row-cell:empty:hover,
+.table-view .table-row-cell:empty:selected,
+.table-view .table-row-cell:empty:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0 !important;
+    -fx-padding: 0 !important;
+    -fx-border-insets: 0 !important;
+    -fx-effect: none !important;
+    -fx-faint-focus-color: transparent !important;
+    -fx-focus-color: transparent !important;
 }
 
 .table-view:focused {
     -fx-border-width: 0px;
     -fx-padding: 0px;
     -fx-background-insets: 0;
+    -fx-effect: none;
 }
 
 #deleteButton {
