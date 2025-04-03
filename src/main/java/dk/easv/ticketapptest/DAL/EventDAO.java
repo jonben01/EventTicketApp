@@ -23,6 +23,7 @@ public class EventDAO implements IEventDataAccess {
     UserDAO userDAO;
     TicketDAO ticketDAO;
 
+    //todo dont throw io
     public EventDAO() throws IOException {
         ticketDAO = new TicketDAO();
         connector = new DBConnector();

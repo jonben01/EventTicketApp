@@ -1,11 +1,5 @@
 package dk.easv.ticketapptest.BE;
 
-
-
-
-
-//TODO MAKE CLASS ABSTRACT WHEN ACTUAL PROJECT STARTS
-
 public class User {
     private int id;
     private String username;
@@ -23,10 +17,6 @@ public class User {
     public User() {
 
     }
-
-
-    //TODO IMPLEMENT USERNAME AND PASSWORD
-
 
     public Role getRole() {
         return role;

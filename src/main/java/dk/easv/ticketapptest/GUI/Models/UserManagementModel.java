@@ -11,7 +11,7 @@ public class UserManagementModel {
 
     private UserManagementLogic userManagementLogic;
 
-    public UserManagementModel() throws Exception {
+    public UserManagementModel() throws EasvTicketException {
         userManagementLogic = new UserManagementLogic();
     }
 

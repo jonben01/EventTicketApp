@@ -2,9 +2,6 @@ package dk.easv.ticketapptest.BE;
 
 public class Ticket {
 
-    //TODO - a list of tickets should be iterated through when looking at events, where the event matches the selected
-    // event, the ticket should be shown.
-    // Should probably also have a "GLOBAL" mode, for tickets that can be used for all events - like STANDARD or FREE BEER
     private Event2 event;
     private boolean GLOBAL;
     private String ticketName;

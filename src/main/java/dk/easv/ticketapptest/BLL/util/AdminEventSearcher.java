@@ -28,7 +28,6 @@ public class AdminEventSearcher {
         return event.getTitle().toLowerCase().contains(searchQuery.toLowerCase());
     }
 
-    //TODO test if it works
     private boolean compareToLocation (String searchQuery, Event2 event) {
         return event.getLocation().toString().toLowerCase().contains(searchQuery.toLowerCase());
     }

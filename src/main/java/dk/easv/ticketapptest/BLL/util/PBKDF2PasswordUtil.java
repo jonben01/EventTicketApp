@@ -14,10 +14,6 @@ public class PBKDF2PasswordUtil {
     private static final int HASH_LENGTH = 32;
     private static final int ITERATIONS = 5000;
 
-    //TODO at some point explain that methods here are static due to the fact that theres no need to make objects of this class
-    // it just does business logic. static makes it easier to call the methods globally, which is fine for this usage(i think??)
-
-
     public static String hashPassword(String password) throws EasvTicketException {
         byte[] salt = generateSalt();
         byte[] hash = pbkdf2Hash(password, salt, ITERATIONS, HASH_LENGTH);

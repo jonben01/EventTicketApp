@@ -15,22 +15,22 @@ public class UserManagementLogic {
     private UserDAO userDAO;
     private UserSearcher userSearcher;
 
-    public UserManagementLogic() throws Exception {
+    public UserManagementLogic() throws EasvTicketException {
         userDAO = new UserDAO();
         userSearcher = new UserSearcher();
 
     }
 
-    public User createUserDB (User user) throws EasvTicketException, UsernameAlreadyExistsException {
+    public void createUserDB (User user) throws EasvTicketException, UsernameAlreadyExistsException {
 
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
-        return userDAO.createUserDB(user);
+        userDAO.createUserDB(user);
 
     }
 
-    public User updateUserDB(User user, int userId) throws EasvTicketException {
+    public void updateUserDB(User user, int userId) throws EasvTicketException {
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
-        return userDAO.updateUserDB(user, userId);
+        userDAO.updateUserDB(user, userId);
     }
 
     public void deleteUser(User user) throws EasvTicketException {

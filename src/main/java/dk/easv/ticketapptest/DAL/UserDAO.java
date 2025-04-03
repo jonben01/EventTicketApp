@@ -1,6 +1,5 @@
 package dk.easv.ticketapptest.DAL;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
@@ -26,7 +25,7 @@ public class UserDAO {
     }
 
 
-    public User createUserDB (User user) throws UsernameAlreadyExistsException, EasvTicketException {
+    public void createUserDB (User user) throws UsernameAlreadyExistsException, EasvTicketException {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName, ImagePath) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
@@ -40,7 +39,7 @@ public class UserDAO {
             connection.setAutoCommit(false);
 
             //TODO handle the bubbling up of this quicker, so it doesnt even make it to the 2627 and 2601
-            // race conditions are handled by those, but you shouldnt have to make it it there in "non-race" conditions.
+            // race conditions are handled by those, but you shouldnt have to make it there in "non-race" conditions.
             if (user == null) {
                 throw new IllegalArgumentException("User cannot be null");
             }
@@ -58,7 +57,7 @@ public class UserDAO {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
 
-            //TODO else throw exception. for this if statement.
+
             int userID = -1;
             if (rs.next()) {
                 userID = rs.getInt(1);
@@ -66,7 +65,7 @@ public class UserDAO {
 
             pstmt2.setString(1, user.getRole().toString());
             ResultSet rs2 = pstmt2.executeQuery();
-            //TODO else throw exception. for this if statement.
+
             int roleID = -1;
             if (rs2.next()) {
                 roleID = rs2.getInt("RoleID");
@@ -82,13 +81,9 @@ public class UserDAO {
                 connection.rollback();
             }
 
-            return new User(user.getUsername(), user.getPassword(), user.getFirstName(),
-                            user.getLastName(), user.getEmail(), user.getPhone(), user.getRole(), user.getImgFilePath());
-
         } catch (SQLException err) {
             //ERROR CODES FOR BREAKING UNIQUE CONSTRAINTS as a workaround, since SQLIntegrityConstraintViolationException
             //is not used.
-            //TODO fix this, only pass this inital message and keep bubbling it up
             if (err.getErrorCode() == 2627 || err.getErrorCode() == 2601) {
                 throw new UsernameAlreadyExistsException("Username: " + user.getUsername() + "already exists", err);
             } else {
@@ -118,8 +113,6 @@ public class UserDAO {
                         "INNER JOIN dbo.Roles AS R ON UR.RoleID = R.RoleID " +
                         "WHERE Username = ?";
 
-
-
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
@@ -143,13 +136,12 @@ public class UserDAO {
         } catch (SQLException e) {
             throw new EasvTicketException("Failed to retrieve user by username", e);
         }
-        //TODO fix exception handling here, and this return.
         return null;
     }
 
 
 
-    public User updateUserDB(User user, int userId) throws EasvTicketException {
+    public void updateUserDB(User user, int userId) throws EasvTicketException {
         String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
         String updateRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
@@ -184,25 +176,8 @@ public class UserDAO {
 
             connection.commit();
 
-            return user;
-
         } catch (SQLException e) {
             throw new EasvTicketException("Could not update user", e);
-        }
-    }
-
-    //TODO fix exceptions, dont pass an SQLException to higher layers
-    private int getUserId(int userId) throws SQLException {
-        String sql = "SELECT UserID FROM dbo.Users WHERE Username = ?";
-        try (Connection connection = dbConnector.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("UserID");
-            } else {
-                throw new SQLException("User not found: " + userId);
-            }
         }
     }
 

@@ -39,11 +39,10 @@ public class UserSearcher {
         return user.getUsername().toLowerCase().contains(searchQuery.toLowerCase());
     }
 
-    //TODO should potentially only return if its right from left to right, and not just contained.
     public boolean compareToEmail(String searchQuery, User user) {
         return user.getEmail().toLowerCase().contains(searchQuery.toLowerCase());
     }
-    //TODO should potentially only return if its right from left to right, and not just contained.
+
     public boolean compareToPhone(String searchQuery, User user) {
         return user.getPhone().toLowerCase().contains(searchQuery.toLowerCase());
     }

@@ -244,7 +244,7 @@ public class AdminEventController implements Initializable {
     }
 
     /**
-     * calls the search method with the users search query
+     * calls the search method with a search query
      * @param searchQuery user input in text field
      * @return task to be run
      */

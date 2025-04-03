@@ -80,9 +80,9 @@ public class AdminUserManagementController implements Initializable {
         try {
             userModel = new UserModel();
             userManagementModel = new UserManagementModel();
-            //TODO IMPLEMENT BETTER EXCEPTION HANDLING HERE.
-        } catch (Exception e) {
+        } catch (EasvTicketException e) {
             e.printStackTrace();
+            AlertClass.alertError("Error", "if you see this message, good luck!");
         }
     }
 
@@ -572,7 +572,6 @@ public class AdminUserManagementController implements Initializable {
             }
         });
 
-        //TODO change this
         //if the task fails, show the user theres a db issue.
         searchTask.setOnFailed(event -> {
             Throwable error = searchTask.getException();

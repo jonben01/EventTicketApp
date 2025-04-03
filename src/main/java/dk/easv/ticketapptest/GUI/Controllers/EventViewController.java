@@ -140,8 +140,6 @@ public class EventViewController {
         this.previousView = previousView;
     }
 
-
-    //TODO exceptions
         @FXML
         public void initialize() {
         try {
@@ -245,7 +243,6 @@ public class EventViewController {
         return false;
     }
 
-    //TODO exceptions
     @FXML
     private void handleAddTicket(ActionEvent actionEvent) {
         try {
