@@ -1,9 +1,23 @@
 package dk.easv.ticketapptest.BE;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String username;
     private String password;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User user)) return false;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
     private Role role;
     private String imgFilePath;
 

@@ -56,7 +56,7 @@ public class AdminCreateUserController implements Initializable {
 
     private User newUser;
 
-    private String imagePath = "src/main/resources/userImages/defaultImage.png";
+    private String imagePath = "src/main/resources/defaultImage.png";
     private ImageUploader imageUploader;
 
     @Override

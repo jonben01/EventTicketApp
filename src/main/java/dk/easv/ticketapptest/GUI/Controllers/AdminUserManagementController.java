@@ -386,7 +386,7 @@ public class AdminUserManagementController implements Initializable {
 
     public void handleDeleteUser(ActionEvent actionEvent) {
         User user = lstUsers.getSelectionModel().getSelectedItem();
-        if (user == SessionManager.getInstance().getCurrentUser()){
+        if (user.equals(SessionManager.getInstance().getCurrentUser())) {
             AlertClass.alertWarning("Dont do that", "You cannot delete your own account.");
             return;
 
