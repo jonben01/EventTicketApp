@@ -135,6 +135,7 @@ public class LoginController implements Initializable {
     }
 
     private void login() {
+
         String password = "hello";
         if(txtPassword.isVisible()) {
             password = txtPassword.getText();

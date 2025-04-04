@@ -505,6 +505,7 @@ public class AdminUserManagementController implements Initializable {
             return;
         }
 
+        assert user != null;
         Optional<ButtonType> result = AlertClass.alertConfirmation("Role change", "Are you sure you want change: " + user.getUsername() + "'s role?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             if (!Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {

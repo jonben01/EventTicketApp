@@ -19,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javafx.geometry.Rectangle2D;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
@@ -267,16 +268,39 @@ public class AdminCreateUserController implements Initializable {
      */
     public void handleUploadPicture(ActionEvent actionEvent) {
 
+        //TODO figure out if i should keep doing the offset here, what if the user uploads a tiny image?
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Picture");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG or JPEG", "*.png", "*.jpg", "*.jpeg"));
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
+            //scaling image before
+            Image image = new Image(file.toURI().toString(), 400, 0, true ,true);
+
+            if (image.getWidth() > 0 && image.getHeight() > 0) {
+                double minDimension = Math.min(image.getWidth(), image.getHeight());
+                double x = (image.getWidth() - minDimension) / 2;
+
+                //create an offset anchor point for images -- better for headshots
+                double offsetY = 0.3;
+                double y = (image.getHeight() - minDimension) * offsetY;
+
+                //make sure nothing goes out of bounds, or if it does reset it
+                if (y < 0) {
+                    y = 0;
+                }
+                if (y > (image.getHeight() - minDimension)) {
+                    y = image.getHeight() - minDimension;
+                }
+
+                Rectangle2D crop = new Rectangle2D(x, y, minDimension, minDimension);
+                imgCreateProfile.setViewport(crop);
+            }
+            imgCreateProfile.setImage(image);
 
             //set the path for the new user
             imagePath = file.getAbsolutePath();
-            imgCreateProfile.setImage(new Image(file.toURI().toString()));
             makeImageViewCircular();
         }
 
