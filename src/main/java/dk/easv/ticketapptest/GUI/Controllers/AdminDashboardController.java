@@ -96,10 +96,12 @@ public class AdminDashboardController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/views/login-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 700, 500);
             Stage stage = (Stage) rootPaneAdmin.getScene().getWindow();
-            stage.setScene(scene);
+
             stage.setFullScreen(false);
             stage.setMaximized(false);
             stage.show();
+
+            stage.setScene(scene);
             //OS decorations apparently count for stage dimension :)
             double decoWidth = stage.getWidth() - scene.getWidth();
             double decoHeight = stage.getHeight() - scene.getHeight();
@@ -109,6 +111,7 @@ public class AdminDashboardController implements Initializable {
             stage.setMinHeight(minHeight + decoHeight);
             stage.setWidth(minWidth + decoWidth);
             stage.setHeight(minHeight + decoHeight);
+
             stage.sizeToScene();
             stage.setResizable(false);
             stage.centerOnScreen();
