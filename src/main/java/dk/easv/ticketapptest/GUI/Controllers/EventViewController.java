@@ -517,24 +517,30 @@ public class EventViewController {
             FXMLLoader loader;
             Parent view;
 
-            if ("event-dashboard".equals(previousView)){
-                loader = new FXMLLoader(getClass().getResource("/views/event-dashboard-event-management.fxml"));
+            if ("event-Dashboard-event-management".equals(previousView)){
+                loader = new FXMLLoader(getClass().getResource("/views/event-Dashboard-event-management.fxml"));
             } else if ("admin-event-view".equals(previousView)) {
                 loader = new FXMLLoader(getClass().getResource("/views/admin-event-view.fxml"));
             } else {
-                loader = new FXMLLoader(getClass().getResource("/views/event-dashboard-event-management.fxml"));
+                loader = new FXMLLoader(getClass().getResource("/views/event-Dashboard-event-management.fxml"));
             }
             view = loader.load();
             if("admin-event-view".equals(previousView)){
                 AdminEventController controller = loader.getController();
                 controller.setRootPane(root);
             }
+            else if("event-Dashboard-event-management".equals(previousView))
+            {
+                EventEventManagementController controller = loader.getController();
+                controller.setPanel(root);
+            }
             root.setCenter(view);
         } catch (IOException e) {
             e.printStackTrace();
-            AlertClass.alertError("Error","Could not return to previous view.");
+            AlertClass.alertError("Error","Could not return to previous view");
 
-            }
         }
+
+    }
 }
 

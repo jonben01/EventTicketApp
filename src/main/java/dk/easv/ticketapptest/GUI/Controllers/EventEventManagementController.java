@@ -29,6 +29,7 @@ import java.util.Optional;
 public class EventEventManagementController {
     String userCSS;
     String eventCSS;
+    @FXML
     BorderPane mainPane;
     @FXML
     private Button btnCreateEvent;
@@ -197,6 +198,7 @@ public class EventEventManagementController {
                     controller.updateTicketList();
                     controller.updateInformation(0);
                     controller.setPanel(mainPane);
+                    controller.setPreviousView("event-Dashboard-event-management");
                     mainPane.setCenter(eventInDepth);
 
                     //TODO VERY BAD. MAKE THIS LESS BAD. PLEASEEEE
