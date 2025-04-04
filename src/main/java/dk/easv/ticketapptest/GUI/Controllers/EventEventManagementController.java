@@ -298,6 +298,9 @@ public class EventEventManagementController {
     private void updateList() {
         try {
             gridPane.getChildren().clear();
+            Label loadingLabel = new Label("Loading Events...");
+            loadingLabel.styleProperty().set("-fx-font-size: 30px");
+            gridPane.add(loadingLabel, 1, 0);
             addExistingEvents(eventModel.getObservableEvents());
         } catch (EasvTicketException e) {
             e.printStackTrace();
