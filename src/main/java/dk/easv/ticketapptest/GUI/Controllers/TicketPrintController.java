@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TicketPrintController {
 
@@ -148,16 +150,6 @@ public class TicketPrintController {
             }
     }
 
-
-    public Event2 getSelectedEvent(){
-        return selectedEvent;
-    }
-
-
-    public void addTicket(Ticket ticket) {
-        tblTicket.getItems().add(ticket);
-    }
-
     public void onHandlePrintTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
 
@@ -168,6 +160,16 @@ public class TicketPrintController {
 
         if (txtCustomerFirstName.getText().isEmpty() || txtCustomerLastName.getText().isEmpty() || txtCustomerEmail.getText().isEmpty() || txtCustomerPhone.getText().isEmpty()) {
             AlertClass.alertInfo("Missing information", "Please fill out all customer details.");
+            return;
+        }
+
+        if(!isValidEmail(txtCustomerEmail.getText())){
+            AlertClass.alertInfo("Invalid email", "Please enter a valid email address.");
+            return;
+        }
+
+        if(!isValidPhone(txtCustomerPhone.getText())){
+            AlertClass.alertInfo("Invalid phone number", "Please enter a valid phone number.");
             return;
         }
 
@@ -214,6 +216,27 @@ public class TicketPrintController {
             randomString.append(characters.charAt(index));
         }
         return length + "abc" + randomString.toString();
+
     }
+
+    private boolean isValidEmail (String email){
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+
+    }
+
+    private boolean isValidPhone (String phone){
+        String regex = "^[0-9]{1,8}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
+
+
+
+
+
 }
 
