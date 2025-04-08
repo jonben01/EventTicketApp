@@ -99,7 +99,7 @@ public class TicketPrintController {
         }
 
 
-        tblTicket.getStylesheets().add("css/admineventstyle.css");
+        tblTicket.getStylesheets().add("css/eventmanagementstyle.css");
         tblTicket.getStyleClass().add("table-view");
 
 

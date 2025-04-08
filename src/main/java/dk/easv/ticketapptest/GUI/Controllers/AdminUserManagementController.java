@@ -498,46 +498,6 @@ public class AdminUserManagementController implements Initializable {
         btnSaveEditUser.setVisible(hasChanged);
     }
 
-    public void handleSwapRole(ActionEvent actionEvent) {
-        User user = lstUsers.getSelectionModel().getSelectedItem();
-        System.out.println(user);
-        if (user != null && Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
-
-            AlertClass.alertInfo("Role change error", "You cannot change your own role");
-            return;
-        }
-
-        assert user != null;
-        Optional<ButtonType> result = AlertClass.alertConfirmation("Role change", "Are you sure you want change: " + user.getUsername() + "'s role?");
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            if (!Objects.equals(SessionManager.getInstance().getCurrentUser().getUsername(), user.getUsername())) {
-                if (user.getRole().equals(Role.ADMIN)) {
-                    try {
-                        //its stupid to do it this order, but the edit role method does the role flip flop itself, so changing should be done after
-                        //should alter edit method, but this work due to the scale of the project and the fact that we will never add new roles
-                        userModel.editRole(user);
-                        user.setRole(Role.COORDINATOR);
-                        lblRole.setText("coordinator");
-                    } catch (EasvTicketException e) {
-                        e.printStackTrace();
-                        AlertClass.alertError("Role change error", "An error occurred while changing the role");
-                    }
-                } else if (user.getRole().equals(Role.COORDINATOR)) {
-                    try {
-                        //its stupid to do it this order, but the edit role method does the role flip flop itself, so changing should be done after
-                        userModel.editRole(user);
-                        user.setRole(Role.ADMIN);
-                        lblRole.setText("admin");
-                    } catch (EasvTicketException e) {
-                        e.printStackTrace();
-                        AlertClass.alertError("Role change error", "An error occurred while changing the role");
-                    }
-                }
-            }
-            lstUsers.refresh();
-        }
-    }
-
     public void searchUser() {
 
         String searchQuery = txtUserSearch.getText();

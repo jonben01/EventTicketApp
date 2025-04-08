@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="952.0" style="-fx-background-color: #F8F8F8;" stylesheets="@../css/usermanagementstyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.ticketapptest.GUI.Controllers.AdminUserManagementController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="952.0" BorderPane.alignment="CENTER">
          <children>
@@ -98,11 +98,6 @@
                                  </font>
                               </Label>
                               <Region prefHeight="42.0" prefWidth="72.0" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="btnSwapRole" mnemonicParsing="false" onAction="#handleSwapRole" prefHeight="30.0" prefWidth="110.0" text="Swap role">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Button>
                            </children>
                            <VBox.margin>
                               <Insets />
