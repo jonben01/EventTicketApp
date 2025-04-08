@@ -259,26 +259,4 @@ public class UserDAO {
             throw new EasvTicketException("SQLException in deleteUser: " + e.getMessage());
         }
     }
-
-    public void editRole(User user) throws EasvTicketException {
-        String editRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
-
-        int adminRoleID = 1;
-        int coordinatorRoleID = 2;
-
-
-        try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(editRoleSQL)) {
-            if (user.getRole() == Role.ADMIN) {
-                pstmt.setInt(1, coordinatorRoleID);
-                pstmt.setInt(2, user.getId());
-                pstmt.executeUpdate();
-            } else if (user.getRole() == Role.COORDINATOR) {
-                pstmt.setInt(1, adminRoleID);
-                pstmt.setInt(2, user.getId());
-                pstmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new EasvTicketException("Couldn't update role");
-        }
-    }
 }

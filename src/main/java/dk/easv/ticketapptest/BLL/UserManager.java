@@ -36,7 +36,4 @@ public class UserManager {
         return userDAO.getUsers();
     }
 
-    public void editRole(User user) throws EasvTicketException {
-        userDAO.editRole(user);
-    }
 }

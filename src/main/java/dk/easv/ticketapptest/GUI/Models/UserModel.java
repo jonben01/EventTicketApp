@@ -36,8 +36,4 @@ public class UserModel {
     public ObservableList<User> getUsers() throws EasvTicketException {
         return userManager.getUsers();
     }
-
-    public void editRole(User user) throws EasvTicketException {
-        userManager.editRole(user);
-    }
 }

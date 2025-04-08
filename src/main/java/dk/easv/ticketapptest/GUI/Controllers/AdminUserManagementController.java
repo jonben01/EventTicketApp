@@ -35,9 +35,7 @@ import java.util.*;
 
 
 public class AdminUserManagementController implements Initializable {
-
-    @FXML
-    public Button btnSwapRole;
+    
     @FXML
     public TextField txtUserSearch;
     @FXML
@@ -112,12 +110,6 @@ public class AdminUserManagementController implements Initializable {
 
         lstUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setUserInfo(newValue);
-
-            if (newValue == SessionManager.getInstance().getCurrentUser()) {
-                btnSwapRole.setDisable(true);
-            } else if (btnSwapRole.isDisable()) {
-                btnSwapRole.setDisable(false);
-            }
         });
         
         userChangeListeners();
