@@ -387,7 +387,7 @@ public class EventViewController {
             Stage stage = new Stage();
             String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
             stage.getIcons().add(new Image(imgPath));
-            stage.setTitle("Create Event");
+            stage.setTitle("Update Event");
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
             stage.setScene(scene);

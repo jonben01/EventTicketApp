@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -219,6 +220,8 @@ public class EventEventManagementController {
             CreateEventViewController controller = loader.getController();
             controller.setParent(this);
             Stage stage = new Stage();
+            String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+            stage.getIcons().add(new Image(imgPath));
             stage.setTitle("Create Event");
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
