@@ -40,13 +40,8 @@ public class EventDashboardController implements Initializable {
         imgLogoEvent.setFitWidth(180);
         imgLogoEvent.setFitHeight(60);
         sidebarVBox.getStyleClass().add("sidebar");
+        handleEventManagement(null);
     }
-    /* //idk hvorfor der var en initialize uden klassen bruger initializable
-    @FXML
-    public void initialize() {
-        sidebarVBox.getStyleClass().add("sidebar");
-    }
-     */
 
     @FXML
     public void handleEventManagement(ActionEvent actionEvent) {
