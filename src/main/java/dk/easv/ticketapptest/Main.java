@@ -9,6 +9,7 @@ import fr.brouillard.oss.cssfx.CSSFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
@@ -21,6 +22,9 @@ public class Main extends Application {
             Scene scene = new Scene(fxmlLoader.load(), 700, 500);
             stage.setTitle("Ticket Management");
             stage.setResizable(false);
+            String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+            stage.getIcons().add(new Image(imgPath));
+
             LoginController loginController = fxmlLoader.getController();
 
             stage.setScene(scene);

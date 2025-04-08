@@ -353,6 +353,8 @@ public class AdminUserManagementController implements Initializable {
             AdminCreateUserController controller = loader.getController();
 
             Stage stage = new Stage();
+            String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+            stage.getIcons().add(new Image(imgPath));
             stage.setTitle("Create User");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);

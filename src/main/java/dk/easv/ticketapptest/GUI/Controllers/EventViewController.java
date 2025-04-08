@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -287,6 +288,8 @@ public class EventViewController {
             controller.setParent(this);
             controller.setSelectedEvent(selectedEvent);
             Stage stage = new Stage();
+            String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+            stage.getIcons().add(new Image(imgPath));
             stage.setTitle("Create Ticket");
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
@@ -382,6 +385,8 @@ public class EventViewController {
             controller.setEventViewController(this);
             controller.selectEvent(selectedEvent);
             Stage stage = new Stage();
+            String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+            stage.getIcons().add(new Image(imgPath));
             stage.setTitle("Create Event");
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/css/Base-stylesheet.css").toExternalForm());
@@ -450,6 +455,8 @@ public class EventViewController {
                 controller.setSelectedTicket(selectedTicket);
                 controller.setSelectedEvent(selectedEvent);
                 Stage stage = new Stage();
+                String imgPath = Objects.requireNonNull(getClass().getResource("/BASW_logo2.png")).toExternalForm();
+                stage.getIcons().add(new Image(imgPath));
                 stage.setTitle("Edit Ticket");
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
