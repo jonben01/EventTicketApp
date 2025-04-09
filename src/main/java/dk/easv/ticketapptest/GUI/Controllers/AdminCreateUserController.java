@@ -62,7 +62,7 @@ public class AdminCreateUserController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        imageUploader = new ImageUploader();
+        imageUploader = new ImageUploader("userImages");
         makeImageViewCircular();
         String defaultImagePath = Objects.requireNonNull(getClass().getResource("/defaultImage.png")).toExternalForm();
         imgCreateProfile.setImage(new Image(defaultImagePath));

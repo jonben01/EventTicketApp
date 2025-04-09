@@ -21,6 +21,7 @@ public class UserModel {
 
     }
 
+    //oops, should have probably been passed to logic layer first
     public boolean verifyPassword(String password, String hashedPassword) throws EasvTicketException {
         return PBKDF2PasswordUtil.verifyPassword(password, hashedPassword );
     }

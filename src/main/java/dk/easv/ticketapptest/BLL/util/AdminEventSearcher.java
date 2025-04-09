@@ -43,6 +43,4 @@ public class AdminEventSearcher {
     private boolean compareToDate(String searchQuery, Event2 event) {
         return event.getStartDate().toString().toLowerCase().contains(searchQuery.toLowerCase());
     }
-
-
 }

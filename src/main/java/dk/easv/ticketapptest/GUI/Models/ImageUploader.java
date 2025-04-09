@@ -13,30 +13,31 @@ import java.nio.file.StandardCopyOption;
 public class ImageUploader {
 
     private static final int MAX_WIDTH = 400;
+    //should have been changed to 400, but it is what it is
     private static final int MAX_HEIGHT = 600;
+    private final String fileDestDir;
+
+    public ImageUploader(String fileDestDir) {
+        this.fileDestDir = fileDestDir;
+    }
 
 
+    //TODO should probably crop before resizing, not 100% sure. currently a very wide or very tall image will become tiny
     public String uploadFile(String filePath) throws EasvTicketException {
-        String fileDestDir = "userImages";
         File dir = new File(fileDestDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        //TODO implement unique names for pictures, to combat collision
 
         File file = new File(filePath);
-
         String baseName = removeExtension(file.getName());
         String forcedPng = baseName + ".png";
-
         File destFile = new File(dir, forcedPng);
-
         try {
             BufferedImage image = ImageIO.read(file);
             if (image == null) {
                 throw new EasvTicketException("Image is null");
             }
-
             BufferedImage resized = resize(image);
             //resize the image if needed
             if (image.getWidth() > image.getHeight()) {
@@ -44,19 +45,18 @@ public class ImageUploader {
             } else if (image.getHeight() > image.getWidth()) {
                 resized = cropIfTall(resized);
             }
-
-            //write the new file, always use png, because for some reason i cant write with JPG :)
             boolean success = ImageIO.write(resized, "png", destFile);
             if (!success) {
                 throw new EasvTicketException("Failed to write image to file");
             }
-
             return "userImages/" + forcedPng;
         } catch (IOException e) {
             throw new EasvTicketException("Couldn't upload file", e);
         }
     }
 
+
+    //one oversight for this method is that there is a chance the resulting dimensions are wonky (tried 180x180 once), it should ideally always be 400x400, or close to
     private BufferedImage resize(BufferedImage originalImage) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
