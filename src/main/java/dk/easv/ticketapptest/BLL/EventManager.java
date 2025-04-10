@@ -1,6 +1,5 @@
 package dk.easv.ticketapptest.BLL;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.User;
@@ -11,7 +10,6 @@ import dk.easv.ticketapptest.DAL.LocationDAO;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class EventManager {
@@ -51,7 +49,6 @@ public class EventManager {
         eventDAO.updateEvent(event, createdLocation);
 
     }
-
 
     public List<User> getAllUsersForEvent(int eventID) throws EasvTicketException {
         return eventDAO.getAllUsersForEvent(eventID);

@@ -1,6 +1,6 @@
 package dk.easv.ticketapptest.DAL;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
@@ -8,7 +8,6 @@ import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,7 +35,6 @@ public class EventDAO implements IEventDataAccess {
             throw new RuntimeException();
         }
 
-   // tempData.add(tempDataClass.getUsers().get(0));
     }
 
     public List<Event2> getAllEvents() throws EasvTicketException {

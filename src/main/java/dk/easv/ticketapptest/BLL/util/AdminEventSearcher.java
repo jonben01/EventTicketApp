@@ -27,7 +27,7 @@ public class AdminEventSearcher {
         return FXCollections.observableList(searchResults);
     }
 
-
+    // this is used to set text to lowercase and compared to lowercase
     private boolean compareToTitle (String searchQuery, Event2 event) {
         return event.getTitle().toLowerCase().contains(searchQuery.toLowerCase());
     }

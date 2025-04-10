@@ -1,8 +1,6 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dk.easv.ticketapptest.BE.Event2;
-import dk.easv.ticketapptest.BE.Location;
 import dk.easv.ticketapptest.BE.Ticket;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
@@ -30,7 +28,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 public class EventViewController {
@@ -128,7 +125,7 @@ public class EventViewController {
                     EventViewController.this.userHasAccess = finalUserHasAccess;
 
 
-                    magicLinesOfCode();
+                    addSortedUsers();
                     lstCoords.refresh();
                     checkUserAccess();
                     updateInformation(1);
@@ -410,7 +407,7 @@ public class EventViewController {
                 tempEvent.addCoordinator(temp);
                 eventModel.removeFromEventUsers(tempEvent);
                 lstCoords.refresh();
-                magicLinesOfCode();
+                addSortedUsers();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -418,7 +415,7 @@ public class EventViewController {
         }
     }
 
-    private void magicLinesOfCode(){
+    private void addSortedUsers(){
         List<User> sortedUsers = sortUsers(new ArrayList<>(lstCoords.getItems()));
         lstCoords.getItems().clear();
         lstCoords.getItems().addAll(sortedUsers);
@@ -436,7 +433,7 @@ public class EventViewController {
                 tempEvent.addCoordinator(temp);
                 eventModel.addToEventUsers(tempEvent);
                 lstCoords.refresh();
-                magicLinesOfCode();
+                addSortedUsers();
             } catch (EasvTicketException e) {
                 e.printStackTrace();
                 AlertClass.alertError("Error", "An error occurred while adding event");

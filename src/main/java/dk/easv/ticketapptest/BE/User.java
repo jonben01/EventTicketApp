@@ -20,12 +20,9 @@ public class User {
 
     private Role role;
     private String imgFilePath;
-
-    //this will be moved to separate classes later, and this class will be made abstract
     private String firstName;
     private String lastName;
     private String email;
-    //should arguably not be a string, but its just easier to work with.
     private String phone;
 
     public User() {

@@ -93,7 +93,7 @@ public class TicketManagementController implements Initializable {
         Label locationLabel = new Label("📍 " + event2.getLocation().getAddress());
         locationLabel.getStyleClass().add("h2");
 
-        Label dateLabel = new Label();
+        Label dateLabel;
         if(Objects.equals(event2.getStartDate(), event2.getEndDate()))
         {
             dateLabel = new Label("📅 " + event2.getStartDate());

@@ -22,7 +22,6 @@ public class UserManagementLogic {
     }
 
     public void createUserDB (User user) throws EasvTicketException, UsernameAlreadyExistsException {
-
         user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
         userDAO.createUserDB(user);
 

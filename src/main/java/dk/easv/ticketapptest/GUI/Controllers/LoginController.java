@@ -51,7 +51,6 @@ public class LoginController implements Initializable {
         try {
             userModel = new UserModel();
         } catch (EasvTicketException e) {
-            //I am uncertain how best to deal with this. Maybe a runtime exception is better here?
             AlertClass.alertError("Error", "An error occurred while starting the application");
         }
         String logoImagePath = Objects.requireNonNull(getClass().getResource("/BASW_logo.png")).toExternalForm();

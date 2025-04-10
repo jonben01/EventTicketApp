@@ -1,6 +1,5 @@
 package dk.easv.ticketapptest.GUI.Controllers;
 //project imports
-import dk.easv.ticketapptest.BE.Role;
 import dk.easv.ticketapptest.BE.User;
 import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.BLL.Exceptions.UsernameAlreadyExistsException;
@@ -57,8 +56,6 @@ public class AdminUserManagementController implements Initializable {
     @FXML
     private TextField txtPassword;
     @FXML
-    private CheckBox chkEditable;
-    @FXML
     private ListView<User> lstUsers;
     @FXML
     private Button btnSaveEditUser;
@@ -73,16 +70,6 @@ public class AdminUserManagementController implements Initializable {
     private PauseTransition searchDebounce;
 
 
-
-    public AdminUserManagementController() {
-        try {
-            userModel = new UserModel();
-            userManagementModel = new UserManagementModel();
-        } catch (EasvTicketException e) {
-            e.printStackTrace();
-            AlertClass.alertError("Error", "if you see this message, good luck!");
-        }
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,22 +113,6 @@ public class AdminUserManagementController implements Initializable {
         imgProfilePicture.setClip(circle);
     }
 
-
-    //TODO REFACTOR userChangeListeners -- helper method that creates a listener for a textfield
-    //TODO call it 6 times in userChangeListeners instead.
-    /*
-    //SETTER SHOULD BE RELEVANT TO THE TEXT FIELD.
-    private void addChangeListener(TextField textField, Consumer<String> setter) {
-    //listens to the text field for changes
-    textField.textProperty().addListener((obs, oldValue, newValue) -> {
-        if (selectedUser != null) {
-        //use the setter param to set the new value
-            setter.accept(newValue);
-            checkIfChanged();
-        }
-    });
-}
-     */
     private void userChangeListeners() {
         txtUsername.textProperty().addListener((observable, oldValue, newValue) -> {
             if (selectedUser != null) {

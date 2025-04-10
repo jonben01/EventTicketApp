@@ -49,7 +49,6 @@ public class CreateEventViewController {
 
     private User sessionUser;
 
-    //todo bad. fix.
     EventManagementModel model;
 
 
@@ -57,8 +56,6 @@ public class CreateEventViewController {
     private EventViewController eventViewController;
     @FXML
     private Label txtTitle;
-    @FXML
-    private Label txtInfo;
 
     @FXML
     private void initialize()  {
@@ -69,7 +66,6 @@ public class CreateEventViewController {
             model = new EventManagementModel();
             String cssFile = getClass().getResource("/css/usermanagementstyle.css").toExternalForm();
             btnCreateEvent.getStylesheets().add(cssFile);
-            //btnAddTicket.getStylesheets().add(cssFile);
         } catch (EasvTicketException e) {
             e.printStackTrace();
             AlertClass.alertError("Something went wrong", "An error has occurred while initializing the event creation window");
@@ -102,8 +98,8 @@ public class CreateEventViewController {
     }
 
     public void CreateEvent(ActionEvent actionEvent) {
-        LocalTime startTime = null;
-        LocalTime endTime = null;
+        LocalTime startTime;
+        LocalTime endTime;
 
         String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d)$";
 

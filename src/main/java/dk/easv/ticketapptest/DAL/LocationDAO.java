@@ -39,8 +39,6 @@ public class LocationDAO implements ILocationDataAccess {
     @Override
     public void updateLocation(Location location) throws EasvTicketException {
 
-        //TODO implement this, if even necessary.
-
     }
 
     @Override

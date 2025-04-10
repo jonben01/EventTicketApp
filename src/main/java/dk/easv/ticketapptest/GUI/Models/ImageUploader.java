@@ -13,7 +13,6 @@ import java.nio.file.StandardCopyOption;
 public class ImageUploader {
 
     private static final int MAX_WIDTH = 400;
-    //should have been changed to 400, but it is what it is
     private static final int MAX_HEIGHT = 600;
     private final String fileDestDir;
 
@@ -22,7 +21,6 @@ public class ImageUploader {
     }
 
 
-    //TODO should probably crop before resizing, not 100% sure. currently a very wide or very tall image will become tiny
     public String uploadFile(String filePath) throws EasvTicketException {
         File dir = new File(fileDestDir);
         if (!dir.exists()) {

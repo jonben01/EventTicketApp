@@ -36,11 +36,9 @@ public class SessionManager {
     }
 
 
-    //TODO remove souts when this works
     public void logout() {
         System.out.println(currentUser + " logged out");
         currentUser = null;
-        System.out.println("Logged out successfully");
 
     }
 }

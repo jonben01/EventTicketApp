@@ -64,19 +64,15 @@ public class Event2 {
     public <E> Event2(String text, Location location, String text1, String text2, LocalDate value, LocalDate value1, LocalTime parse, LocalTime parse1, ArrayList<Ticket> tickets, ArrayList<E> es) {
     }
 
-    //use DateTimeFormatter on localDate types in actual project instead of this
-    //also use a date picker, to avoid edge cases where someone types something stupid.
-    //should validate either way and handle those cases.
-
     public EventStatus getEventStatus() {
         LocalDateTime eventEnd = null;
         if (endDate != null && endTime != null) {
             eventEnd = LocalDateTime.of(endDate, endTime);
         }
-        //required field, shouldn't need to handle null. Might be best to do anyway but it should be fine
-        LocalDateTime eventStart = LocalDateTime.of(startDate, startTime);
 
+        LocalDateTime eventStart = LocalDateTime.of(startDate, startTime);
         LocalDateTime now = LocalDateTime.now();
+        
         if (now.isBefore(eventStart)) {
             return EventStatus.UPCOMING;
         } else if (eventEnd != null && !now.isAfter(eventEnd)) {

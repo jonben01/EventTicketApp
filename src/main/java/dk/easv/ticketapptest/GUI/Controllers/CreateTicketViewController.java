@@ -43,7 +43,6 @@ public class CreateTicketViewController {
             AlertClass.alertError("Error occurred", "Something went wrong");
         }
     }
-    // todo: find a better way to do this:
     public void setParent(TicketPrintController parent) {
         this.parent = parent;
     }

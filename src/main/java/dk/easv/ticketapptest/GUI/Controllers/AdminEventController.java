@@ -2,7 +2,6 @@ package dk.easv.ticketapptest.GUI.Controllers;
 
 import dk.easv.ticketapptest.BE.Event2;
 import dk.easv.ticketapptest.BE.EventStatus;
-import dk.easv.ticketapptest.BLL.Exceptions.EasvTicketException;
 import dk.easv.ticketapptest.GUI.AlertClass;
 import dk.easv.ticketapptest.GUI.Models.AdminEventModel;
 import javafx.animation.PauseTransition;
@@ -17,19 +16,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -258,7 +251,6 @@ public class AdminEventController implements Initializable {
             }
         };
 
-        //TODO should probably make something to counteract out of order completions
         searchTask.setOnSucceeded(e -> {
             ObservableList<Event2> filteredList = searchTask.getValue();
             if (filteredList != null) {

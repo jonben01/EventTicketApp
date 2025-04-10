@@ -15,7 +15,6 @@ public class DBConnector {
 
     public DBConnector() throws IOException {
 
-
         Properties dbProps = new Properties();
         dbProps.load(new FileInputStream(PROPERTY_FILE));
 

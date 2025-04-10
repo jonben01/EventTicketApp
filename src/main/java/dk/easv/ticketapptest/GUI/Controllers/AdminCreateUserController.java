@@ -159,7 +159,6 @@ public class AdminCreateUserController implements Initializable {
      * @return boolean check
      */
     private boolean highlightFields() {
-        //pretty bloated but i am not smart enough to make a flexible method instead apparently :) - jonas 03/04
         boolean allValid = true;
         String style = "-fx-border-color: red; -fx-border-width: 1px;";
         StringBuilder errorMessages = new StringBuilder();

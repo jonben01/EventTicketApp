@@ -38,8 +38,6 @@ public class UserDAO {
              PreparedStatement pstmt3 = connection.prepareStatement(setRoleSQL)) {
             connection.setAutoCommit(false);
 
-            //TODO handle the bubbling up of this quicker, so it doesnt even make it to the 2627 and 2601
-            // race conditions are handled by those, but you shouldnt have to make it there in "non-race" conditions.
             if (user == null) {
                 throw new IllegalArgumentException("User cannot be null");
             }

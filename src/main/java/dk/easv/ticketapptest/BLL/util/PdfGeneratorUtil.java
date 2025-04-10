@@ -23,12 +23,14 @@ public class PdfGeneratorUtil {
 
     public static void generateTicket(String filePath, String eventTitle, String eventDescription, String locationGuidance, String eventLocation, String eventDate, String eventStartTime, String eventEndTime, String ticketType, String customerName, String qrCodePath, String barCodePath, String logoPath, String customerLastName) {
         try {
+            // Create PDF
             File file = new File(filePath);
             file.getParentFile().mkdirs();
             PdfWriter writer = new PdfWriter(file);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
 
+            // Fonts
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
             PdfFont normal = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
@@ -49,10 +51,9 @@ public class PdfGeneratorUtil {
             topSectionTable.addCell(new Cell().add(new Paragraph(eventDescription).setFont(normal).setFontSize(12)).setBorder(Border.NO_BORDER));
             guidanceSectionTable.addCell(new Cell().add(new Paragraph().add(new Text("Guidance: ").setFont(bold)).add(new Text(locationGuidance).setFont(normal))).setFontSize(12).setBorder(Border.NO_BORDER));
 
+            // Add tables to the document
             document.add(topSectionTable);
             document.add(guidanceSectionTable);
-
-
 
             // Add bottom title above event details
             Paragraph bottomTitle = new Paragraph(eventTitle).setFont(bold).setFontSize(16).setTextAlignment(TextAlignment.LEFT);
@@ -73,8 +74,10 @@ public class PdfGeneratorUtil {
             eventDetailsTable.addCell(new Cell().add(new Paragraph().add(new Text("Customer: ").setFont(bold)).add(new Text(customerName + " " + customerLastName).setFont(normal))).setFontSize(12));
             bottomTable.addCell(new Cell().add(eventDetailsTable).setBorder(Border.NO_BORDER));
 
+            // QR Code and Barcode
             Table qrCodeImage = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             Table qrBarcodeImage = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
+
             if (new File(qrCodePath).exists()) {
                 Image qrImage = new Image(ImageDataFactory.create(qrCodePath)).setWidth(150).setHeight(150);
                 qrCodeImage.addCell(new Cell().add(qrImage).setBorder(Border.NO_BORDER));
@@ -83,31 +86,29 @@ public class PdfGeneratorUtil {
                 Image barImage = new Image(ImageDataFactory.create(barCodePath)).setWidth(250).setHeight(100);
                 qrBarcodeImage.addCell(new Cell().add(barImage).setBorder(Border.NO_BORDER));
             }
-            //Move QR Code
+
+            // Move QR Code
             Table qrCodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             qrCodeTable.addCell(new Cell().add(qrCodeImage).setBorder(Border.NO_BORDER));
             qrCodeTable.setFixedPosition(296,140,PageSize.A4.getWidth() - 72);
 
-            //Move Bar Code
+            // Move Bar Code
             Table qrBarcodeTable = new Table(UnitValue.createPercentArray(1)).useAllAvailableWidth();
             qrBarcodeTable.addCell(new Cell().add(qrBarcodeImage).setBorder(Border.NO_BORDER));
             qrBarcodeTable.setFixedPosition(310,30,PageSize.A4.getWidth() - 72);
 
-
-
+            // Add tables to the document
             document.add(qrBarcodeTable);
             document.add(bottomTable);
             document.add(qrCodeTable);
             document.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static Cell createCell(String text, PdfFont font) {
-        return new Cell().add(new Paragraph(text).setFont(font).setFontSize(10)).setBorder(Border.NO_BORDER);
-    }
-
+    //this is used to create a dottet line for the pdf
     private static void drawDottedLineAndScissor(PdfDocument pdf, float y) {
         PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
         canvas.setLineDash(3, 3);

@@ -64,8 +64,6 @@ public class TicketPrintController {
     @FXML
     private Label lblCoords;
     @FXML
-    private ListView lstCoords;
-    @FXML
     private Button btnPrintTicket;
     @FXML
     private Button btnReturn;
@@ -103,7 +101,6 @@ public class TicketPrintController {
         tblTicket.getStyleClass().add("table-view");
 
 
-        //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
         lblTitle.getStyleClass().add("h1");
         lblLocationTicket.getStyleClass().add("h2");
         lblDateTicket.getStyleClass().add("h2");
@@ -178,7 +175,7 @@ public class TicketPrintController {
             String rndString = generateRandomString();
             String qrFilePath = "src/main/resources/images/" + rndString + "_qr.png";
             String barcodeFilePath = "src/main/resources/images/" + rndString + "_barcode.png";
-            String logoFilePath = "src/main/resources/images/logo.png"; // Replace with your logo path
+            String logoFilePath = "src/main/resources/images/logo.png";
 
             // Generate QR code and Barcode
             BufferedImage qrImage = QRImageUtil.generateQRCode(rndString, 150, 150);
@@ -191,10 +188,16 @@ public class TicketPrintController {
             // Generate the ticket PDF with both the QR code and barcode
             String ticketPath = "target/PrintedTickets/" + rndString + ".pdf";
             Customer customer = new Customer(txtCustomerFirstName.getText(), txtCustomerLastName.getText(), txtCustomerEmail.getText(), Integer.parseInt(txtCustomerPhone.getText()));
-            PdfGeneratorUtil.generateTicket(ticketPath, selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getLocationGuidance(), selectedEvent.getLocation().getAddress() + ", " + selectedEvent.getLocation().getCity() + ", " + selectedEvent.getLocation().getPostalCode(), selectedEvent.getStartDate().toString(), selectedEvent.getStartTime().toString(), selectedEvent.getEndTime().toString(), selectedTicket.getTicketName(), customer.getFirstName(), qrFilePath, barcodeFilePath, logoFilePath, customer.getLastName());
+            PdfGeneratorUtil.generateTicket(ticketPath, selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getLocationGuidance(),
+                    selectedEvent.getLocation().getAddress() + ", " + selectedEvent.getLocation().getCity() + ", " + selectedEvent.getLocation().getPostalCode(),
+                    selectedEvent.getStartDate().toString(), selectedEvent.getStartTime().toString(), selectedEvent.getEndTime().toString(), selectedTicket.getTicketName(),
+                    customer.getFirstName(), qrFilePath, barcodeFilePath, logoFilePath, customer.getLastName());
 
             ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
-            gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() + "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +"\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!", txtCustomerEmail.getText(), new File(ticketPath));
+            gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() +
+                    "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +
+                    "\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!",
+                    txtCustomerEmail.getText(), new File(ticketPath));
             new File(qrFilePath).delete();
             new File(barcodeFilePath).delete();
             new File(ticketPath).delete();
