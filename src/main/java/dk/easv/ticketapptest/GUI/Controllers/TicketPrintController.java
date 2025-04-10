@@ -195,8 +195,7 @@ public class TicketPrintController {
 
             ticketModel.savePrintedTicket(rndString, selectedTicket, selectedEvent, customer);
             gMailer.sendMail("Your tickets for " + selectedEvent.getTitle() + " are here!", "Hello " + customer.getFirstName() +
-                    "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() +
-                    "\n\n\n\n\n If you have any question. I don't know. You can respond to this email i guess, but nobody is checking it.\n Have a ticketTastic day!",
+                    "!\nYour tickets are attached below.\n Your order included:\n" + selectedTicket.getTicketName() + "\n Have a ticketTastic day!",
                     txtCustomerEmail.getText(), new File(ticketPath));
             new File(qrFilePath).delete();
             new File(barcodeFilePath).delete();
@@ -207,7 +206,7 @@ public class TicketPrintController {
         }
     }
 
-        //TODO: TEMP KLASSE. MAKE THIS STUFF ACTUALLY GOOD.
+
     public static String generateRandomString() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -221,7 +220,7 @@ public class TicketPrintController {
         return length + "abc" + randomString.toString();
 
     }
-
+    
     private boolean isValidEmail (String email){
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
