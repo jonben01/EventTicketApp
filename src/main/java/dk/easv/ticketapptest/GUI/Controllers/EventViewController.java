@@ -94,6 +94,10 @@ public class EventViewController {
 
     private String previousView;
 
+    /**
+     * Inputs the selected event information into the page. Uses Task to do this without freezing UI.
+     * @param event2
+     */
     public void setSelectedEvent(Event2 event2) {
         this.selectedEvent = event2;
 
@@ -183,7 +187,6 @@ public class EventViewController {
             tblTicket.getStylesheets().add("css/eventmanagementstyle.css");
             tblTicket.getStyleClass().add("table-view");
 
-            //TODO: FIND EN BEDRE MÅDE AT GØRE DET HER PÅ.
             lblTitle.getStyleClass().add("h1");
             lblLocation.getStyleClass().add("h2");
             lblDate.getStyleClass().add("h2");
@@ -219,7 +222,9 @@ public class EventViewController {
         }
     }
 
-
+    /**
+     * Prepare the list for showcasing the users.
+     */
     private void populateList(){
         lstCoords.setCellFactory(param -> new ListCell<User>() {
             private Label nameLabel = new Label();
@@ -239,6 +244,14 @@ public class EventViewController {
                 setGraphic(vBox);
             }
 
+            /**
+             * updateItem() taken overriden from the cell class.
+             * Fills the list with the given item (User).
+             * @param item The new item for the cell.
+             * @param empty whether or not this cell represents data from the list. If it
+             *        is empty, then it does not represent any domain data, but is a cell
+             *        being used to render an "empty" row.
+             */
             @Override
             protected void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
@@ -265,6 +278,12 @@ public class EventViewController {
         });
     }
 
+    /**
+     * A method for checking whether or not this specific user has access to the event.
+     * Done by comparing the user to all the users who have access to this event.
+     * @param user
+     * @return
+     */
     private Boolean userHasAssignedEvent(User user){
         for(User allUser : usersWithAccess)
         {
@@ -276,6 +295,11 @@ public class EventViewController {
         return false;
     }
 
+    /**
+     * Runs if the user chooses to Create a new ticket.
+     * Simply opens the window.
+     * @param actionEvent
+     */
     @FXML
     private void handleAddTicket(ActionEvent actionEvent) {
         try {
@@ -298,6 +322,9 @@ public class EventViewController {
         }
     }
 
+    /**
+     * Reloads all the tickets in the ticket list. Uses a Task to do this. Only updates if there is no current thread running.
+     */
     public void updateTicketList() {
         if(taskRunning) {
             return;
@@ -341,7 +368,10 @@ public class EventViewController {
     }
 
 
-
+    /**
+     * Changes information if the event is edited.
+     * @param version
+     */
     public void updateInformation(int version) {
         if(version == 1) {
             try {
@@ -373,6 +403,11 @@ public class EventViewController {
         txtDesc.setText(selectedEvent.getDescription());
     }
 
+    /**
+     * Runs if the edit event button is pressed.
+     * Simply opens the create-event-view window, with the update event version.
+     * @param actionEvent
+     */
     @FXML
     private void onEditEvent(ActionEvent actionEvent) {
         try {
@@ -395,6 +430,11 @@ public class EventViewController {
         }
     }
 
+    /**
+     * Runs if the delete event coordinator button is pressed.
+     * Removes the users' access to the event.
+     * @param actionEvent
+     */
     @FXML
     private void handleRemoveEvent(ActionEvent actionEvent) {
         try {
@@ -415,12 +455,21 @@ public class EventViewController {
         }
     }
 
+    /**
+     * Sorts the users and then adds the sorted list to the list of coordinators.
+     * (Previously named "magicLinesOfCode()". It will be missed.
+     */
     private void addSortedUsers(){
         List<User> sortedUsers = sortUsers(new ArrayList<>(lstCoords.getItems()));
         lstCoords.getItems().clear();
         lstCoords.getItems().addAll(sortedUsers);
     }
 
+    /**
+     * Runs when the user attempts to give a user, access to this event.
+     * Then sorts the list.
+     * @param actionEvent
+     */
     @FXML
     private void handleAddEvent(ActionEvent actionEvent){
         User temp = (User) lstCoords.getSelectionModel().getSelectedItem();
@@ -441,6 +490,11 @@ public class EventViewController {
         }
     }
 
+    /**
+     * Runs when the user pressed the edit ticket button.
+     * Opens the create-ticket-view window with the Edit version.
+     * @param actionEvent
+     */
     public void handleEditTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
         if (selectedTicket != null) {
@@ -468,6 +522,11 @@ public class EventViewController {
         }
     }
 
+    /**
+     * Runs when the user presses the Delete ticket button.
+     * Removes the ticket from the list and DB.
+     * @param actionEvent
+     */
     public void handleDeleteTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
         if (selectedTicket != null) {
@@ -490,6 +549,13 @@ public class EventViewController {
             AlertClass.alertWarning("Missing ticket", "Please select a ticket to delete");
         }
     }
+
+    /**
+     * Sorts the list of event coordinators by whether the users have access to the event or not.
+     * Users with access are set on top.
+     * @param users
+     * @return
+     */
     private List<User> sortUsers(List<User> users) {
         List<User> hasAccessList = new ArrayList<>();
         List<User> noAccessList = new ArrayList<>();
@@ -515,6 +581,11 @@ public class EventViewController {
         return hasAccessList;
     }
 
+    /**
+     * Runs the return to previous window method.
+     * Loads the "previousView" window.
+     * @param mouseEvent
+     */
     @FXML
     private void handleReturn(MouseEvent mouseEvent) {
         try{

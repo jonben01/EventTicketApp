@@ -17,6 +17,12 @@ public class TicketDAO implements ITicketDataAccess {
         connector = new DBConnector();
     }
 
+    /**
+     * Adds a temporary ticket to the DB.
+     * @param ticket temporary ticket without ID
+     * @return created ticket with the new ID.
+     * @throws EasvTicketException
+     */
     @Override
     public Ticket createTicket(Ticket ticket) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Tickets(Title, Description, Price, Global) VALUES(?,?,?,?);";
@@ -49,6 +55,11 @@ public class TicketDAO implements ITicketDataAccess {
         }
     }
 
+    /**
+     * Deletes a ticket from the DB.
+     * @param ticket The ticket that needs to be removed.
+     * @throws EasvTicketException
+     */
     @Override
     public void deleteTicket(Ticket ticket) throws EasvTicketException {
         String sql = "DELETE FROM dbo.Tickets WHERE TicketID = ?;";
@@ -62,6 +73,12 @@ public class TicketDAO implements ITicketDataAccess {
         }
     }
 
+    /**
+     * Updates a specific tickets information.,
+     * @param ticket the ticket that needs to be updated.
+     * @return return the ticket with the new information.
+     * @throws EasvTicketException
+     */
     @Override
     public Ticket updateTicket(Ticket ticket) throws EasvTicketException {
         String sql = "UPDATE dbo.Tickets SET Title = ?, Description = ?, Price = ?, Global = ? WHERE TicketID = ?;";
@@ -81,6 +98,13 @@ public class TicketDAO implements ITicketDataAccess {
 
     }
 
+    /**
+     * Get alls available tickets saved in the application.
+     * Currently no usages. Could be used in future development
+     * to reuse tickets for different events without adding it to global
+     * @return List of all the tickets saved in DB.
+     * @throws EasvTicketException
+     */
     @Override
     public List<Ticket> getAllTickets() throws EasvTicketException {
         List<Ticket> allTickets = new ArrayList<>();
@@ -103,6 +127,12 @@ public class TicketDAO implements ITicketDataAccess {
         return allTickets;
     }
 
+    /**
+     * Get all the tickets assigned to a specific event.
+     * @param event the event in question
+     * @return list of all the tickets that are assigned to the event.
+     * @throws EasvTicketException
+     */
     @Override
     public List<Ticket> getTicketsForEvent(Event2 event) throws EasvTicketException {
         List<Ticket> eventtickets = new ArrayList<>();
@@ -141,6 +171,12 @@ public class TicketDAO implements ITicketDataAccess {
         }
     }
 
+    /**
+     * Assigning a ticket to an event.
+     * @param ticket the ticket that should be added.
+     * @param event the event in question.
+     * @throws EasvTicketException
+     */
     @Override
     public void AssignTicketToEvent(Ticket ticket, Event2 event) throws EasvTicketException{
         String sql = "INSERT INTO dbo.TicketEvent_Junction(TicketID, EventID) " + "VALUES(?, ?);";
@@ -154,6 +190,14 @@ public class TicketDAO implements ITicketDataAccess {
         }
     }
 
+    /**
+     * Saves the created ticket + assigned customer info.
+     * @param generatedID The ID created when sending the ticket. (Should be hashed)
+     * @param ticket Ticket type, that the ID is connected to.
+     * @param event The event that this ticket is connected to.
+     * @param customer The customer information that this ticket is connected to.
+     * @throws EasvTicketException
+     */
     public void savePrintedTicket(String generatedID, Ticket ticket, Event2 event, Customer customer) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Printed_Tickets(GeneratedTicket, TicketID, EventID, FirstName, LastName, Email, PhoneNumber) " + "VALUES(?, ?, ?, ?, ?, ?, ?);";
         try (Connection conn = connector.getConnection();

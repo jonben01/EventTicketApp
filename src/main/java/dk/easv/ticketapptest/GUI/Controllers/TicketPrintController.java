@@ -119,6 +119,10 @@ public class TicketPrintController {
 
     }
 
+    /**
+     * inputs the information depending on the selected event in the previous window.
+     * @param event - Selected Event.
+     */
     public void setEventDetails(Event2 event){
         this.lblTitle.setText(event.getTitle());
         this.lblLocationTicket.setText(event.getLocation().getAddress() + ", " + event.getLocation().getCity());
@@ -132,7 +136,11 @@ public class TicketPrintController {
 
     }
 
-
+    /**
+     * Runs when the user presses on the return button.
+     * Sends the user back to the ticket management window.
+     * @param actionEvent
+     */
     @FXML
     private void handleReturn(ActionEvent actionEvent) {
             try {
@@ -147,6 +155,11 @@ public class TicketPrintController {
             }
     }
 
+    /**
+     * Runs when the Send Ticket button is pressed. Checks if the information is filled.
+     * Could be improved instead of having multiple if statements.
+     * @param actionEvent
+     */
     public void onHandlePrintTicket(ActionEvent actionEvent) {
         Ticket selectedTicket = tblTicket.getSelectionModel().getSelectedItem();
 
@@ -172,7 +185,9 @@ public class TicketPrintController {
 
         System.out.println("Ticket Printed: " + selectedTicket.getTicketName() + " for " + txtCustomerFirstName.getText());
         try {
+            //Creates the ticket code:
             String rndString = generateRandomString();
+            //Creates the file paths for the qr and barcodes:
             String qrFilePath = "src/main/resources/images/" + rndString + "_qr.png";
             String barcodeFilePath = "src/main/resources/images/" + rndString + "_barcode.png";
             String logoFilePath = "src/main/resources/images/logo.png";
@@ -206,21 +221,35 @@ public class TicketPrintController {
         }
     }
 
-
+    /**
+     * Creates a randomly generated unique code using a list of preset characters.
+     * @return
+     */
     public static String generateRandomString() {
+        //Lists all the possible symbols in generation:
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
+        //Randomly generates a length of the code between 15 and 45 characters.
         int length = random.nextInt(30) + 15;
         StringBuilder randomString = new StringBuilder();
 
+        //Builds the string:
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(characters.length());
             randomString.append(characters.charAt(index));
         }
+        // Modifies the string to give the generated string length + separator before the generated string.
+        // Generally used for debugging if any problems with the tickets should occur.
         return length + "abc" + randomString.toString();
 
     }
 
+    /**
+     * Check if the email given fits the pattern.
+     * Currently the pattern checks if the string in the textbox has "@" symbol in it.
+     * @param email
+     * @return
+     */
     private boolean isValidEmail (String email){
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
@@ -229,6 +258,11 @@ public class TicketPrintController {
 
     }
 
+    /**
+     * Checks if the phone number given is just numbers.
+     * @param phone
+     * @return
+     */
     private boolean isValidPhone (String phone){
         String regex = "^[0-9]{1,8}$";
         Pattern pattern = Pattern.compile(regex);

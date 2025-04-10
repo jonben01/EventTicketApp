@@ -47,7 +47,7 @@ public class TicketManagementController implements Initializable {
             gridPane.setHgap(0);
             gridPane.setVgap(25);
 
-
+            //Setting up initial constraints for the grid.
             for (int i = 0; i < 3; i++) {
                 ColumnConstraints columnConstraints = new ColumnConstraints();
                 columnConstraints.setHgrow(Priority.ALWAYS);
@@ -79,6 +79,12 @@ public class TicketManagementController implements Initializable {
         mainPane = rootPaneEvent;
     }
 
+    /**
+     * Creates new "event panels" that can be added to the grid.
+     * Inputs all the information from the event parameter.
+     * @param event2 - The event that should be displayed in the ponel.
+     * @return VBox, this is the "panel".
+     */
     private VBox createEventPanel(Event2 event2) {
 
         VBox vbox = new VBox();
@@ -87,6 +93,7 @@ public class TicketManagementController implements Initializable {
         vbox.getStyleClass().add("vBoxBorder");
         vbox.setCursor(javafx.scene.Cursor.HAND);
 
+        //Creates UI elements:
         Label titleLabel = new Label(event2.getTitle());
         titleLabel.getStyleClass().add("h1");
 
@@ -106,8 +113,10 @@ public class TicketManagementController implements Initializable {
         Label timeLabel = new Label("🕒 " + event2.getStartTime() + " - " + event2.getEndTime());
         timeLabel.getStyleClass().add("h2");
 
+        //Adds the created UI elements to the panel.
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel);
 
+        //Runs whenever the user presses the event panel, to open detailed event view.
         vbox.setOnMouseClicked(event -> {
             if(event.getClickCount() == 1)
             {
@@ -128,16 +137,27 @@ public class TicketManagementController implements Initializable {
         return vbox;
     }
 
+    /**
+     * Adds the event given in parameter in the grid.
+     * @param event
+     */
     public void createEvent(Event2 event) {
+        //Get the next available coordinates in the grid.
         int x = getNextX();
         int y = getNextY();
-        System.out.println("(" + x + "," + y + ")");
+        System.out.println("(" + x + "," + y + ")"); //Debugging statement.
 
+        //Creates the panel and then adds it.
         gridPane.add(createEventPanel(event), x, y);
 
+        //increments the next available coordinates.
         currentX++;
     }
 
+    /**
+     * For all the available events, create a panel in the grid.
+     * @param events
+     */
    private void addExistingEvents(List<Event2> events){
         if(!events.isEmpty()){
             for(Event2 event : events){
@@ -154,6 +174,10 @@ public class TicketManagementController implements Initializable {
         return currentX / 3;
     }
 
+    /**
+     * Tracks window size and resizes the event panels accordingly.
+     * If work period is expanded, revamp of this method would be preferred.
+     */
     private void trackWindowSize() {
         windowPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double width = newValue.doubleValue();

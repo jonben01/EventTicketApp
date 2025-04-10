@@ -24,7 +24,12 @@ public class UserDAO {
         }
     }
 
-
+    /**
+     * Adds a new user to the DB.
+     * @param user temporary User object that needs to be added.
+     * @throws UsernameAlreadyExistsException
+     * @throws EasvTicketException
+     */
     public void createUserDB (User user) throws UsernameAlreadyExistsException, EasvTicketException {
         String userSQL = "INSERT INTO dbo.Users (Username, PasswordHash, Email, PhoneNumber, FirstName, LastName, ImagePath) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -90,6 +95,12 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Get the hashed password that is connected to a specific username.
+     * @param username the username in question.
+     * @return the hashed password.
+     * @throws EasvTicketException
+     */
     public String getPassword(String username) throws EasvTicketException {
         String passwordSQL = "SELECT PasswordHash FROM dbo.Users WHERE Username = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(passwordSQL)) {
@@ -104,6 +115,12 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * Receives the user object that has a specific username
+     * @param username Unique username that is connected to a user.
+     * @return User object that is connected to the username.
+     * @throws EasvTicketException
+     */
     public User getUserByUsername(String username) throws EasvTicketException {
 
         String userSQL = "SELECT U.*, R.RoleName FROM dbo.Users U " +
@@ -138,7 +155,13 @@ public class UserDAO {
     }
 
 
-
+    /**
+     * Update user information.
+     * @param user The new updated information
+     * @param userId The ID of the user that is being updated.
+     * @param hasPasswordChanged A true/false check to see if the password should be changed or not.
+     * @throws EasvTicketException
+     */
     public void updateUserDB(User user, int userId, boolean hasPasswordChanged) throws EasvTicketException {
         String sql;
         if(hasPasswordChanged) {
@@ -199,6 +222,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Gets all the Event Coordinators that are registered in the DB.
+     * @return List of all Event Coordinators.
+     * @throws EasvTicketException
+     */
     public List<User> getAllCoordinators() throws EasvTicketException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.* FROM dbo.User_Roles ru RIGHT JOIN dbo.Users u ON u.UserID = ru.UserID WHERE RoleID = 2";
@@ -221,6 +249,12 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Checks if a user with a specific username exists in DB.
+     * @param username The username in question.
+     * @return True/False if the user exists.
+     * @throws EasvTicketException
+     */
     public boolean usernameExists(String username) throws EasvTicketException {
         String userSQL = "SELECT Username FROM dbo.Users WHERE Username = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(userSQL)) {
@@ -237,6 +271,11 @@ public class UserDAO {
         return false;
     }
 
+    /**
+     * Get a list of all the users registered in DB.
+     * @return ObservableList of all the users.
+     * @throws EasvTicketException
+     */
     public ObservableList<User> getUsers() throws EasvTicketException {
         String userSQL = "SELECT u.*, r.RoleName FROM dbo.Users u JOIN dbo.User_Roles ur ON u.UserID = ur.UserID JOIN dbo.Roles r ON r.RoleID = ur.RoleID; ";
 
@@ -266,6 +305,11 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Delete a specific user from DB.
+     * @param user the user in question.
+     * @throws EasvTicketException
+     */
     public void deleteUser(User user) throws EasvTicketException {
         String deleteSQL = "DELETE FROM dbo.Users WHERE UserID = ?";
         try (Connection conn = dbConnector.getConnection(); PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {

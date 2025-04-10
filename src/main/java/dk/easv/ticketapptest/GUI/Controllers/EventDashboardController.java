@@ -43,6 +43,11 @@ public class EventDashboardController implements Initializable {
         handleEventManagement(null);
     }
 
+    /**
+     * Runs when the Events button is pressed. Opens the Event Management window
+     * and passes the rootPaneEvent on to the new window.
+     * @param actionEvent
+     */
     @FXML
     public void handleEventManagement(ActionEvent actionEvent) {
         try {
@@ -56,6 +61,11 @@ public class EventDashboardController implements Initializable {
         }
     }
 
+    /**
+     * Runs when the Tickets button is pressed. Opens the Ticket Management window
+     * and passes the rootPaneEvent on to the new window.
+     * @param actionEvent
+     */
     @FXML
     private void handleTicketManagement(ActionEvent actionEvent) {
         try {
@@ -69,6 +79,11 @@ public class EventDashboardController implements Initializable {
         }
     }
 
+    /**
+     * Runs when the "Log out" button is pressed. Opens the Login window
+     * and resizes the window to fit the premade size of the login window.
+     * @param actionEvent
+     */
     @FXML
     private void onLogOut(ActionEvent actionEvent) {
         try {
@@ -80,7 +95,7 @@ public class EventDashboardController implements Initializable {
             stage.setFullScreen(false);
             stage.setMaximized(false);
             stage.show();
-            //OS decorations apparently count for stage dimension :)
+            //OS decorations included for stage dimension.
             double decoWidth = stage.getWidth() - scene.getWidth();
             double decoHeight = stage.getHeight() - scene.getHeight();
             double minHeight = 500;

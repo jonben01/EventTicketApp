@@ -63,6 +63,9 @@ public class LoginController implements Initializable {
         enterKeyListeners();
     }
 
+    /**
+     * Handles the logic for opening the admin dashboard.
+     */
     public void handleAdminDash() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/admin-dashboard-view.fxml"));
         try {
@@ -86,6 +89,9 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Just checks if the users presses enter at any point in time...
+     */
     private void enterKeyListeners() {
         txtUsername.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -104,6 +110,9 @@ public class LoginController implements Initializable {
         });
     }
 
+    /**
+     * Handles the logic for opening the Event Dashboard.
+     */
     public void handleEventDash() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/event-dashboard-view.fxml"));
 
@@ -129,10 +138,19 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Runs whenever the login button is pressed.
+     * @param actionEvent
+     */
     public void handleLogin(ActionEvent actionEvent) {
         login();
     }
 
+    /**
+     * Handles the login validation.
+     * Receives the password from the passwordField, and the verifies the password + Username login.
+     * In the end runs either the AdminDash or EventDash, depending on the login type.
+     */
     private void login() {
 
         String password = "hello";
@@ -193,6 +211,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Runs whenever the Show/Hide password button is pressed.
+     * Has 2 different password field ontop of each other. 1 PasswordField, 1 normal TextField.
+     * If one is visible, disable the other. When pressed change visibility for both.
+     * @param actionEvent
+     */
     @FXML
     private void handleTogglePassword(ActionEvent actionEvent) {
         if (txtPassword.isVisible()) {

@@ -53,15 +53,19 @@ public class CreateTicketViewController {
 
     }
 
+    /**
+     * Runs the actions whenever the create/edit button is pressed.
+     * Either creates a new ticket, or updates the already existing information.
+     * @param actionEvent
+     */
     @FXML
     private void handleCreateTicket(ActionEvent actionEvent) {
         String name = txtTicketName.getText();
         String description = txtTicketDesc.getText();
         double price = Double.parseDouble(txtTicketPrice.getText());
 
-
+        // Create new ticket
         if (selectedTicket == null) {
-            // Create new ticket
             Ticket ticket = new Ticket(selectedEvent, price, chkGlobal.isSelected(), name, description);
             try {
                 ticketModel.createTicket(ticket);
@@ -70,9 +74,8 @@ public class CreateTicketViewController {
                 AlertClass.alertError("Error","An error occurred while creating ticket");
             }
 
-
+        // Update existing ticket
         } else {
-            // Update existing ticket
             try {
                 selectedTicket.setTicketName(name);
                 selectedTicket.setDescription(description);
@@ -90,6 +93,11 @@ public class CreateTicketViewController {
 
 
     }
+
+    /**
+     * Change the UI from create ticket window to Edit ticket window.
+     * @param selectedTicket
+     */
     public void setSelectedTicket(Ticket selectedTicket) {
         this.selectedTicket = selectedTicket;
         txtTicketName.setText(selectedTicket.getTicketName());

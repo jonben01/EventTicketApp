@@ -10,8 +10,6 @@ public interface ILocationDataAccess {
 
     Location createLocation (Location location) throws EasvTicketException;
 
-    void updateLocation (Location location) throws EasvTicketException;
-
     List<Location> getAllLocations() throws EasvTicketException;
 
     void deleteLocation (Location location) throws EasvTicketException;

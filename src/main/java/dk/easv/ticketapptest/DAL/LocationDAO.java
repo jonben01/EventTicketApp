@@ -15,6 +15,12 @@ public class LocationDAO implements ILocationDataAccess {
         connector = new DBConnector();
     }
 
+    /**
+     * Adds a new location to the DB.
+     * @param location temp location that needs to be added to db.
+     * @return location after it has been added to DB, with its new ID.
+     * @throws EasvTicketException
+     */
     @Override
     public Location createLocation(Location location) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Locations(Address, City, PostalCode) VALUES(?,?,?);";
@@ -36,11 +42,13 @@ public class LocationDAO implements ILocationDataAccess {
         }
     }
 
-    @Override
-    public void updateLocation(Location location) throws EasvTicketException {
-
-    }
-
+    /**
+     * A method to get all the location saved in DB.
+     * Method currently has no usages, since its use has been removed.
+     * Future development can use this method to reuse locations.
+     * @return A list of all the locations.
+     * @throws EasvTicketException
+     */
     @Override
     public ArrayList<Location> getAllLocations () throws EasvTicketException {
         ArrayList<Location> allLocations = new ArrayList<>();

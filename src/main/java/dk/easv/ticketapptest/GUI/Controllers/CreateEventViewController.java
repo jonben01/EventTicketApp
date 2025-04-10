@@ -72,6 +72,12 @@ public class CreateEventViewController {
         }
     }
 
+    /**
+     * This method is only run in the EventViewController.
+     * It is used to set the selected event, and change the UI to make it edit the selectedEvent,
+     * instead of creating a new one.
+     * @param event
+     */
     public void selectEvent(Event2 event)
     {
         selectedEvent = event;
@@ -97,12 +103,18 @@ public class CreateEventViewController {
         this.eventViewController = eventViewController;
     }
 
+    /**
+     * This method is run when the "Create Event" button is pressed.
+     * It is used to check if the areas aren't null and thereafter create/edit the event.
+     * @param actionEvent
+     */
     public void CreateEvent(ActionEvent actionEvent) {
         LocalTime startTime;
         LocalTime endTime;
 
-        String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d)$";
+        String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d)$"; // [xx:xx] pattern
 
+        // Checks if all the information fields have been filled.
         if (dateStartDate.getValue() == null || dateEndDate.getValue() == null ||
                 !txtNameEvent.getText().isEmpty() && !dateStartDate.getValue().toString().isEmpty() &&
                         !dateEndDate.getValue().toString().isEmpty() &&
@@ -114,6 +126,7 @@ public class CreateEventViewController {
                         !txtAddress.getText().isEmpty() &&
                         !txtPostalCode.getText().isEmpty()) {
 
+            //Additional checks due to DateTime not throwing Exceptions.
             try {
                 if (!txtStartEvent.getText().isEmpty() && txtStartEvent.getText().matches(timePattern)) {
                     startTime = LocalTime.parse(txtStartEvent.getText());
@@ -131,10 +144,14 @@ public class CreateEventViewController {
                     throw new EasvTicketException("Start time or end time is empty.");
                 }
                     Location location = new Location(txtAddress.getText(), txtCity.getText(), Integer.parseInt(txtPostalCode.getText()));
+
+                //If event is being updated, run:
                     if (selectedEvent != null) {
                         Event2 event = new Event2(selectedEvent.getEventID(), txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), new ArrayList<Ticket>(), selectedEvent.getEventCoordinators(), "Scheduled");
                         model.updateEvent(event);
                         eventViewController.updateInformation(1);
+
+                //if even is being created, run:
                     } else {
                         Event2 event = new Event2(txtNameEvent.getText(), location, txtDescriptionEvent.getText(), txtLocationGuidance.getText(), dateStartDate.getValue(), dateEndDate.getValue(), LocalTime.parse(txtStartEvent.getText()), LocalTime.parse(txtEndEvent.getText()), (List<Ticket>) new ArrayList<Ticket>() {
                         }, new ArrayList<>(Arrays.asList(sessionUser)));

@@ -22,7 +22,6 @@ public class EventDAO implements IEventDataAccess {
     UserDAO userDAO;
     TicketDAO ticketDAO;
 
-    //todo dont throw io
     public EventDAO() throws IOException {
         ticketDAO = new TicketDAO();
         connector = new DBConnector();
@@ -30,13 +29,17 @@ public class EventDAO implements IEventDataAccess {
 
         try {
             userDAO = new UserDAO();
-            //TODO this should be applied to all of the other objects, but also DO NOT THROW RUNTIME - cba changing this right now
         } catch (EasvTicketException e) {
             throw new RuntimeException();
         }
 
     }
 
+    /**
+     * Receives all the events in DB.
+     * @return List of all the events in DB.
+     * @throws EasvTicketException
+     */
     public List<Event2> getAllEvents() throws EasvTicketException {
         List<Event2> events = new ArrayList<>();
         String sql = "SELECT e.EventID, e.Title, e.StartTime, e.EndTime, e.LocationID, e.LocationGuidance, e.Description, e.Status, e.StartDate, e.EndDate, e.CreatedBy, " +
@@ -117,7 +120,12 @@ public class EventDAO implements IEventDataAccess {
     }
 
 
-
+    /**
+     * Gets every user that is assigned to the event.
+     * @param id EventID for the event desired.
+     * @return List of users that are assigned to the event.
+     * @throws EasvTicketException
+     */
     public List<User> getAllUsersForEvent(int id) throws EasvTicketException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Users u ON u.UserID = d.UserID WHERE d.EventID = ?;";
@@ -140,6 +148,12 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
+    /**
+     * Updates the event information.
+     * @param event Event that should be updated.
+     * @param location Newly updated location which should be attached to the event given.
+     * @throws EasvTicketException
+     */
     @Override
     public void updateEvent(Event2 event, Location location ) throws EasvTicketException {
 
@@ -162,6 +176,13 @@ public class EventDAO implements IEventDataAccess {
 
     }
 
+    /**
+     * Creates a new event from tempEvent given.
+     * @param event temp event generated without ID.
+     * @param location location generated that needs to be attached to the event.
+     * @return The saved event, with its ID from DB.
+     * @throws EasvTicketException
+     */
     public Event2 createEvent(Event2 event, Location location) throws EasvTicketException {
 
         String sql = "INSERT INTO dbo.Events(Title, StartTime, EndTime, LocationID, LocationGuidance, Description, CreatedBy, StartDate, EndDate) " +
@@ -191,6 +212,11 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
+    /**
+     * attaches the original creator user to the event through the Event_Users junction table.
+     * @param event Event with the original creator in it.
+     * @throws EasvTicketException
+     */
     public void addToEventUsers(Event2 event) throws EasvTicketException {
         String sql = "INSERT INTO dbo.Event_Users(EventID, UserID) VALUES (?,?)";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -204,6 +230,11 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
+    /**
+     * Deletes an event from DB.
+     * @param eventToBeDeleted - The event that needs to be deleted.
+     * @throws EasvTicketException
+     */
     public void deleteEvent(Event2 eventToBeDeleted) throws EasvTicketException {
         try (Connection conn = connector.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM dbo.Events WHERE EventID = ?")) {
@@ -214,6 +245,11 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
+    /**
+     * Removes the original user from the event.
+     * @param event
+     * @throws EasvTicketException
+     */
     public void removeFromEventUsers(Event2 event) throws EasvTicketException {
         String sql = "DELETE FROM dbo.Event_Users WHERE EventID = ? AND UserID = ?";
         try(Connection conn = connector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
@@ -227,6 +263,12 @@ public class EventDAO implements IEventDataAccess {
         }
     }
 
+    /**
+     * Sends back all the events that this particular user has access to.
+     * @param userid ID of the user in question.
+     * @return A list of events that the user has access to.
+     * @throws EasvTicketException
+     */
     public List<Event2> getAllEventsForUser(int userid) throws EasvTicketException {
         List<Event2> events = new ArrayList<>();
         String sql = "SELECT * FROM dbo.Event_Users d LEFT JOIN dbo.Events u ON u.EventID = d.EventID LEFT JOIN dbo.Locations l ON l.LocationID = u.LocationID WHERE d.UserID = ?;";

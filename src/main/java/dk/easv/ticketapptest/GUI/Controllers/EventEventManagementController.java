@@ -59,7 +59,10 @@ public class EventEventManagementController {
             gridPane.getStylesheets().add(eventCSS);
             gridPane.setStyle("-fx-background-color: #F8F8F8;");
 
-            gridPane.setPadding(new Insets(35, -35, 0, 0));
+
+            //Initial event panel grid pane constraint setup:
+
+            gridPane.setPadding(new Insets(35, 0, 0, 0));
             gridPane.setHgap(5);
             gridPane.setVgap(5);
 
@@ -76,8 +79,8 @@ public class EventEventManagementController {
             for (int i = 0; i < 10; i++) { // Set the number of rows you expect
                 RowConstraints rowConstraints = new RowConstraints();
                 rowConstraints.setVgrow(Priority.ALWAYS);
-                rowConstraints.setMinHeight(270);
-                rowConstraints.setPrefHeight(270);
+                rowConstraints.setMinHeight(10);
+                rowConstraints.setPrefHeight(10);
                 //rowConstraints.setMaxHeight(300);
                 gridPane.getRowConstraints().add(rowConstraints);
 
@@ -97,10 +100,17 @@ public class EventEventManagementController {
         this.mainPane = mainPane;
     }
 
+    /**
+     * Sets up the individual event panels based off of the event information.
+     * @param event2 - the event that is being set up as a panel.
+     * @param hasEvent - true or false value, depending on whether the current user has access to the event or not.
+     * @return
+     */
     private VBox createEventPanel(Event2 event2, Boolean hasEvent) {
 
         VBox vbox = new VBox();
         vBoxList.add(vbox);
+        vbox.setCursor(javafx.scene.Cursor.HAND);
         vbox.getStyleClass().add("vBoxBorder");
             // Width constraints
             vbox.setPrefWidth(270);
@@ -109,6 +119,8 @@ public class EventEventManagementController {
             // Height constraints
             vbox.setPrefHeight(270);
             vbox.setMaxHeight(270);
+
+            //UI element creation:
 
         Label titleLabel = new Label(event2.getTitle());
         titleLabel.getStyleClass().add("h1");
@@ -122,6 +134,7 @@ public class EventEventManagementController {
             deleteButton.setDisable(true);
         }
 
+        //functionality for when the delete button is pressed:
         deleteButton.setOnAction(event -> {
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -143,7 +156,7 @@ public class EventEventManagementController {
                 }
         });
 
-
+        //Continued  UI element creation:
         Label locationLabel = new Label("📍 " + event2.getLocation().getAddress());
         locationLabel.getStyleClass().add("h2");
         Label dateLabel;
@@ -185,9 +198,11 @@ public class EventEventManagementController {
         }
             coordinatorLabel.getStyleClass().add("h4");
 
+        //The created UI elements are added to the vBox "Event panels".
         vbox.getChildren().addAll(titleLabel, locationLabel, dateLabel, timeLabel, separator1,
                 ticketsLabel, ticketInfoLabel, separator2, coordinatorLabel, deleteButton);
 
+        //Logic when the event panel is clicked. (Not delete button)
         vbox.setOnMouseClicked(event -> {
             if(event.getClickCount() == 1)
             {
@@ -202,7 +217,6 @@ public class EventEventManagementController {
                     controller.setPreviousView("event-Dashboard-event-management");
                     mainPane.setCenter(eventInDepth);
 
-                    //TODO VERY BAD. MAKE THIS LESS BAD. PLEASEEEE
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -212,6 +226,12 @@ public class EventEventManagementController {
         return vbox;
     }
 
+
+    /**
+     * Runs whenever the user presses the "Create Event" button.
+     * Simply opens a new window with the create-event-view.fxml file.
+     * @param actionEvent
+     */
     @FXML
     private void handleCreateEvent(ActionEvent actionEvent) {
         try {
@@ -234,7 +254,13 @@ public class EventEventManagementController {
         }
     }
 
-
+    /**
+     * Responsible for adding the event to the event grid.
+     * Gets the next available coordinates for the grid, then creates an event panel for the grid, and adds it.
+     * Increases coordinate location by 1.
+     * @param event
+     * @param hasEvent
+     */
     public void createEvent(Event2 event, Boolean hasEvent) {
         int x = getNextX();
         int y = getNextY();
@@ -246,11 +272,7 @@ public class EventEventManagementController {
     }
 
     private void addExistingEvents(List<Event2> events) {
-        if(taskRunning)
-        {
-            return;
-        }
-        else
+        if(!taskRunning)
         {
             taskRunning = true;
 
@@ -299,7 +321,10 @@ public class EventEventManagementController {
         }
     }
 
-
+    /**
+     * Used to refresh the event list. Removes the events, and the re-adds the one from event model.
+     * Used only if the observable events from the event model are modified in any way.
+     */
     private void updateList() {
         try {
             gridPane.getChildren().clear();
@@ -321,24 +346,50 @@ public class EventEventManagementController {
         return currentX / 3;
     }
 
+    /**
+     * Automatically resizes the event panels depending on the window size.
+     * If work period is expanded, revamp of this method would be preferred.
+     */
     private void trackWindowSize() {
         windowPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             double width = newValue.doubleValue();
             int columns = gridPane.getColumnConstraints().size();
             double columnWidth = width / columns;
             for (ColumnConstraints column : gridPane.getColumnConstraints()) {
-                column.setMinWidth(columnWidth);
-                column.setPrefWidth(columnWidth);
-                column.setMaxWidth(columnWidth);
+                column.setMinWidth(columnWidth * 0.9+10);
+                column.setPrefWidth(columnWidth * 0.9+10);
+                column.setMaxWidth(columnWidth * 0.9+10);
             }
         for(VBox vBox : vBoxList)
         {
-            vBox.setPrefWidth(columnWidth * 0.9 - 30);
-            vBox.setMinWidth(columnWidth * 0.9 - 30);
-            vBox.setMaxWidth(columnWidth * 0.9 - 30);
+            //Unique
+            vBox.setPrefWidth(columnWidth * 0.9);
+            vBox.setMinWidth(columnWidth * 0.9);
+            vBox.setMaxWidth(columnWidth * 0.9);
             System.out.println(vBox.getPrefWidth() + " - " + columnWidth);
         }
         });
+
+        double HeightMultiplier = 3.5;
+        windowPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double height = newValue.doubleValue();
+            int rows = gridPane.getRowConstraints().size();
+            double rowHeight = height / rows;
+            for (RowConstraints row : gridPane.getRowConstraints()) {
+                row.setMinHeight(rowHeight * HeightMultiplier+30);
+                row.setPrefHeight(rowHeight * HeightMultiplier+30);
+                row.setMaxHeight(rowHeight * HeightMultiplier+30);
+            }
+            for(VBox vBox : vBoxList)
+            {
+                //Unique
+                vBox.setPrefHeight(rowHeight * HeightMultiplier);
+                vBox.setMinHeight(rowHeight * HeightMultiplier);
+                vBox.setMaxHeight(rowHeight * HeightMultiplier);
+                System.out.println(vBox.getPrefHeight() + " - " + rowHeight);
+            }
+        });
+
     }
 }
 
