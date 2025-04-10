@@ -69,7 +69,15 @@ public class AdminUserManagementController implements Initializable {
 
     private PauseTransition searchDebounce;
 
-
+    public AdminUserManagementController() {
+        try {
+            userModel = new UserModel();
+            userManagementModel = new UserManagementModel();
+        } catch (EasvTicketException e) {
+            e.printStackTrace();
+            AlertClass.alertError("Error", "if you see this message, good luck!");
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

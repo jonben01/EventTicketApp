@@ -220,7 +220,7 @@ public class TicketPrintController {
         return length + "abc" + randomString.toString();
 
     }
-    
+
     private boolean isValidEmail (String email){
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
