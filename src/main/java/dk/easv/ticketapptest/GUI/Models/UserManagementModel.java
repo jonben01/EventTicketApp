@@ -19,8 +19,8 @@ public class UserManagementModel {
         userManagementLogic.createUserDB(user);
     }
 
-    public void updateUserDB(User selectedUser, int userId) throws EasvTicketException {
-        userManagementLogic.updateUserDB(selectedUser, userId);
+    public void updateUserDB(User selectedUser, int userId, boolean hasPasswordChanged) throws EasvTicketException {
+        userManagementLogic.updateUserDB(selectedUser, userId, hasPasswordChanged);
     }
 
     public void deleteUser(User user) throws EasvTicketException {

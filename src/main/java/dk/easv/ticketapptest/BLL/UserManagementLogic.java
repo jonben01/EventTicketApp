@@ -27,9 +27,11 @@ public class UserManagementLogic {
 
     }
 
-    public void updateUserDB(User user, int userId) throws EasvTicketException {
-        user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
-        userDAO.updateUserDB(user, userId);
+    public void updateUserDB(User user, int userId, boolean hasPasswordChanged) throws EasvTicketException {
+        if(hasPasswordChanged) {
+            user.setPassword(PBKDF2PasswordUtil.hashPassword(user.getPassword()));
+        }
+        userDAO.updateUserDB(user, userId, hasPasswordChanged);
     }
 
     public void deleteUser(User user) throws EasvTicketException {

@@ -139,8 +139,16 @@ public class UserDAO {
 
 
 
-    public void updateUserDB(User user, int userId) throws EasvTicketException {
-        String sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
+    public void updateUserDB(User user, int userId, boolean hasPasswordChanged) throws EasvTicketException {
+        String sql;
+        if(hasPasswordChanged) {
+            sql = "UPDATE dbo.Users SET Username = ?, PasswordHash = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
+        }
+        else
+        {
+            sql = "UPDATE dbo.Users SET Username = ?, Email = ?, PhoneNumber = ?, FirstName = ?, LastName = ? WHERE UserID = ?";
+
+        }
         String getRoleSQL = "SELECT RoleID FROM Roles WHERE RoleName = ?";
         String updateRoleSQL = "UPDATE dbo.User_Roles SET RoleID = ? WHERE UserID = ?";
 
@@ -150,7 +158,18 @@ public class UserDAO {
              PreparedStatement pstmt3 = connection.prepareStatement(updateRoleSQL)) {
 
             connection.setAutoCommit(false);
+        if(!hasPasswordChanged) {
 
+
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getPhone());
+            pstmt.setString(4, user.getFirstName());
+            pstmt.setString(5, user.getLastName());
+            pstmt.setInt(6, userId);
+        }
+        else
+        {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getEmail());
@@ -158,6 +177,7 @@ public class UserDAO {
             pstmt.setString(5, user.getFirstName());
             pstmt.setString(6, user.getLastName());
             pstmt.setInt(7, userId);
+        }
 
             pstmt.executeUpdate();
 

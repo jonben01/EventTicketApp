@@ -34,7 +34,8 @@ import java.util.*;
 
 
 public class AdminUserManagementController implements Initializable {
-    
+
+    boolean hasPasswordChanged = false;
     @FXML
     public TextField txtUserSearch;
     @FXML
@@ -132,6 +133,7 @@ public class AdminUserManagementController implements Initializable {
             if (selectedUser != null) {
                 if (!newValue.equals(PASSWORD_PLACEHOLDER) && !newValue.isEmpty()) {
                     hasChanged = true;
+                    hasPasswordChanged = true;
                 }
                 checkIfChanged();
             }
@@ -368,7 +370,6 @@ public class AdminUserManagementController implements Initializable {
             Optional<ButtonType> result = AlertClass.alertConfirmation("Delete User", "Are you sure you want to delete this user: " + user.getUsername());
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 try {
-                    //TODO check if this causes errors on an empty list, not going to try right now -- jonas 25/03
                     userManagementModel.deleteUser(user);
                     lstUsers.getItems().remove(user);
                     if (!lstUsers.getItems().isEmpty()) {
@@ -402,14 +403,16 @@ public class AdminUserManagementController implements Initializable {
             int userId = selectedUser.getId();
 
             selectedUser.setUsername(newUsername);
-            selectedUser.setPassword(newPassword);
+            if(hasPasswordChanged) {
+                selectedUser.setPassword(newPassword);
+            }
             selectedUser.setFirstName(newFirstName);
             selectedUser.setLastName(newLastName);
             selectedUser.setEmail(newEmail);
             selectedUser.setPhone(newPhone);
 
             try {
-                userManagementModel.updateUserDB(selectedUser, userId);
+                userManagementModel.updateUserDB(selectedUser, userId, hasPasswordChanged);
                 // Update original values after successful update
                 originalValues.put(txtUsername, newUsername);
                 originalValues.put(txtPassword, newPassword);
